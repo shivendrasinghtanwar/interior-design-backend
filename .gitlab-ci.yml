@@ -1,0 +1,23 @@
+stages:
+ - deploy
+
+#devDeploy
+deployToDev:
+ only:
+   - dev
+ stage: deploy
+ tags:
+   - deploy
+ script:
+   - bash deploy/deployDev.sh
+
+
+#master deploy
+deployToMaster:
+ only:
+   - master
+ stage: deploy
+ tags:
+   - deploy
+ script:
+   - bash deploy/deploy.sh
