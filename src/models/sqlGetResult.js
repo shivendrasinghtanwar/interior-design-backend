@@ -16,7 +16,6 @@ class MySqlExec {
 
   async mySqlTxn(arrayOfQueryInSequence) {
     const queryArray = arrayOfQueryInSequence;
-    console.log('queries ', queryArray);
     const conn = await mysql.getConnectionFromPool();
     let insertedUserId = 0;
     try {

@@ -17,7 +17,7 @@ class Queries {
   }
 
   getAdminDetailsById(userId) {
-    return `select * from user u left join client_assigned ca on ca.admin_id = u.id left join `
+    return `select * from user u left join client_assigned ca on ca.admin_id = u.id left join `;
   }
 }
 

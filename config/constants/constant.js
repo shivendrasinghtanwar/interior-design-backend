@@ -221,14 +221,6 @@ const constants = {
     revise: 'REVISE',
     send: 'SEND'
   },
-  status: {
-    loan: {
-      approved: 'APPROVED',
-      committed: 'COMMITTED'
-    },
-    proposal: { pending: 'PENDING' }
-
-  },
   proposalMap: {
     borrower: {
       SHORT_TERM: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
@@ -250,21 +242,10 @@ const constants = {
     INVALID_EMAIL: 'Invalid email format.',
     INVALID_EMAIL_OR_MOBILE: 'Invalid email or mobile format.',
     INVALID_CLIENT_ID: 'Client Id is invalid!',
+    DESIGN_QUOTATION_ALREADY_GENERATED: 'Design Quotation Already Generated for this user!',
+    SIGNUP_ERROR: 'Signup error. Please try again.',
+    DESIGN_QUOTATION_ERROR: 'Error while generating design quotation. Please try again.',
     RESP_SUCCESS: 'Response success',
-    UNAUTHORISED: 'Not Permitted.',
-    NO_DATA: 'No data found',
-    EMPTY_FIELD: 'Empty field not allowed.',
-    FETCHING_ERROR: 'Erroring in fetching data.',
-    START_DATE_VALIDATION: 'Date should not be less than 1 JAN 2015.',
-    END_DATE_VALIDATION: 'Date should not be greater than now.',
-
-    VALID_TITLE: 'Please select a valid title.',
-    INVALID_EMI_AMT: 'Must be a valid Emi amount.',
-    INVALID_ANNUAL_TURNOVER: 'Must be a valid annual turnover amount.',
-    INVALID_ITRFILEREPLY: 'Please select a valid option.',
-    INVALID_LOAN_PURPOSE: 'Must be a valid loan purpose.',
-    INVALID_EXP: 'Invalid working experience.',
-    INVALID_MODE_OF_INCOME: 'Invalid mode of income.',
     EMAIL_EXIST: 'Email already exist.',
     EMAIL_NOT_EXIST: 'Email does not exist.',
     MOBILE_EXIST: 'Mobile no. already exist.',
@@ -295,7 +276,6 @@ const constants = {
     INVALID_BIZTYPE: 'Invalid business type.',
     INVALID_MSTATUS: 'Invalid marital status.',
     INVALID_NOMREL: 'Invalid relationship.',
-    INVALID_DESIG: 'Please provide valid designation.',
     INVALID_IFSC: 'Invalid IFSC code format.',
     INVALID_HOLDERNAME: 'Invalid account holder name.',
     LOGGED_IN: 'Loggedin successfully.',
@@ -310,8 +290,6 @@ const constants = {
     BANK_UPDATE: 'Bank details updated.',
     BANK_UPDATE_ERROR: 'For update bank details please contact support.',
     CANNOT_UPDATE_PROFILE: 'For update profile please contact support.',
-    SIGNUP_ERROR: 'Signup error. Please try again.',
-    DESIGN_QUOTATION_ERROR: 'Error while generating design quotation. Please try again.',
     SIGNUP_2_3_ERROR: 'Something Went wrong while updating data. Please try again.',
     OTP_SENDING_ERROR: 'Error while sending OTP.',
     LOGOUT: 'Logged out successfully.',
@@ -415,27 +393,8 @@ const constants = {
     INVALID_AMOUNT: 'Invalid amount passed.',
     PROP_NOT_FOUND: 'No relevant proposal found.',
     INVALID_PROP: 'Invalid proposal',
-    EMAIL_A_VERIFIED: 'Email already verified',
-    CONTACT_SUPPORT: 'Please contact support for mobile or email update.',
-    NO_LEGAL_DOCS: 'No legal documents found.',
-    DOWN_LEGAL_DOCS: 'Download legal documents.',
-    PAY_HISTORY: 'Payment history.',
-    WALLET_ID_EXIST: 'Wallet already exist.',
-    WALLET_CREATED: 'Wallet created successfully.',
-    WALLET_CERROR: 'Wallet creation error.',
-    LINK_CREATED: 'Link created successfully.',
-    INVALID_ADDON: 'Invalid Addon passed.',
-    NO_FEE_PAID: 'No Fee paid/initiated yet.',
-    CALLBACKREQ: 'Callback requested.',
-    DEMOREQ: 'Demo requested',
-    NO_INV_FOUND: 'No invoices found.',
-    BAL_INSUF: 'Wallet balance insufficient',
-    INVOICE_SETTLED: 'Invoice settlement initiated successfully.',
-    NO_EMI: 'EMI not exist',
-    STATUS_INVALID: 'Either loan or Investment status not valid.',
-    NO_INVS_FOUND: 'No investor found'
+    EMAIL_A_VERIFIED: 'Email already verified'
   }
-
 };
 
 module.exports = constants;

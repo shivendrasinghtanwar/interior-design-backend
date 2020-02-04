@@ -1,4 +1,8 @@
 class Queries {
+  getDesignQuotationByClientId(clientId) {
+    return `SELECT * FROM design_quotation where client_id = ${clientId}`;
+  }
+
   insertDesignQuotationQueries(reqData) {
     const finalQuerySet = [];
     const designQuotId = `SELECT id from design_quotation WHERE client_id = ${reqData.clientId}`;
