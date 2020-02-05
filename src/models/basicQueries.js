@@ -12,8 +12,8 @@ class Queries {
     return query;
   }
 
-  isUserExist(data) {
-    return `SELECT email, mobile FROM user WHERE mobile = "${data.mobile}" OR email = "${data.email}"`;
+  fetchAllClient() {
+    return "select u.id clientId,u.email,u.title,u.first_name,u.last_name,u.mobile,u.address,u.created registered,u.updated lastUpdated,if(dq.id is not null, 1, 0) designQuotGenerated from user u left join design_quotation dq on dq.client_id = u.id where type='CLIENT';";
   }
 
   getAdminDetailsById(userId) {
