@@ -32,6 +32,24 @@ class RegisterModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+
+  async registerAdmin(req, res, next) {
+    try {
+      const reqData = new RegisterModule().getMandatoryFields(req);
+      reqData.status = 'STEP_1';
+      reqData.type = 'ADMIN';
+      reqData.password = req.body.password;
+      reqData.address = req.body.address || null;
+      reqData.role = 'ADMIN';
+      reqData.registeredBy = req._decoded.id;
+      const response = await registerConn.addClient(reqData);
+      console.log(response);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
 }
 
 module.exports = new RegisterModule();

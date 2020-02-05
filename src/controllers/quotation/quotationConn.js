@@ -58,7 +58,7 @@ class QuotationConn {
     designQuotHtml = designQuotHtml.replace('{adhocAmount}', adhocCharges || 0);
     designQuotHtml = designQuotHtml.replace('{paymentTerms}', paymentTerms);
     const htmlData = designQuotHtml;
-    const tempFilePath = url1.replace('.html', '.pdf');
+    const tempFilePath = url1.replace('.html', `${new Date()}.pdf`);
     await new Promise((resolve, reject) => {
       pdf.create(htmlData, {
         // format: 'A3',
@@ -75,17 +75,15 @@ class QuotationConn {
     });
     // const s3docLink = await s3Upload(tempFilePath, `${user.id}-design-quotation.pdf`);
     // reqData.docUrl = s3docLink;
-    reqData.docUrl = 'https://lendboxdev.s3.amazonaws.com/4-design-quotation.pdf';
+    reqData.docUrl = tempFilePath;
     const dbres = await mySqlTxn(insertDesignQuotationQueries(reqData));
     // fs.unlinkSync(tempFilePath);
     if (dbres.code) {
-      console.log('#'.repeat(100));
       return {
         httpStatus: 404,
         body: { success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {} }
       };
     }
-    console.log('$'.repeat(100));
     return {
       httpStatus: 200,
       body: {

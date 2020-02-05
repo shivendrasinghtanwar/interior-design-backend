@@ -10,7 +10,8 @@ const router = express.Router();
 
 router.get('/login', validators.checkEmail, validators.checkPassword, validationErrorHandler, loginModule.loginByPasswordReqFilter);
 router.post('/generate-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.designQuotation);
-router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validationErrorHandler, registerModule.registerClient); //todo verifyToken and validator.checkClientId and checkbody is not working in validator
+router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validationErrorHandler, registerModule.registerClient);
+router.post('/register-admin', verifyToken, validators.checkEmail, validators.checkPassword, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validationErrorHandler, registerModule.registerAdmin);
 
 
 router.use(errorHandler);
