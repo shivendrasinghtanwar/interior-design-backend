@@ -12,6 +12,7 @@ const router = express.Router();
 router.get('/login', validators.checkEmail, validators.checkPassword, validationErrorHandler, loginModule.loginByPasswordReqFilter);
 router.post('/generate-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.designQuotation);
 router.get('/fetch-all-client', verifyToken, clientModule.fetchAllClient);
+router.post('/assign-to-client', verifyToken, validators.checkClientId, validators.checkAdminId, validationErrorHandler, clientModule.assignToClient);
 router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validationErrorHandler, registerModule.registerClient);
 router.post('/register-admin', verifyToken, validators.checkEmail, validators.checkPassword, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validationErrorHandler, registerModule.registerAdmin);
 

@@ -1,12 +1,12 @@
 const _ = require('lodash');
 const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
-const { getData, mySqlTxn } = require('../../models/sqlGetResult');
+const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
 
 class RegisterConn {
   async addClient(reqData) {
     // Check if user exist with emailId, mobile number or both.
-    const listExistedUsers = JSON.stringify(await (getData(isUserExist(reqData))))
+    const listExistedUsers = JSON.stringify(await (execSql(isUserExist(reqData))))
       .toLocaleLowerCase();
     if (listExistedUsers.includes(reqData.mobile)
           && listExistedUsers.includes(reqData.email)) {

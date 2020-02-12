@@ -6,10 +6,8 @@ const pdf = require('html-pdf');
 const { s3Upload } = require('../../utils/s3Upload');
 const { insertDesignQuotationQueries, getDesignQuotationByClientId } = require('../../models/quotationQueries');
 const { getUserById } = require('../../models/basicQueries');
-const { getData, mySqlTxn } = require('../../models/sqlGetResult');
-const {
-  resMsg
-} = require('../../../config/constants/constant');
+const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
+const { resMsg } = require('../../../config/constants/constant');
 
 // const path =
 // const __dirname = '../../../template';
@@ -19,16 +17,14 @@ class QuotationConn {
     const {
       design, view3D, adhocCharges, clientId
     } = reqData;
-    const [designQuot] = await getData(getDesignQuotationByClientId(clientId));
-    console.log('designQuot ', designQuot);
+    const [designQuot] = await execSql(getDesignQuotationByClientId(clientId));
     if (designQuot) {
       return {
         httpStatus: 400,
         body: { success: false, msg: resMsg.DESIGN_QUOTATION_ALREADY_GENERATED, data: {} }
       };
     }
-    const [user] = await getData(getUserById(clientId));
-    console.log('user ', user);
+    const [user] = await execSql(getUserById(clientId));
     if (!user) {
       return {
         httpStatus: 400, body: { success: false, msg: resMsg.INVALID_CLIENT_ID, data: {} }
@@ -37,7 +33,7 @@ class QuotationConn {
 
     const url1 = path.join(__dirname, '../../../template', '/Design_Quotation_Template.html');
     // const path = '../../../template';
-    console.log(reqData);
+    console.log('reqData', reqData);
     const totalRooms = reqData.design.map(x => x.count).reduce((x, y) => x + y, 0) || 0;
     const html = fs.readFileSync(url1, 'utf8');
     const finalCost = ((totalRooms * 5000) || 0) + ((view3D * 3500) || 0) + (adhocCharges || 0);
@@ -58,7 +54,8 @@ class QuotationConn {
     designQuotHtml = designQuotHtml.replace('{adhocAmount}', adhocCharges || 0);
     designQuotHtml = designQuotHtml.replace('{paymentTerms}', paymentTerms);
     const htmlData = designQuotHtml;
-    const tempFilePath = url1.replace('.html', `${new Date()}.pdf`);
+    const tempFilePath = url1.replace('.html', `${Date.now()}.pdf`);
+    // const tempFilePath = `${process.cwd()}/Design-Quot-${Date.now()}.pdf`;
     await new Promise((resolve, reject) => {
       pdf.create(htmlData, {
         // format: 'A3',
@@ -67,15 +64,17 @@ class QuotationConn {
         width: '9in',
         type: 'pdf',
         zoomFactor: '0.5'
-      }).toFile(tempFilePath, (e, file) => {
+      }).toFile(tempFilePath, async (e, file) => {
         if (e) return reject(e);
         console.log(file);
         return resolve(file);
       });
     });
-    // const s3docLink = await s3Upload(tempFilePath, `${user.id}-design-quotation.pdf`);
-    // reqData.docUrl = s3docLink;
-    reqData.docUrl = tempFilePath;
+    console.log('temp ', tempFilePath);
+    const s3docLink = await s3Upload(tempFilePath, `${user.id}-design-quotation.pdf`);
+    reqData.docUrl = s3docLink;
+    console.log('s3doclink', s3docLink);
+    // reqData.docUrl = tempFilePath;
     const dbres = await mySqlTxn(insertDesignQuotationQueries(reqData));
     // fs.unlinkSync(tempFilePath);
     if (dbres.code) {

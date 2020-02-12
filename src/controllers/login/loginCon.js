@@ -1,5 +1,5 @@
 const { getUserByMobileOrEmail } = require('../../models/basicQueries');
-const { getData } = require('../../models/sqlGetResult');
+const { execSql } = require('../../models/sqlGetResult');
 const { generateToken } = require('../../middlewares/jwt');
 const {
   resMsg
@@ -7,7 +7,7 @@ const {
 
 class Login {
   async loginByPassword(reqData) {
-    const [user] = await getData(getUserByMobileOrEmail(reqData));
+    const [user] = await execSql(getUserByMobileOrEmail(reqData));
     console.log(user);
     if (!user) {
       return {

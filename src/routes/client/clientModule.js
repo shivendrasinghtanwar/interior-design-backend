@@ -14,6 +14,20 @@ class ClientModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+
+  async assignToClient(req, res, next) {
+    try {
+      const reqData = {};
+      reqData.clientId = req.body.clientId;
+      reqData.adminId = req.body.adminId;
+      reqData.updatedBy = req._decoded.id;
+      const response = await clientCont.assignToClient(reqData);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
 }
 
 module.exports = new ClientModule();

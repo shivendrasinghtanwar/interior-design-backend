@@ -1,7 +1,7 @@
 const mysql = require('../../config/db/mySqlConn');
 
 class MySqlExec {
-  async getData(query) {
+  async execSql(query) {
     return new Promise(async (resolve, reject) => {
       const conn = await mysql.getConnectionFromPool();
       conn.query(query, (err, result) => {

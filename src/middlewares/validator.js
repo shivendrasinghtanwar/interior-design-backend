@@ -28,6 +28,14 @@ const validators = {
       .escape()
       .withMessage('Client Id is required')
   ],
+  checkAdminId: [
+    check('adminId')
+      .not()
+      .isEmpty()
+      .trim()
+      .escape()
+      .withMessage('Admin Id is required')
+  ],
   checkTitle: [
     check('title')
       .not()

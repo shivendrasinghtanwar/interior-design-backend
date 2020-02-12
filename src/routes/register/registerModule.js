@@ -18,7 +18,7 @@ class RegisterModule {
   async registerClient(req, res, next) {
     try {
       const reqData = new RegisterModule().getMandatoryFields(req);
-      reqData.status = 'STEP_1';
+      reqData.status = '1';
       reqData.type = 'CLIENT';
       reqData.password = '12345678';
       reqData.address = req.body.address || null;
@@ -36,7 +36,7 @@ class RegisterModule {
   async registerAdmin(req, res, next) {
     try {
       const reqData = new RegisterModule().getMandatoryFields(req);
-      reqData.status = 'STEP_1';
+      reqData.status = '1';
       reqData.type = 'ADMIN';
       reqData.password = req.body.password;
       reqData.address = req.body.address || null;
