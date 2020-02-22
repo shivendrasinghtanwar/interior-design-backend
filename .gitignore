@@ -54,3 +54,6 @@ logs/*.log
 
 .vscode
 .env
+
+#remove templates
+templates/*.pdf

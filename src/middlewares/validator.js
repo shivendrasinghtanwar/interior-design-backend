@@ -12,6 +12,15 @@ const validators = {
       .isEmail()
       .withMessage('E-mail id is required or invalid')
   ],
+  checkRemarks: [
+    check('remarks')
+      .not()
+      .isEmpty()
+      .trim()
+      .escape()
+      .isEmail()
+      .withMessage('Scope of Work is required')
+  ],
   checkPassword: [
     check('password')
       .not()

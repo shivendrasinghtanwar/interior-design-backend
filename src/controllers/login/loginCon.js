@@ -1,4 +1,4 @@
-const { getUserByMobileOrEmail } = require('../../models/basicQueries');
+const { getAdminByMobileOrEmail } = require('../../models/basicQueries');
 const { execSql } = require('../../models/sqlGetResult');
 const { generateToken } = require('../../middlewares/jwt');
 const {
@@ -7,7 +7,7 @@ const {
 
 class Login {
   async loginByPassword(reqData) {
-    const [user] = await execSql(getUserByMobileOrEmail(reqData));
+    const [user] = await execSql(getAdminByMobileOrEmail(reqData));
     console.log(user);
     if (!user) {
       return {
@@ -20,10 +20,7 @@ class Login {
       type: user.type,
       role: user.user_role
     };
-    let url;
-    if (user.type === 'ADMIN') url = '/ADMIN';
-    else url = '/CLIENT';
-    const jwt = await generateToken(tokenData, '5000min', url);
+    const jwt = await generateToken(tokenData, '5000min');
     return {
       httpStatus: 200,
       body: {

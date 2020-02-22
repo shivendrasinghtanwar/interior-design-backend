@@ -7,16 +7,16 @@ const { adminUrls, userUrls } = require('../../config/constants/urlByRoles');
 let jwtKey;
 
 class JwtToken {
-  async generateToken(tokenData, exp, routeUrl) {
+  async generateToken(tokenData, exp) {
     // Get JWT Keys.
-    jwtKey = (new JwtToken()).jwtKeys(routeUrl);
-    console.log('jwtkey', jwtKey);
+    jwtKey = JWT.login;
     return new Promise((resolve, reject) => {
       jwt.sign(tokenData, jwtKey, { expiresIn: exp }, (err, token) => {
         if (err) {
           return reject(err);
         }
         let encryptToken = token;
+        console.log('bef enc:->', encryptToken);
         encryptToken = crypt.encryptData(encryptToken);
         return resolve(encryptToken);
       });
@@ -28,14 +28,13 @@ class JwtToken {
     if (!token) return next(new errors.AuthorizationError('Did not receive token'));
     try {
       token = crypt.decryptData(token);
+      console.log('after dec:->', token);
       // Get JWT Keys.
-      jwtKey = (new JwtToken()).jwtKeys(req._parsedUrl.pathname);
-      console.log('jwtkey', req._parsedUrl.pathname);
+      jwtKey = JWT.login;
       if (!jwtKey) next(new errors.AuthorizationError('Access denied!'));
       jwt.verify(token, jwtKey, (err, decoded) => {
-        console.log('dec', decoded);
         if (err) next(new errors.AuthorizationError('Token Invalid or Expired. Forbidden!'));
-        const isValidUser = (new JwtToken()).accesUrls(req._parsedUrl.pathname, decoded.role);
+        const isValidUser = (new JwtToken()).accessUrls(req._parsedUrl.pathname, decoded.type);
         if (!isValidUser) next(new errors.AuthorizationError('Access denied!'));
         req._decoded = decoded;
       });
@@ -45,17 +44,17 @@ class JwtToken {
     return next();
   }
 
-  jwtKeys(routeUrl) {
-    // add different secret keys for different routes.
-    if (adminUrls.indexOf(routeUrl) >= 0 || userUrls.indexOf(routeUrl) >= 0) return JWT.login;
-    return null;
-  }
+  // jwtKeys(routeUrl) {
+  // add different secret keys for different routes.
+  // if (adminUrls.indexOf(routeUrl) >= 0 || userUrls.indexOf(routeUrl) >= 0)
+  // return JWT.login;
+  // return null;
+  // }
 
   // Will return route is for ROLE_ADMIN or ROLE_USER
-  accesUrls(routeUrl, role) {
-    if (adminUrls.indexOf(routeUrl) >= 0 && role === 'ROLE_ADMIN') return true;
-    if (userUrls.indexOf(routeUrl) >= 0 && role === 'ROLE_USER') return true;
-    return false;
+  accessUrls(routeUrl, role) {
+    if (adminUrls.indexOf(routeUrl) >= 0 && role === 'ADMIN') return true;
+    return userUrls.indexOf(routeUrl) >= 0 && role === 'CLIENT';
   }
 }
 

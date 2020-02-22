@@ -5,7 +5,7 @@ const moment = require('moment');
 const pdf = require('html-pdf');
 const { s3Upload } = require('../../utils/s3Upload');
 const { insertDesignQuotationQueries, getDesignQuotationByClientId } = require('../../models/quotationQueries');
-const { getUserById } = require('../../models/basicQueries');
+const { getClientByIdOrMobileOrEmail } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
 
@@ -24,7 +24,7 @@ class QuotationConn {
         body: { success: false, msg: resMsg.DESIGN_QUOTATION_ALREADY_GENERATED, data: {} }
       };
     }
-    const [user] = await execSql(getUserById(clientId));
+    const [user] = await execSql(getClientByIdOrMobileOrEmail(reqData));
     if (!user) {
       return {
         httpStatus: 400, body: { success: false, msg: resMsg.INVALID_CLIENT_ID, data: {} }

@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
+const { getClientByIdOrMobileOrEmail } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
+const { generateToken } = require('../../middlewares/jwt');
 const { resMsg } = require('../../../config/constants/constant');
 
 class RegisterConn {
@@ -26,12 +28,21 @@ class RegisterConn {
     const dbres = await mySqlTxn(addClientQuery(reqData));
     if (dbres.code) {
       return {
-        httpStatus: 404,
+        httpStatus: 500,
         body: { success: false, msg: resMsg.SIGNUP_ERROR, data: {} }
       };
     }
+    if (reqData.shareReqForm) {
+      const [client] = await execSql(getClientByIdOrMobileOrEmail(reqData));
+      const tokenData = {
+        id: client.id,
+        status: client.status,
+        type: 'CLIENT'
+      };
+      reqData.jwt = await generateToken(tokenData, '5000min');
+    }
     return {
-      httpStatus: 200, body: { success: true, msg: resMsg.REGISTER_SUCCESS, data: {} }
+      httpStatus: 200, body: { success: true, msg: resMsg.REGISTER_SUCCESS, data: reqData.jwt }
     };
   }
 }

@@ -19,9 +19,13 @@ class RegisterModule {
     try {
       const reqData = new RegisterModule().getMandatoryFields(req);
       reqData.status = '1';
-      reqData.type = 'CLIENT';
       reqData.password = '12345678';
       reqData.address = req.body.address || null;
+      reqData.city = req.body.city;
+      reqData.meetingDatetime = req.body.meetingDatetime;
+      reqData.scopeOfWork = req.body.scopeOfWork;
+      reqData.shareReqForm = req.body.shareReqForm;
+      reqData.visitCharges = req.body.visitCharges;
       reqData.role = 'USER';
       reqData.registeredBy = req._decoded.id;
       const response = await registerConn.addClient(reqData);
