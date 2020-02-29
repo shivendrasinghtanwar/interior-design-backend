@@ -24,6 +24,7 @@ class RegisterModule {
       reqData.city = req.body.city;
       reqData.meetingDatetime = req.body.meetingDatetime;
       reqData.scopeOfWork = req.body.scopeOfWork;
+      reqData.package = req.body.package;
       reqData.shareReqForm = req.body.shareReqForm;
       reqData.visitCharges = req.body.visitCharges;
       reqData.role = 'USER';

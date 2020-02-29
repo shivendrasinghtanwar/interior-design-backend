@@ -49,9 +49,19 @@ const validators = {
     check('title')
       .not()
       .isEmpty()
+      .isIn(['Mr.', 'Ms.', 'Mrs.'])
       .trim()
       .escape()
       .withMessage('title is required')
+  ],
+  checkPackage: [
+    check('package')
+      .not()
+      .isEmpty()
+      .isIn(['DN', 'FHI', 'MF'])
+      .trim()
+      .escape()
+      .withMessage('package is required or invalid!')
   ],
   checkFirstName: [
     check('firstName')
@@ -68,6 +78,24 @@ const validators = {
       .trim()
       .escape()
       .withMessage('Last name is required')
+  ],
+  checkCity: [
+    check('city')
+      .not()
+      .isEmpty()
+      .isIn(['DELHI', 'GURGAON', 'NOIDA'])
+      .trim()
+      .escape()
+      .withMessage('City is required!')
+  ],
+  checkMeetingTime: [
+    check('meetingDatetime')
+      .not()
+      .isEmpty()
+      .trim()
+      .escape()
+      .isISO8601()
+      .withMessage('meeting date time is required or invalid')
   ],
   checkMobile: [
     check('mobile')

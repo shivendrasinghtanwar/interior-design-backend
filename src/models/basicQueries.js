@@ -20,8 +20,12 @@ class Queries {
     return query;
   }
 
-  fetchAllClient() {
-    return "select u.id clientId,u.email,u.title,u.first_name,u.last_name,u.mobile,u.address,u.created registered,u.updated lastUpdated,if(dq.id is not null, 1, 0) designQuotGenerated from client u left join design_quotation dq on dq.client_id = u.id order by u.id desc;";
+  updateLoginTime(id) {
+    return `Insert into login_details set admin_id= ${id}, current_login = now() on duplicate key update last_login = current_login, current_login = now() ;`;
+  }
+
+  allUnassignedClientQuery() {
+    return "select c.id,concat(c.title,' ',c.first_name,' ',c.last_name) AS name, c.email,c.mobile,ad.city,c.meeting_datetime,c.req_form_shared from client c join address_details ad on ad.client_id = c.id;";
   }
 
   assignToClient(reqData) {

@@ -20,14 +20,15 @@ class ReqFormModule {
 
   async fillReqFormClientSide(req, res, next) {
     try {
-      let reqData = {};
+      // let reqData = {};
       const {
         propertyType, propertyAge, areaSize, bedRoom, bathRoom, livingRoom, kitchen
       } = req.body;
-      reqData.clientId = req._decoded.id;
-      reqData = {
-        ...reqData, propertyType, propertyAge, areaSize, bedRoom, bathRoom, livingRoom, kitchen
+      const reqData = {
+        propertyType, propertyAge, areaSize, bedRoom, bathRoom, livingRoom, kitchen
       };
+      reqData.clientId = req._decoded.id;
+      console.log('reqdata for fill client form \n', reqData);
       const response = await reqFormCon.fillReqFormClientSide(reqData);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
