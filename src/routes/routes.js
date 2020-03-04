@@ -4,6 +4,7 @@ const { validators, validationErrorHandler } = require('../middlewares/validator
 const quotationModule = require('./quotation/quotationModule');
 const clientModule = require('./client/clientModule');
 const preSalesModule = require('./preSales/preSalesModule');
+const designerModule = require('./designer/designerModule');
 const registerModule = require('./register/registerModule');
 const reqFormModule = require('./reqForm/reqFormModule');
 const { errorHandler } = require('./../middlewares/errors');
@@ -17,6 +18,10 @@ router.post('/generate-design-quotation', verifyToken, validators.checkClientId,
 
 router.get('/pre-sales/fetch-all-unassigned-client', verifyToken, preSalesModule.fetchAllUnassignedClient);
 router.get('/pre-sales/assigned-client', verifyToken, preSalesModule.fetchAssignedClient);
+
+router.get('/designer/assigned-client', verifyToken, designerModule.fetchAssignedClient);
+router.post('/designer/update-client-met', verifyToken, designerModule.updateClientMet);
+
 
 router.get('/check-client-req-form', verifyToken, reqFormModule.checkReqForm);
 router.post('/fill-client-req-form', verifyToken, reqFormModule.fillReqFormClientSide);

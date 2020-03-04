@@ -247,6 +247,8 @@ const constants = {
     DESIGN_QUOTATION_ERROR: 'Error while generating design quotation. Please try again.',
     REQ_FORM_ERROR: 'Error while filling requirement form. Please try again later.',
     ASSIGN_ADMIN_ERROR: 'Error while assigning. Please try again.',
+    CLIENT_MET_SUCCESS: 'Client met updated successfully',
+    CLIENT_MET_ERROR: 'Error while updating client met! Please try again.',
     RESP_SUCCESS: 'Response success',
     EMAIL_EXIST: 'Email already exist.',
     EMAIL_NOT_EXIST: 'Email does not exist.',
