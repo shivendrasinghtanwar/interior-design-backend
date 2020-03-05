@@ -30,7 +30,7 @@ class Queries {
 
   assignToClient(reqData) {
     const finalQuerySet = [];
-    finalQuerySet.push(`INSERT INTO client_assigned (client_id,admin_id,assigned_by) value (${reqData.clientId},${reqData.adminId},${reqData.updatedBy}) `);
+    finalQuerySet.push(`INSERT INTO client_assigned (client_id,admin_id,assigned_by) value (${reqData.clientId},${reqData.adminId},${reqData.updatedBy}) on duplicate key update admin_id = ${reqData.adminId}, assigned_by = ${reqData.updatedBy} `);
     finalQuerySet.push(`update client set status = status+1 where id = ${reqData.clientId} and status<3;`);
     console.log('final->', finalQuerySet);
     return finalQuerySet;

@@ -1,10 +1,21 @@
-const { updateClientMetTxn, fetchAssignedClientQuery } = require('../../models/preSalesQueries');
+const { fetchClientMetQuery, updateClientMetTxn, fetchAssignedClientQuery } = require('../../models/designerQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
 
 class DesignerCon {
   async fetchAssignedClient(reqData) {
     const allClients = await execSql(fetchAssignedClientQuery(reqData));
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: { allClients }
+      }
+    };
+  }
+
+  async fetchClientMet(reqData) {
+    const allClients = await execSql(fetchClientMetQuery(reqData));
     return {
       httpStatus: 200,
       body: {
