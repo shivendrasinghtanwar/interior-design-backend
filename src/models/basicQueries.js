@@ -12,12 +12,16 @@ class Queries {
     const {
       email, password, mobile, id
     } = reqData;
-    let query = 'select * from admin u LEFT JOIN user_roles ur on ur.admin_id = u.id  where 1=1 ';
+    let query = 'select id,email,concat(title,\' \', first_name,\' \', last_name) name,mobile,type,status from admin u where visible=1';
     if (email) query += ` and email = '${email}'`;
     if (password) query += ` and password = '${password}'`;
     if (mobile) query += ` and mobile = '${mobile}'`;
     if (id) query += ` and u.id = '${id}'`;
     return query;
+  }
+
+  getUserRoles(userId) {
+    return `SELECT roles from user_roles where admin_id = ${userId}`;
   }
 
   updateLoginTime(id) {

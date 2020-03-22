@@ -29,8 +29,8 @@ router.post('/fill-client-req-form', verifyToken, reqFormModule.fillReqFormClien
 
 router.post('/assign-to-client', verifyToken, validators.checkClientId, validators.checkAdminId, validationErrorHandler, clientModule.assignToClient);
 
-router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName,
-  validators.checkMobile, validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler,
+router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile,
+  validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler,
   registerModule.registerClient);
 
 router.post('/register-admin', verifyToken, validators.checkEmail, validators.checkPassword, validators.checkTitle, validators.checkFirstName,
