@@ -1,4 +1,4 @@
-const { assignToClient } = require('../../models/basicQueries');
+const { assignToClient, getClientProfile } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
 
@@ -16,6 +16,23 @@ class ClientCon {
       body: {
         success: true,
         msg: resMsg.SUCCESSFULLY_ASSIGNED
+      }
+    };
+  }
+
+  async getProfile(clientId) {
+    const profile = await execSql(getClientProfile(clientId));
+    if (profile) {
+      return {
+        httpStatus: 404,
+        body: { success: false, msg: resMsg.INVALID_CLIENT_ID, data: {} }
+      };
+    }
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: profile
       }
     };
   }

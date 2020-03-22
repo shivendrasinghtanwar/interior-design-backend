@@ -39,6 +39,10 @@ class Queries {
     console.log('final->', finalQuerySet);
     return finalQuerySet;
   }
+
+  getClientProfile(clientId) {
+    return `select DATE_format(c.meeting_datetime,'%d %b %y %h:%i %p') AS meetingDateTime,c.id,concat(c.title,' ',c.first_name,' ',c.last_name) AS name, c.email,c.mobile,ad.city,p.id AS projectId,p.scope_of_work,p.package,DATE_format(dq.created,'%d %b %Y') dos,ad.address,m.min_of_meeting,rf.id as reqFormId,dq.id AS designQuotId from client c left join client_assigned ca on c.id = ca.client_id join projects p on p.client_id = c.id left join meetings m on m.project_id = p.id join address_details ad on ad.client_id = c.id left join req_form rf on rf.client_id = c.id left join design_quotation dq on dq.client_id = c.id where c.id = ${clientId}`;
+  }
 }
 
 module.exports = new Queries();
