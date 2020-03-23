@@ -21,8 +21,8 @@ class ClientCon {
   }
 
   async getProfile(clientId) {
-    const profile = await execSql(getClientProfile(clientId));
-    if (profile) {
+    const [profile] = await execSql(getClientProfile(clientId));
+    if (!profile) {
       return {
         httpStatus: 404,
         body: { success: false, msg: resMsg.INVALID_CLIENT_ID, data: {} }
