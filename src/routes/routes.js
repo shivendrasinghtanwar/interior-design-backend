@@ -7,6 +7,7 @@ const preSalesModule = require('./preSales/preSalesModule');
 const designerModule = require('./designer/designerModule');
 const registerModule = require('./register/registerModule');
 const reqFormModule = require('./reqForm/reqFormModule');
+const boqModule = require('./boq/boqModule');
 const { errorHandler } = require('./../middlewares/errors');
 const { verifyToken } = require('./../middlewares/jwt');
 
@@ -30,14 +31,13 @@ router.post('/fill-client-req-form', verifyToken, reqFormModule.fillReqFormClien
 
 router.post('/assign-to-client', verifyToken, validators.checkClientId, validators.checkAdminId, validationErrorHandler, clientModule.assignToClient);
 
-router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile,
-  validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler,
-  registerModule.registerClient);
+router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler, registerModule.registerClient);
 
 router.post('/register-admin', verifyToken, validators.checkEmail, validators.checkPassword, validators.checkTitle, validators.checkFirstName,
   validators.checkLastName, validators.checkMobile, validationErrorHandler,
   registerModule.registerAdmin);
 
+router.get('/on-site-records', verifyToken, boqModule.getOnSiteRecords);
 
 router.use(errorHandler);
 
