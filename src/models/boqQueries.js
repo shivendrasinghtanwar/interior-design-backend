@@ -15,6 +15,10 @@ class Queries {
     from on_site_master_data;`;
   }
 
+  allDistinctItemTypes() {
+    return `select distinct item_type
+    from on_site_master_data`;
+  }
 }
 
 module.exports = new Queries();
