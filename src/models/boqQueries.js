@@ -16,8 +16,9 @@ class Queries {
   }
 
   allDistinctItemTypes() {
-    return `select distinct item_type
-    from on_site_master_data`;
+    return `select distinct item_type as category
+    from on_site_master_data
+    group by item_type`;
   }
 }
 
