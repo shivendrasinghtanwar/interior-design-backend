@@ -7,7 +7,7 @@ class BoqCon {
       httpStatus: 200,
       body: {
         success: true,
-        data: await execSql(allOnSiteRecords())
+        data: await execSql(allOnSiteRecords(reqData.category))
       }
     };
   }

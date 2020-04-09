@@ -8,7 +8,9 @@ class BOQModule {
   async getOnSiteRecords(req, res, next) {
     try {
       const adminId = req._decoded.id;
-      const response = await boqCon.fetchAllOnSiteRecords({ adminId });
+      console.log('params----------------------', req.query);
+      const { category } = req.query;
+      const response = await boqCon.fetchAllOnSiteRecords({ adminId, category });
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);
@@ -16,7 +18,7 @@ class BOQModule {
     }
   }
 
-  async getDistinctItemTypes(req, res, next){
+  async getDistinctItemTypes(req, res, next) {
     try {
       const adminId = req._decoded.id;
       const response = await boqCon.getAllItemTypes({ adminId });

@@ -1,6 +1,8 @@
 class Queries {
-  allOnSiteRecords() {
-    return `select
+  allOnSiteRecords(category) {
+
+    console.log('category--------------', category);
+    let queryString = `select
     id,
     item_type,
     item_description,
@@ -13,6 +15,12 @@ class Queries {
     created,
     updated
     from on_site_master_data;`;
+    if (category != '') {
+      queryString = queryString.replace(';', ' ');
+      queryString += `where item_type='${category}'`;
+    }
+    console.log('query string--------------', queryString);
+    return queryString;
   }
 
   allDistinctItemTypes() {
