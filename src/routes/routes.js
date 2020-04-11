@@ -38,7 +38,14 @@ router.post('/register-admin', verifyToken, validators.checkEmail, validators.ch
   registerModule.registerAdmin);
 
 router.get('/on-site-records', verifyToken, boqModule.getOnSiteRecords);
-router.get('/on-site-categories', verifyToken, boqModule.getDistinctItemTypes);
+router.get('/on-site-categories', verifyToken, boqModule.getOnSiteDistinctItemTypes);
+
+router.get('/boq-furniture-records', verifyToken, boqModule.getBOQFurnitureRecords);
+router.get('/boq-furniture-categories', verifyToken, boqModule.getBOQFurnitureCategories);
+
+router.get('/boq-modular-records', verifyToken, boqModule.getBOQModularRecords);
+router.get('/boq-modular-categories', verifyToken, boqModule.getBOQModularCategories);
+
 
 router.use(errorHandler);
 

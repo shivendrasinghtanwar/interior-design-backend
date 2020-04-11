@@ -18,10 +18,56 @@ class BOQModule {
     }
   }
 
-  async getDistinctItemTypes(req, res, next) {
+  async getOnSiteDistinctItemTypes(req, res, next) {
     try {
       const adminId = req._decoded.id;
-      const response = await boqCon.getAllItemTypes({ adminId });
+      const response = await boqCon.getOnSiteDistinctItemTypes({ adminId });
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async getBOQFurnitureRecords(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const { category } = req.query;
+      const response = await boqCon.getBOQFurnitureRecords({ adminId, category });
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async getBOQFurnitureCategories(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const response = await boqCon.getBOQFurnitureCategories({ adminId });
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async getBOQModularRecords(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const { category } = req.query;
+      const response = await boqCon.getBOQModularRecords({ adminId, category });
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async getBOQModularCategories(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const response = await boqCon.getBOQModularCategories({ adminId });
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);

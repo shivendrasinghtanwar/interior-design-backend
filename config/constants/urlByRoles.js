@@ -13,7 +13,11 @@ const routeConstants = {
     '/designer/update-client-met',
     '/client-profile',
     '/on-site-records',
-    '/on-site-categories'
+    '/on-site-categories',
+    '/boq-furniture-records',
+    '/boq-furniture-categories',
+    '/boq-modular-records',
+    '/boq-modular-categories'
   ],
   userUrls: [
     '/check-client-req-form', '/fill-client-req-form'

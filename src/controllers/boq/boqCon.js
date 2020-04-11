@@ -1,8 +1,10 @@
-const { allOnSiteRecords,allDistinctItemTypes } = require('../../models/boqQueries');
+const {
+  allOnSiteRecords, allOnSiteDistinctItemTypes, allFurnitureRecords, allFurnitureCategories, allModularCategories, allModularRecords
+} = require('../../models/boqQueries');
 const { execSql } = require('../../models/sqlGetResult');
-class BoqCon {
-  async fetchAllOnSiteRecords(reqData){
 
+class BoqCon {
+  async fetchAllOnSiteRecords(reqData) {
     return {
       httpStatus: 200,
       body: {
@@ -12,12 +14,52 @@ class BoqCon {
     };
   }
 
-  async getAllItemTypes(reqData) {
+  async getOnSiteDistinctItemTypes(reqData) {
     return {
       httpStatus: 200,
       body: {
         success: true,
-        data: await execSql(allDistinctItemTypes())
+        data: await execSql(allOnSiteDistinctItemTypes())
+      }
+    };
+  }
+
+  async getBOQFurnitureRecords(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(allFurnitureRecords(reqData.category))
+      }
+    };
+  }
+
+  async getBOQFurnitureCategories(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(allFurnitureCategories())
+      }
+    };
+  }
+
+  async getBOQModularRecords(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(allModularRecords(reqData.category))
+      }
+    };
+  }
+
+  async getBOQModularCategories(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(allModularCategories())
       }
     };
   }
