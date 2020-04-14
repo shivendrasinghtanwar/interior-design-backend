@@ -43,6 +43,44 @@ class Queries {
   getClientProfile(clientId) {
     return `select DATE_format(c.meeting_datetime,'%d %b %y %h:%i %p') AS meetingDateTime,c.id,concat(c.title,' ',c.first_name,' ',c.last_name) AS name, c.email,c.mobile,ad.city,p.id AS projectId,p.scope_of_work,p.package,DATE_format(dq.created,'%d %b %Y') dos,ad.address,m.min_of_meeting,rf.id as reqFormId,dq.id AS designQuotId from client c left join client_assigned ca on c.id = ca.client_id join projects p on p.client_id = c.id left join meetings m on m.project_id = p.id join address_details ad on ad.client_id = c.id left join req_form rf on rf.client_id = c.id left join design_quotation dq on dq.client_id = c.id where c.id = ${clientId}`;
   }
+
+  updateClientProfile(reqData) {
+    let query;
+    let note = 'Client Updated:';
+    query = `update client c
+         left join client_assigned ca on c.id = ca.client_id
+         join projects p on p.client_id = c.id
+         left join meetings m on m.project_id = p.id
+         join address_details ad on ad.client_id = c.id
+         left join req_form rf on rf.client_id = c.id
+         left join design_quotation dq on dq.client_id = c.id set c.updated=now()`;
+    if (reqData.oldTitle !== reqData.newTitle) {
+      query += `,c.title='${reqData.newTitle}'`;
+      note += ` :title update from ${reqData.oldTitle} to ${reqData.newTitle}`;
+    }
+    if (reqData.oldFirstName !== reqData.newFirstName) {
+      query += `,c.first_name='${reqData.newFirstName}'`;
+      note += ` :first name update from ${reqData.oldFirstName} to ${reqData.newFirstName}`;
+    }
+    if (reqData.oldLastName !== reqData.newLastName) {
+      query += `,c.last_name='${reqData.newLastName}'`;
+      note += ` :last name update from ${reqData.oldLastName} to ${reqData.newLastName}`;
+    }
+    if (reqData.oldAddress !== reqData.newAddress) {
+      query += ` ,ad.address='${reqData.newAddress}'`;
+      note += ` :last name update from ${reqData.oldLastName} to ${reqData.newLastName}`;
+    }
+    if (reqData.oldCity !== reqData.newCity) {
+      query += ` ,ad.city='${reqData.newCity}'`;
+      note += ` :city update from ${reqData.oldCity} to ${reqData.newCity}`;
+    }
+    if (reqData.oldCity !== reqData.newCity) {
+      query += ` ,ad.city='${reqData.newCity}'`;
+      note += ` :city update from ${reqData.oldCity} to ${reqData.newCity}`;
+    }
+    query += `where c.id = ${reqData.clientId}`;
+    return [query, `insert into notes (client_id, notes, tag, admin_id) values (${reqData.clientId}, ${note}, 'CLIENT_UPDATED', ${reqData.adminId});`];
+  }
 }
 
 module.exports = new Queries();

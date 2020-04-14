@@ -29,6 +29,17 @@ class ClientModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+
+  async updateClientProfile(req, res, next) {
+    try {
+      const { clientId } = req.body;
+      const response = await clientCont.updateClientProfile(clientId);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (e) {
+      console.log(e);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
 }
 
 module.exports = new ClientModule();

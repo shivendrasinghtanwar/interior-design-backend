@@ -24,6 +24,7 @@ router.get('/designer/client-met', verifyToken, designerModule.fetchClientMet);
 router.post('/designer/update-client-met', verifyToken, designerModule.updateClientMet);
 
 router.get('/client-profile', verifyToken, clientModule.getProfile);
+router.post('/update-client-profile', verifyToken, clientModule.updateClientProfile);
 
 router.get('/check-client-req-form', verifyToken, reqFormModule.checkReqForm);
 router.post('/fill-client-req-form', verifyToken, reqFormModule.fillReqFormClientSide);
