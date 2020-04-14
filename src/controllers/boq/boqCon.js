@@ -1,5 +1,5 @@
 const {
-  allOnSiteRecords, allOnSiteDistinctItemTypes, allFurnitureRecords, allFurnitureCategories, allModularCategories, allModularRecords
+  allOnSiteRecords, allOnSiteDistinctItemTypes, allFurnitureRecords, allFurnitureCategories, allModularCategories, allModularRecords, searchFurnitureRecords, searchModularRecords
 } = require('../../models/boqQueries');
 const { execSql } = require('../../models/sqlGetResult');
 
@@ -60,6 +60,26 @@ class BoqCon {
       body: {
         success: true,
         data: await execSql(allModularCategories())
+      }
+    };
+  }
+
+  async getBOQFurnitureSearch(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(searchFurnitureRecords(reqData.searchType, reqData. searchTerm))
+      }
+    };
+  }
+
+  async getBOQModularSearch(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(searchModularRecords(reqData.searchType, reqData. searchTerm))
       }
     };
   }
