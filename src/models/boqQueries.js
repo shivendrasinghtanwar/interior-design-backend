@@ -100,6 +100,76 @@ class Queries {
     group by item_type`;
   }
 
+  searchFurnitureRecords(searchType,searchTerm) {
+    let queryString = `select 
+    id,
+    item_code,
+    item_type,
+    item_name,
+    item_description,
+    unit,
+    rate,
+    amount,
+    piece_quantity,
+    breadth,
+    length,
+    height,
+    main_rate,
+    fabric_m,
+    fabric_rate,
+    drawer_count,
+    drawer_rate,
+    sliding,
+    sliding_rate,
+    url
+    width
+    from boq_furniture_master_data`;
+    let regex=".*"+searchTerm+'*';
+
+    if(searchType =='item_code'){
+      queryString += ` where item_code REGEXP '${regex}'`;
+      console.log(queryString)
+    } else if(searchType == 'item_description'){
+      queryString += ` where item_description REGEXP '${regex}'`;
+    }
+    return queryString
+  }
+
+  searchModularRecords(searchType,searchTerm) {
+    let queryString = `select
+    id,
+    item_code,
+    item_type,
+    item_name,
+    item_description,
+    unit,
+    rate,
+    amount,
+    piece_quantity,
+    breadth,
+    length,
+    height,
+    main_rate,
+    fabric_m,
+    fabric_rate,
+    drawer_count,
+    drawer_rate,
+    sliding,
+    sliding_rate,
+    url
+    width
+    from boq_modular_master_data`;
+    let regex=".*"+searchTerm+'*';
+
+    if(searchType =='item_code'){
+      queryString += ` where item_code REGEXP '${regex}'`;
+      console.log(queryString)
+    } else if(searchType == 'item_description'){
+      queryString += ` where item_description REGEXP '${regex}'`;
+    }
+    return queryString
+  }
+
 }
 
 module.exports = new Queries();

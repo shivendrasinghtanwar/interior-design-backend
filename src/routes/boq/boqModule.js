@@ -85,6 +85,32 @@ class BOQModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+  async getBOQFurnitureSearch(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const { searchType }= req.query;
+      const { searchTerm }= req.query;
+      const response = await boqCon.getBOQFurnitureSearch({ adminId, searchType, searchTerm});
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async getBOQModularSearch(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const { searchType }= req.query;
+      const { searchTerm }= req.query;
+      const response = await boqCon.getBOQModularSearch({ adminId, searchType, searchTerm});
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
 }
 
 

@@ -48,6 +48,10 @@ router.get('/boq-modular-categories', verifyToken, boqModule.getBOQModularCatego
 
 router.post('/boq-generate', verifyToken , boqModule.generateBOQ)
 
+router.get('/boq-search-furniture', verifyToken, boqModule.getBOQFurnitureSearch);
+router.get('/boq-search-modular', verifyToken, boqModule.getBOQModularSearch);
+
+
 router.use(errorHandler);
 
 module.exports = router;

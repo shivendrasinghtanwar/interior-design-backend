@@ -1,5 +1,5 @@
 const {
-  allOnSiteRecords, allOnSiteDistinctItemTypes, allFurnitureRecords, allFurnitureCategories, allModularCategories, allModularRecords
+  allOnSiteRecords, allOnSiteDistinctItemTypes, allFurnitureRecords, allFurnitureCategories, allModularCategories, allModularRecords, searchFurnitureRecords, searchModularRecords
 } = require('../../models/boqQueries');
 
 const { s3Upload } = require('../../utils/s3Upload');
@@ -109,35 +109,54 @@ class BoqCon {
     if (dbres.code) {
       return {
         httpStatus: 404,
-        body: { success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {} }
+        body: {success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {}}
       };
     }
     return {
       httpStatus: 200,
       body: {
         success: true,
+
         data: { url: reqData.docUrl }
       }
     };
   }
+  async getBOQFurnitureSearch(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(searchFurnitureRecords(reqData.searchType, reqData. searchTerm))
+      }
+    };
+  }
+  async makeBOQTableBody(data) {
 
-  async makeBOQTableBody(data){
+      let row = '<tr>';
 
-    let row = '<tr>';
+      let column = '';
+      column += '<td> 1 </td>';
+      column += '<td> 1 </td>';
+      column += '<td> 1 </td>';
+      column += '<td> 1 </td>';
+      column += '<td> 1 </td>';
+      column += '<td> 1 </td>';
+      column += '<td> 1 </td>';
+      column += '<td> 1 </td>';
 
-    let column = '';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
+      row += column;
+      row += '</tr>';
+      return row;
+    }
 
-    row += column;
-    row += '</tr>';
-    return row
+  async getBOQModularSearch(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(searchModularRecords(reqData.searchType, reqData. searchTerm))
+      }
+    }
   }
 }
 module.exports = new BoqCon();
