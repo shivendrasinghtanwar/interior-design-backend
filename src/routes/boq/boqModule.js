@@ -74,6 +74,17 @@ class BOQModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+
+  async generateBOQ(req, res, next){
+    try {
+      const adminId = req._decoded.id;
+      const response = await boqCon.generateBOQ({ adminId });
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
 }
 
 

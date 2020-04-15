@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BOQ_Template</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css' />
+	<style type="text/css">
+		body{
+			font-family: 'Open Sans', sans-serif;
+			padding: 5px;
+		}
+		table{
+			margin-top: 1rem;
+			width: 100%;
+			border-collapse: collapse;
+		}
+		.mainTable th{
+			 border-bottom: 1px solid black;
+			 text-align:left;
+		}
+		.mainTable td{
+			 border-bottom: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+  <!-- Upper Row with logo and company and customer address  -->
+<!--       <table>
+      	<tr>
+      		<td>
+	        	<table>
+	        		<tr>
+	        			<td style="text-align: left;">
+	        				  $companyName$
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>
+	        				$companyAddress$
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>
+	        				$companyZipCode$ $companyCity$
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>
+	        				$companyCountry$
+	        			</td>
+	        		</tr>
+
+	        		<tr>
+	        			<td>
+	        				 <br/>
+	        			</td>
+	        		</tr>
+
+					<tr>
+						<td style="text-align: left;">
+							  $customerCompany$
+						</td>
+					</tr>
+	        		<tr>
+	        			<td style="text-align: left;">
+	        				  $customerName$
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>
+	        				$customerAddress$
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>
+	        				$customerZipCode$ $customerCity$
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>
+	        				$customerCountry$
+	        			</td>
+	        		</tr>
+	        	</table>	
+      		</td>
+      		<td style="text-align:right;">
+      			<img  src="$logo$" class="pull-right" style="margin-right: 0px; height: 100px;" />
+      		</td>
+      	</tr>
+      </table>    -->
+     <!-- Invoice general Row with invoice number, duedate, invoice date,etc  -->
+     <table>
+     	<tr>
+     		<td>
+     			<h3 style="text-align: center;"><strong>BOQ</strong></h3>
+     		</td>
+     	</tr>
+     </table>
+
+     <div style="border-top: 1px solid black"></div>
+
+<!--      <table>
+     	<tr>
+     		<td>
+     			<table>
+     				<tr>
+     					<td>
+     						Invoice Date : $invoiceDate$
+     					</td>
+     				</tr>
+     				<tr>
+     					<td>
+     						Due Date :  $dueDate$
+     					</td>
+     				</tr>
+     			</table>
+     		</td>
+     		<td>
+     			<table>
+     				<tr>
+     					<td>
+     						Invoice Number : $invoiceNumber$
+     					</td>
+     				</tr>
+     				<tr>
+     					<td>
+     						$poNumber$ &nbsp;
+     					</td>
+     				</tr>
+     			</table>
+     		</td>
+     	</tr>
+     </table> -->
+     <div style="border-top: 1px solid black"></div>  
+<br/>
+    <!-- Main Table Row row -->
+        <table class="mainTable">
+        	<thead>
+        		<tr>
+	                <th>S. No.</th>
+	                <th>Product</th>
+	                <th>Description</th>
+	                <th>Unit Price</th>
+	                <th>Quantity</th>
+	                <th>Discount</th>
+	                <th>VAT</th>
+	                <th>Total</th>
+            	</tr>                    
+        	</thead>
+        	<tbody>
+        		{tableBody}
+        	</tbody>            
+        </table>
+
+      <!-- Total table Row row -->
+      <table style="text-align: right;">
+      	<tr>
+      		<td width=70%></td>
+      		<td width=30%>
+      			<table style="text-align: right;">
+      			<!-- <tr >
+		            <th>Total (NET) : </th>
+		            <th>$subTotal$ $currency$</th>
+		        </tr>
+		        <tr style="border-top: 1px solid black">
+		            <th>Discount : </th>
+		            <th>$discount$ $currency$</th>
+		        </tr>  -->             
+		        <tr style="border-top: 1px solid black;border-bottom: 1px solid black;font-size: 20px;">
+		            <th>Total : </th>	
+		           	<th>{totalAmount} {currency}</th>
+		        </tr>
+			</table>
+      		</td>
+      	</tr>
+      </table>
+</body>
+</html>

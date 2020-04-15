@@ -46,6 +46,7 @@ router.get('/boq-furniture-categories', verifyToken, boqModule.getBOQFurnitureCa
 router.get('/boq-modular-records', verifyToken, boqModule.getBOQModularRecords);
 router.get('/boq-modular-categories', verifyToken, boqModule.getBOQModularCategories);
 
+router.post('/boq-generate', verifyToken , boqModule.generateBOQ)
 
 router.use(errorHandler);
 
