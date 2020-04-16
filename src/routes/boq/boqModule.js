@@ -3,7 +3,7 @@ const errors = require('../../utils/errors');
 const {
   resMsg
 } = require('../../../config/constants/constant');
-
+const boqPdfMaker = require('../../controllers/boq/boqPdfMaker');
 class BOQModule {
   async getOnSiteRecords(req, res, next) {
     try {
@@ -120,7 +120,7 @@ class BOQModule {
       const boqOnsiteData = req.body.onsite;
       const boqFurnitureData = req.body.furniture;
       const boqModularData = req.body.modular;
-      const response = await boqCon.makeOnSiteTable(boqOnsiteData);
+      const response = boqPdfMaker.makeOnSiteTable(boqOnsiteData);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);

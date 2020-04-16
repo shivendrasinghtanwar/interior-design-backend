@@ -9,6 +9,8 @@ const path = require('path');
 const moment = require('moment');
 const { execSql } = require('../../models/sqlGetResult');
 const _ = require('underscore');
+const boqPdfMaker = require('./boqPdfMaker');
+const pdfMerger = require('easy-pdf-merge');
 class BoqCon {
   async fetchAllOnSiteRecords(reqData) {
     return {
@@ -94,33 +96,31 @@ class BoqCon {
 
   async generateBOQ(reqData) {
     const {
-      adminId, boqOnsiteData, furnitureData, modularData
+      adminId, boqOnsiteData, boqFurnitureData, modularData
     } = reqData;
 
-    const url1 = path.join('./template', '/BOQ/index.html');
-    const html = fs.readFileSync(url1, 'utf8');
-    let designQuotHtml = html;
-
-    let tableBody = await this.makeOnSiteTable(boqOnsiteData);
-    designQuotHtml = designQuotHtml.replace('{tableBody}', tableBody);
-    designQuotHtml = designQuotHtml.replace('{currency}', `INR`);
-    const htmlData = designQuotHtml;
-    const tempFilePath = url1.replace('.html', `${Date.now()}.pdf`);
-    // const tempFilePath = `${process.cwd()}/Design-Quot-${Date.now()}.pdf`;
+    let onSitePdfUrl = await boqPdfMaker.makeOnSitePdf(boqOnsiteData,adminId);
+    let furniturePdfUrl = await boqPdfMaker.makeFurniturePdf(boqFurnitureData,adminId);
+    const finalFile = path.join('./template', `/BOQ/boqCombined_${adminId}_${Date.now()}.pdf`);
     await new Promise((resolve, reject) => {
-      pdf.create(htmlData, {
-        // format: 'A3',
-        orientation: 'landscape',
-        height: '16in', // allowed units: mm, cm, in, px
-        width: '9in',
-        type: 'pdf',
-        zoomFactor: '0'
-      }).toFile(tempFilePath, async (e, file) => {
-        if (e) return reject(e);
-        console.log(file);
-        return resolve(file);
+      pdfMerger([onSitePdfUrl,furniturePdfUrl],finalFile,function(err) {
+        if(err) {
+          console.log('Merging error',err);
+          return {
+            httpStatus: 400,
+            body: {
+              success: false,
+              msg: err,
+              data: {}
+            }
+          };
+        }
+        console.log('Successfully merged!');
+
       });
     });
+
+
     // console.log('temp ', tempFilePath);
     /*const s3docLink = await s3Upload(tempFilePath, `${user.id}-boq.pdf`);*/
     // reqData.docUrl = s3docLink;
@@ -138,70 +138,9 @@ class BoqCon {
       body: {
         success: true,
 
-        data: { url: reqData.docUrl }
+        data: { 'onSitePdfUrl':finalFile }
       }
     };
-  }
-   async makeOnSiteTable(onsiteData) {
-    let tableBody = '';
-    const groupedData = _.groupBy(onsiteData,'item_type');
-
-    console.log(groupedData);
-    Object.entries(groupedData).forEach(([key,values])=>{
-      console.log('Key-->',key);
-      // console.log('values-->',value);
-
-      let categoryRow = `<tr class="categoryRow">`;
-
-      let categoryColumn = '';
-      categoryColumn += '<td> A </td>';
-      categoryColumn += `<td> ${key} </td>`;
-      categoryColumn += `<td></td>`;
-      categoryColumn += `<td></td>`;
-      categoryColumn += `<td></td>`;
-      categoryColumn += `<td></td>`;
-      categoryColumn += `<td></td>`;
-      categoryColumn += `<td></td>`;
-      categoryRow += categoryColumn;
-      categoryRow += '</tr>';
-      tableBody += categoryRow;
-
-
-      values.forEach(record => {
-        let row = '<tr>';
-
-         let column = '';
-         column += '<td> 1 </td>';
-         column += `<td> ${record.item_description} </td>`;
-         column += `<td> ${record.unit} </td>`;
-         column += '<td> 0 </td>';
-         column += `<td> ${record.rate} </td>`;
-         column += '<td> 0 </td>';
-         column += '<td>  </td>';
-
-         row += column;
-         row += '</tr>';
-         tableBody += row;
-      });
-
-    });
-    // console.log(groupedData);
-    let row = '<tr>';
-
-   /* let column = '';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-    column += '<td> 1 </td>';
-
-    row += column;
-    row += '</tr>';*/
-   // console.log('Final table body',tableBody);
-    return tableBody;
   }
 }
 module.exports = new BoqCon();

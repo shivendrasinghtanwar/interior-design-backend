@@ -8,19 +8,18 @@
 		body{
 			font-family: 'Open Sans', sans-serif;
 			font-size: 10px !important;
-			padding: 5px;
 		}
 		table{
-			margin-top: 1rem;
+			/*margin-top: 1rem;*/
 			width: 100%;
 			border-collapse: collapse;
 		}
+
 		.header{
 			background-color: #021f59;
-			text-align: center; 
+			text-align: center;
 			color: white;
-			padding-top: 5px;
-			padding-bottom: 5px;
+      margin: 0;
 		}
 		.header h2{
 			padding: 0;
@@ -34,44 +33,66 @@
 		}
 		.mainTable td{
 			 border-bottom: 1px solid black;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 4px;
 		}
+    td:first-child, th:first-child{
+      align-content: center !important;
+      text-align:  center!important;
+    }
 		.categoryRow{
 			background-color: #d1c26d;
+      font-weight:bold ;
 		}
-		
+		.catIndex{
+			border-right: solid thin black;
+		}
+
 	</style>
 </head>
 <body>
 <!-- Upper Row with logo and company and customer address  -->
 
 <!-- Invoice general Row with invoice number, duedate, invoice date,etc  -->
-     <table class="header">
-     	<tr>
-     		<td>
+     <div class="header" id="pageHeader">
      			<h2>On-Site Work</h2>
-     		</td>
-     	</tr>
-     </table>
+     </div>
 
-     <div style="border-top: 1px solid black"></div>
-
-<br/>
     <!-- Main Table Row row -->
         <table class="mainTable">
         	<thead>
         		<tr>
-	                <th>S. No.</th>
-	                <th>Description</th>
-	                <th>Unit Price</th>
-	                <th>Quantity</th>
-	                <th>Rate</th>
-	                <th>Amount</th>
-	                <th>Extra</th>
-            	</tr>                    
+	                <th width="5%">S. No.</th>
+	                <th width="40%">Description</th>
+	                <th width="8%">Unit Price</th>
+	                <th width="8%">Quantity</th>
+	                <th width="8%">Rate</th>
+	                <th width="8%">Amount</th>
+	                <th width="23%">Extra</th>
+            	</tr>
         	</thead>
-        	<tbody>  
+        	<tbody>
+<!--        		<tr class="categoryRow">-->
+<!--	                <td class="catIndex">S. No.</td>-->
+<!--	                <td>Description</td>-->
+<!--	                <td>Unit Price</td>-->
+<!--	                <td>Quantity</td>-->
+<!--	                <td>Rate</td>-->
+<!--	                <td>Amount</td>-->
+<!--	                <td>Extra</td>-->
+<!--            	</tr>-->
+<!--            	<tr>-->
+<!--	                <td>S. No.</td>-->
+<!--	                <td>Stone skirting: installation with cement mortar (stone provided by client)</td>-->
+<!--	                <td>Unit Price</td>-->
+<!--	                <td>Quantity</td>-->
+<!--	                <td>Rate</td>-->
+<!--	                <td>Amount</td>-->
+<!--	                <td>Extra</td>-->
+<!--            	</tr>-->
         		{tableBody}
-        	</tbody>            
+        	</tbody>
         </table>
 
       <!-- Total table Row row -->
@@ -87,9 +108,9 @@
 		        <tr style="border-top: 1px solid black">
 		            <th>Discount : </th>
 		            <th>$discount$ $currency$</th>
-		        </tr>  -->             
+		        </tr>  -->
 		        <tr style="border-top: 1px solid black;border-bottom: 1px solid black;font-size: 20px;">
-		            <th>Total : </th>	
+		            <th>Total : </th>
 		           	<th>{totalAmount} {currency}</th>
 		        </tr>
 			</table>
