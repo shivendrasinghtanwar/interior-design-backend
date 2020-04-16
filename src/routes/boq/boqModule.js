@@ -74,23 +74,12 @@ class BOQModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
-
-  async generateBOQ(req, res, next){
-    try {
-      const adminId = req._decoded.id;
-      const response = await boqCon.generateBOQ({ adminId });
-      return res.status(response.httpStatus).json(response.body);
-    } catch (err) {
-      console.log(err);
-      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
-    }
-  }
   async getBOQFurnitureSearch(req, res, next) {
     try {
       const adminId = req._decoded.id;
-      const { searchType }= req.query;
-      const { searchTerm }= req.query;
-      const response = await boqCon.getBOQFurnitureSearch({ adminId, searchType, searchTerm});
+      const { type }= req.query;
+      const { term }= req.query;
+      const response = await boqCon.getBOQFurnitureSearch({ adminId, type, term});
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);
@@ -101,9 +90,37 @@ class BOQModule {
   async getBOQModularSearch(req, res, next) {
     try {
       const adminId = req._decoded.id;
-      const { searchType }= req.query;
-      const { searchTerm }= req.query;
-      const response = await boqCon.getBOQModularSearch({ adminId, searchType, searchTerm});
+      const { type }= req.query;
+      const { term }= req.query;
+      const response = await boqCon.getBOQModularSearch({ adminId, type, term});
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async generateBOQ(req, res, next){
+    try {
+      const adminId = req._decoded.id;
+      const boqOnsiteData = req.body.onsite;
+      const boqFurnitureData = req.body.furniture;
+      const boqModularData = req.body.modular;
+      const response = await boqCon.generateBOQ({ adminId, boqOnsiteData, boqFurnitureData, boqModularData });
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async generateBOQTest(req, res, next){
+    try {
+      const adminId = req._decoded.id;
+      const boqOnsiteData = req.body.onsite;
+      const boqFurnitureData = req.body.furniture;
+      const boqModularData = req.body.modular;
+      const response = await boqCon.makeOnSiteTable(boqOnsiteData);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);

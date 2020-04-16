@@ -42,6 +42,7 @@
     "shortid": "^2.2.15",
     "string-template": "^1.0.0",
     "strong-soap": "^1.14.0",
+    "underscore": "^1.10.2",
     "winston": "^2.4.1",
     "winston-daily-rotate-file": "^3.3.0"
   },

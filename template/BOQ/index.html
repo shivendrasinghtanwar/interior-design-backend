@@ -7,6 +7,7 @@
 	<style type="text/css">
 		body{
 			font-family: 'Open Sans', sans-serif;
+			font-size: 10px !important;
 			padding: 5px;
 		}
 		table{
@@ -14,140 +15,61 @@
 			width: 100%;
 			border-collapse: collapse;
 		}
-		.mainTable th{
+		.header{
+			background-color: #021f59;
+			text-align: center; 
+			color: white;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+		.header h2{
+			padding: 0;
+			margin: 0;
+		}
+		.mainTable thead{
+			border-top: solid thin black;
+			background-color: #87ccf5;
 			 border-bottom: 1px solid black;
 			 text-align:left;
 		}
 		.mainTable td{
 			 border-bottom: 1px solid black;
 		}
+		.categoryRow{
+			background-color: #d1c26d;
+		}
+		
 	</style>
 </head>
 <body>
-  <!-- Upper Row with logo and company and customer address  -->
-<!--       <table>
-      	<tr>
-      		<td>
-	        	<table>
-	        		<tr>
-	        			<td style="text-align: left;">
-	        				  $companyName$
-	        			</td>
-	        		</tr>
-	        		<tr>
-	        			<td>
-	        				$companyAddress$
-	        			</td>
-	        		</tr>
-	        		<tr>
-	        			<td>
-	        				$companyZipCode$ $companyCity$
-	        			</td>
-	        		</tr>
-	        		<tr>
-	        			<td>
-	        				$companyCountry$
-	        			</td>
-	        		</tr>
+<!-- Upper Row with logo and company and customer address  -->
 
-	        		<tr>
-	        			<td>
-	        				 <br/>
-	        			</td>
-	        		</tr>
-
-					<tr>
-						<td style="text-align: left;">
-							  $customerCompany$
-						</td>
-					</tr>
-	        		<tr>
-	        			<td style="text-align: left;">
-	        				  $customerName$
-	        			</td>
-	        		</tr>
-	        		<tr>
-	        			<td>
-	        				$customerAddress$
-	        			</td>
-	        		</tr>
-	        		<tr>
-	        			<td>
-	        				$customerZipCode$ $customerCity$
-	        			</td>
-	        		</tr>
-	        		<tr>
-	        			<td>
-	        				$customerCountry$
-	        			</td>
-	        		</tr>
-	        	</table>	
-      		</td>
-      		<td style="text-align:right;">
-      			<img  src="$logo$" class="pull-right" style="margin-right: 0px; height: 100px;" />
-      		</td>
-      	</tr>
-      </table>    -->
-     <!-- Invoice general Row with invoice number, duedate, invoice date,etc  -->
-     <table>
+<!-- Invoice general Row with invoice number, duedate, invoice date,etc  -->
+     <table class="header">
      	<tr>
      		<td>
-     			<h3 style="text-align: center;"><strong>BOQ</strong></h3>
+     			<h2>On-Site Work</h2>
      		</td>
      	</tr>
      </table>
 
      <div style="border-top: 1px solid black"></div>
 
-<!--      <table>
-     	<tr>
-     		<td>
-     			<table>
-     				<tr>
-     					<td>
-     						Invoice Date : $invoiceDate$
-     					</td>
-     				</tr>
-     				<tr>
-     					<td>
-     						Due Date :  $dueDate$
-     					</td>
-     				</tr>
-     			</table>
-     		</td>
-     		<td>
-     			<table>
-     				<tr>
-     					<td>
-     						Invoice Number : $invoiceNumber$
-     					</td>
-     				</tr>
-     				<tr>
-     					<td>
-     						$poNumber$ &nbsp;
-     					</td>
-     				</tr>
-     			</table>
-     		</td>
-     	</tr>
-     </table> -->
-     <div style="border-top: 1px solid black"></div>  
 <br/>
     <!-- Main Table Row row -->
         <table class="mainTable">
         	<thead>
         		<tr>
 	                <th>S. No.</th>
-	                <th>Product</th>
 	                <th>Description</th>
 	                <th>Unit Price</th>
 	                <th>Quantity</th>
-	                <th>Discount</th>
-	                <th>VAT</th>
-	                <th>Total</th>
+	                <th>Rate</th>
+	                <th>Amount</th>
+	                <th>Extra</th>
             	</tr>                    
         	</thead>
-        	<tbody>
+        	<tbody>  
         		{tableBody}
         	</tbody>            
         </table>

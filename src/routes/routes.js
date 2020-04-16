@@ -46,11 +46,11 @@ router.get('/boq-furniture-categories', verifyToken, boqModule.getBOQFurnitureCa
 router.get('/boq-modular-records', verifyToken, boqModule.getBOQModularRecords);
 router.get('/boq-modular-categories', verifyToken, boqModule.getBOQModularCategories);
 
-router.post('/boq-generate', verifyToken , boqModule.generateBOQ)
-
 router.get('/boq-search-furniture', verifyToken, boqModule.getBOQFurnitureSearch);
 router.get('/boq-search-modular', verifyToken, boqModule.getBOQModularSearch);
 
+router.post('/boq-generate', verifyToken , boqModule.generateBOQ);
+router.post('/boq-generate-test', verifyToken , boqModule.generateBOQTest);
 
 router.use(errorHandler);
 

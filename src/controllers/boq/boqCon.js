@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const { execSql } = require('../../models/sqlGetResult');
-
+const _ = require('underscore');
 class BoqCon {
   async fetchAllOnSiteRecords(reqData) {
     return {
@@ -70,17 +70,38 @@ class BoqCon {
     };
   }
 
+  async getBOQFurnitureSearch(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(searchFurnitureRecords(reqData.type, reqData.term))
+      }
+    };
+  }
+
+  async getBOQModularSearch(reqData) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(searchModularRecords(reqData.type, reqData.term))
+      }
+    }
+  }
+
+
+
   async generateBOQ(reqData) {
     const {
-      design, view3D, adhocCharges, clientId
+      adminId, boqOnsiteData, furnitureData, modularData
     } = reqData;
 
     const url1 = path.join('./template', '/BOQ/index.html');
     const html = fs.readFileSync(url1, 'utf8');
     let designQuotHtml = html;
 
-    let tableBody = await this.makeBOQTableBody(reqData);
-    console.log(tableBody)
+    let tableBody = await this.makeOnSiteTable(boqOnsiteData);
     designQuotHtml = designQuotHtml.replace('{tableBody}', tableBody);
     designQuotHtml = designQuotHtml.replace('{currency}', `INR`);
     const htmlData = designQuotHtml;
@@ -89,11 +110,11 @@ class BoqCon {
     await new Promise((resolve, reject) => {
       pdf.create(htmlData, {
         // format: 'A3',
-        orientation: 'portrait',
+        orientation: 'landscape',
         height: '16in', // allowed units: mm, cm, in, px
         width: '9in',
         type: 'pdf',
-        zoomFactor: '0.5'
+        zoomFactor: '0'
       }).toFile(tempFilePath, async (e, file) => {
         if (e) return reject(e);
         console.log(file);
@@ -102,16 +123,16 @@ class BoqCon {
     });
     // console.log('temp ', tempFilePath);
     /*const s3docLink = await s3Upload(tempFilePath, `${user.id}-boq.pdf`);*/
-    reqData.docUrl = s3docLink;
+    // reqData.docUrl = s3docLink;
     // console.log('s3doclink', s3docLink);
     // reqData.docUrl = tempFilePath;
     // fs.unlinkSync(tempFilePath);
-    if (dbres.code) {
+   /* if (dbres.code) {
       return {
         httpStatus: 404,
         body: {success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {}}
       };
-    }
+    }*/
     return {
       httpStatus: 200,
       body: {
@@ -121,42 +142,66 @@ class BoqCon {
       }
     };
   }
-  async getBOQFurnitureSearch(reqData) {
-    return {
-      httpStatus: 200,
-      body: {
-        success: true,
-        data: await execSql(searchFurnitureRecords(reqData.searchType, reqData. searchTerm))
-      }
-    };
-  }
-  async makeBOQTableBody(data) {
+   async makeOnSiteTable(onsiteData) {
+    let tableBody = '';
+    const groupedData = _.groupBy(onsiteData,'item_type');
 
-      let row = '<tr>';
+    console.log(groupedData);
+    Object.entries(groupedData).forEach(([key,values])=>{
+      console.log('Key-->',key);
+      // console.log('values-->',value);
 
-      let column = '';
-      column += '<td> 1 </td>';
-      column += '<td> 1 </td>';
-      column += '<td> 1 </td>';
-      column += '<td> 1 </td>';
-      column += '<td> 1 </td>';
-      column += '<td> 1 </td>';
-      column += '<td> 1 </td>';
-      column += '<td> 1 </td>';
+      let categoryRow = `<tr class="categoryRow">`;
 
-      row += column;
-      row += '</tr>';
-      return row;
-    }
+      let categoryColumn = '';
+      categoryColumn += '<td> A </td>';
+      categoryColumn += `<td> ${key} </td>`;
+      categoryColumn += `<td></td>`;
+      categoryColumn += `<td></td>`;
+      categoryColumn += `<td></td>`;
+      categoryColumn += `<td></td>`;
+      categoryColumn += `<td></td>`;
+      categoryColumn += `<td></td>`;
+      categoryRow += categoryColumn;
+      categoryRow += '</tr>';
+      tableBody += categoryRow;
 
-  async getBOQModularSearch(reqData) {
-    return {
-      httpStatus: 200,
-      body: {
-        success: true,
-        data: await execSql(searchModularRecords(reqData.searchType, reqData. searchTerm))
-      }
-    }
+
+      values.forEach(record => {
+        let row = '<tr>';
+
+         let column = '';
+         column += '<td> 1 </td>';
+         column += `<td> ${record.item_description} </td>`;
+         column += `<td> ${record.unit} </td>`;
+         column += '<td> 0 </td>';
+         column += `<td> ${record.rate} </td>`;
+         column += '<td> 0 </td>';
+         column += '<td>  </td>';
+
+         row += column;
+         row += '</tr>';
+         tableBody += row;
+      });
+
+    });
+    // console.log(groupedData);
+    let row = '<tr>';
+
+   /* let column = '';
+    column += '<td> 1 </td>';
+    column += '<td> 1 </td>';
+    column += '<td> 1 </td>';
+    column += '<td> 1 </td>';
+    column += '<td> 1 </td>';
+    column += '<td> 1 </td>';
+    column += '<td> 1 </td>';
+    column += '<td> 1 </td>';
+
+    row += column;
+    row += '</tr>';*/
+   // console.log('Final table body',tableBody);
+    return tableBody;
   }
 }
 module.exports = new BoqCon();
