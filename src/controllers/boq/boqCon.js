@@ -119,7 +119,7 @@ class BoqCon {
     const {
       adminId, clientId
     } = reqData;
-
+    console.log('3rd',clientId);
     const boqOnsiteData = await execSql(getClientOnSiteData(clientId));
     const boqFurnitureData = await execSql(getClientBoqFurnitureData(clientId))
     let onSitePdfUrl = await boqPdfMaker.makeOnSitePdf(boqOnsiteData,adminId);
@@ -137,13 +137,17 @@ class BoqCon {
               data: {}
             }
           };*/
+         return reject(err)
         }
+        console.log(resolve);
         console.log('Successfully merged!');
-
+        boqPdfMaker.delete(onSitePdfUrl);
+        boqPdfMaker.delete(furniturePdfUrl);
+        return resolve('OK')
       });
     });
 
-
+    console.log('2nd');
     // console.log('temp ', tempFilePath);
     /*const s3docLink = await s3Upload(tempFilePath, `${user.id}-boq.pdf`);*/
     // reqData.docUrl = s3docLink;
@@ -156,6 +160,8 @@ class BoqCon {
         body: {success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {}}
       };
     }*/
+
+
     return {
       httpStatus: 200,
       body: {

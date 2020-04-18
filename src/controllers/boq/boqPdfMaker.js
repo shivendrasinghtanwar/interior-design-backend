@@ -10,7 +10,6 @@ const path = require('path');
 const moment = require('moment');
 const { execSql } = require('../../models/sqlGetResult');
 const _ = require('underscore');
-
 /*
 let row = '<tr>';
 let column = '';
@@ -81,9 +80,9 @@ class BoqPdfMaker {
         column += `<td> ${index+1} </td>`;
         column += `<td> ${record.item_description} </td>`;
         column += `<td> ${record.unit} </td>`;
-        column += '<td align="right"> 0 </td>';
+        column += `<td align="right"> ${record.quantity} </td>`;
         column += `<td align="right"> ${record.rate} </td>`;
-        column += '<td align="right"> 0 </td>';
+        column += `<td align="right"> ${record.total} </td>`;
         column += '<td>  </td>';
 
         row += column;
@@ -148,10 +147,10 @@ class BoqPdfMaker {
         column += `<td> ${record.item_code} </td>`;
         column += `<td> ${this.getItemDescriptionFurniture(record)} </td>`;
         column += `<td> ${record.unit} </td>`;
-        column += '<td align="right"> 0 </td>';
+        column += `<td align="right"> ${record.quantity} </td>`;
         column += `<td align="right"> ${record.rate} </td>`;
-        column += '<td align="right"> 0 </td>';
-        column += '<td>  </td>';
+        column += `<td align="right"> ${record.total} </td>`;
+        column += `<td>  </td>`;
 
         row += column;
         row += '</tr>';
@@ -279,5 +278,12 @@ class BoqPdfMaker {
     return description;
   }
 
+  delete(path){
+    fs.unlink(path, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    })
+  }
 }
 module.exports = new BoqPdfMaker();

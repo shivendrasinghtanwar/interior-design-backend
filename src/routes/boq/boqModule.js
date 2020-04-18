@@ -105,6 +105,7 @@ class BOQModule {
       const adminId = req._decoded.id;
       const { clientId } = req.query;
       const response = await boqCon.generateBOQ({ adminId, clientId});
+      console.log('4th',response);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);
