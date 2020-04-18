@@ -20,8 +20,9 @@ const routeConstants = {
     '/boq-modular-categories',
     '/boq-search-furniture',
     '/boq-search-modular',
-    '/boq-generate',
+    '/boq-generate-pdf',
     '/boq-generate-test',
+    '/boq-save-data'
   ],
   userUrls: [
     '/check-client-req-form', '/fill-client-req-form'

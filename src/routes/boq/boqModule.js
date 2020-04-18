@@ -103,24 +103,33 @@ class BOQModule {
   async generateBOQ(req, res, next){
     try {
       const adminId = req._decoded.id;
-      const boqOnsiteData = req.body.onsite;
-      const boqFurnitureData = req.body.furniture;
-      const boqModularData = req.body.modular;
-      const response = await boqCon.generateBOQ({ adminId, boqOnsiteData, boqFurnitureData, boqModularData });
+      const { clientId } = req.query;
+      const response = await boqCon.generateBOQ({ adminId, clientId});
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
-
-  async generateBOQTest(req, res, next){
-    try {
+ async saveData(req, res, next){
+    try{
       const adminId = req._decoded.id;
+      const clientId = req.body.clientId;
       const boqOnsiteData = req.body.onsite;
       const boqFurnitureData = req.body.furniture;
       const boqModularData = req.body.modular;
-      const response = boqPdfMaker.makeOnSiteTable(boqOnsiteData);
+      const response = await boqCon.saveBOQData({adminId, clientId, boqOnsiteData, boqFurnitureData, boqModularData});
+      return res.status(response.httpStatus).json(response.body);
+    }catch (e) {
+      console.log(e);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+ }
+  async generateBOQTest(req, res, next){
+    try {
+      const adminId = req._decoded.id;
+      const { clientId } = req.query;
+      const response = await boqCon.test(clientId);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);

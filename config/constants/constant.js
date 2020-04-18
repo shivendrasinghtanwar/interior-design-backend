@@ -239,6 +239,7 @@ const constants = {
     }
   },
   resMsg: {
+    OK:'OK',
     INVALID_EMAIL: 'Invalid email format.',
     INVALID_EMAIL_OR_MOBILE: 'Invalid email or mobile format.',
     INVALID_CLIENT_ID: 'Client Id is invalid!',

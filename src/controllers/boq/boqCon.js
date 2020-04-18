@@ -1,16 +1,29 @@
 const {
-  allOnSiteRecords, allOnSiteDistinctItemTypes, allFurnitureRecords, allFurnitureCategories, allModularCategories, allModularRecords, searchFurnitureRecords, searchModularRecords
+  allOnSiteRecords,
+  allOnSiteDistinctItemTypes,
+  allFurnitureRecords,
+  allFurnitureCategories,
+  allModularCategories,
+  allModularRecords,
+  searchFurnitureRecords,
+  searchModularRecords,
+  saveOnsiteData,
+  saveFurnitureData,
+  saveModularData,
+  getClientOnSiteData,
+  getClientBoqFurnitureData
 } = require('../../models/boqQueries');
-
+const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
 const { s3Upload } = require('../../utils/s3Upload');
 const pdf = require('html-pdf');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
-const { execSql } = require('../../models/sqlGetResult');
+const { execSql,mySqlTxn } = require('../../models/sqlGetResult');
 const _ = require('underscore');
 const boqPdfMaker = require('./boqPdfMaker');
 const pdfMerger = require('easy-pdf-merge');
+const { resMsg } = require('../../../config/constants/constant');
 class BoqCon {
   async fetchAllOnSiteRecords(reqData) {
     return {
@@ -92,13 +105,23 @@ class BoqCon {
     }
   }
 
-
+  async test(clientId){
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(getClientBoqFurnitureData(clientId))
+      }
+    }
+  }
 
   async generateBOQ(reqData) {
     const {
-      adminId, boqOnsiteData, boqFurnitureData, modularData
+      adminId, clientId
     } = reqData;
 
+    const boqOnsiteData = await execSql(getClientOnSiteData(clientId));
+    const boqFurnitureData = await execSql(getClientBoqFurnitureData(clientId))
     let onSitePdfUrl = await boqPdfMaker.makeOnSitePdf(boqOnsiteData,adminId);
     let furniturePdfUrl = await boqPdfMaker.makeFurniturePdf(boqFurnitureData,adminId);
     const finalFile = path.join('./template', `/BOQ/boqCombined_${adminId}_${Date.now()}.pdf`);
@@ -106,14 +129,14 @@ class BoqCon {
       pdfMerger([onSitePdfUrl,furniturePdfUrl],finalFile,function(err) {
         if(err) {
           console.log('Merging error',err);
-          return {
+         /* return {
             httpStatus: 400,
             body: {
               success: false,
               msg: err,
               data: {}
             }
-          };
+          };*/
         }
         console.log('Successfully merged!');
 
@@ -138,9 +161,45 @@ class BoqCon {
       body: {
         success: true,
 
-        data: { 'onSitePdfUrl':finalFile }
+        data: { pdfUrl:finalFile }
       }
     };
   }
+
+  async saveBOQData(reqData) {
+    // Check if user exist with emailId, mobile number or both.
+   /* const listExistedUsers = JSON.stringify(await (execSql(isUserExist(reqData)))).toLocaleLowerCase();
+
+    if (listExistedUsers.includes(reqData.mobile)
+      && listExistedUsers.includes(reqData.email)) {
+      return {
+        httpStatus: 400,
+        body: { success: false, msg: resMsg.EMAIL_MOBILE_EXIST, data: {} }
+      };
+    }*/
+    if(reqData.boqOnsiteData.length!==0) {
+      reqData.boqOnsiteData.forEach(record => {
+        const onSiteDBRes = execSql(saveOnsiteData(record, reqData.clientId));
+        console.log('Onsite data save response -- ', onSiteDBRes);
+      });
+    }
+    if(reqData.boqFurnitureData.length!==0) {
+      reqData.boqFurnitureData.forEach(record => {
+        const onSiteDBRes = execSql(saveFurnitureData(record, reqData.clientId));
+        console.log('Onsite data save response -- ', onSiteDBRes);
+      });
+    }
+    if(reqData.boqModularData.length!==0){
+      reqData.boqModularData.forEach(record=>{
+        const onSiteDBRes = execSql(saveModularData(record,reqData.clientId));
+        console.log('Onsite data save response -- ',onSiteDBRes);
+      });
+    }
+
+
+     return {
+       httpStatus: 200, body: { success: true, msg: resMsg.OK }
+     };
+   }
 }
 module.exports = new BoqCon();

@@ -48,7 +48,6 @@ class Queries {
     sliding,
     sliding_rate,
     url
-    width
     from boq_furniture_master_data`;
     if (category) {
       queryString += ` where item_type='${category}'`;
@@ -101,7 +100,7 @@ class Queries {
   }
 
   searchFurnitureRecords(searchType,searchTerm) {
-    let queryString = `select 
+    let queryString = `select
     id,
     item_code,
     item_type,
@@ -170,6 +169,51 @@ class Queries {
     return queryString
   }
 
+  saveOnsiteData(data,clientId){
+    return `Insert into client_onsite_data
+    (client_id,onsite_id,nos,length,height,width,quantity,total) VALUE
+    (${clientId},${data.id},${data.nos},${data.length},${data.height},${data.width},${data.quantity},${data.total});`
+  }
+  saveFurnitureData(data,clientId){
+    return `Insert into client_furniture_data
+    (client_id,furniture_id,quantity,total) VALUE
+    (${clientId},${data.id},${data.quantity},${data.total});`
+  }
+  saveModularData(data,clientId){
+    return `Insert into client_modular_data
+    (client_id,onsite_id,quantity,total) VALUE
+    (${clientId},${data.id},${data.quantity},${data.total});`
+  }
+
+  getClientOnSiteData(clientId){
+    return `select
+    client_onsite_data.nos,
+    client_onsite_data.length,
+    client_onsite_data.height,
+    client_onsite_data.width,
+    client_onsite_data.quantity,
+    client_onsite_data.total,
+    item_type,
+    item_description,
+    unit,rate
+    from client_onsite_data
+    inner join on_site_master_data ON client_onsite_data.onsite_id=on_site_master_data.id
+    where client_id = ${clientId}`;
+  }
+
+  getClientBoqFurnitureData(clientId){
+    return `select
+    client_furniture_data.quantity,
+    client_furniture_data.total,
+    item_type,
+    item_code,
+    item_name,
+    item_description,
+    unit,rate,breadth,length,height,main_rate,url
+    from client_furniture_data
+    inner join boq_furniture_master_data ON client_furniture_data.furniture_id=boq_furniture_master_data.id
+    where client_id = ${clientId}`;
+  }
 }
 
 module.exports = new Queries();

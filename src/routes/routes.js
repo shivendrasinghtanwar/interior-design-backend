@@ -49,8 +49,9 @@ router.get('/boq-modular-categories', verifyToken, boqModule.getBOQModularCatego
 router.get('/boq-search-furniture', verifyToken, boqModule.getBOQFurnitureSearch);
 router.get('/boq-search-modular', verifyToken, boqModule.getBOQModularSearch);
 
-router.post('/boq-generate', verifyToken , boqModule.generateBOQ);
-router.post('/boq-generate-test', verifyToken , boqModule.generateBOQTest);
+router.post('/boq-save-data',verifyToken, boqModule.saveData);
+router.get('/boq-generate-pdf', verifyToken , boqModule.generateBOQ);
+router.get('/boq-generate-test', verifyToken , boqModule.generateBOQTest);
 
 router.use(errorHandler);
 
