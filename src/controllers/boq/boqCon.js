@@ -11,7 +11,8 @@ const {
   saveFurnitureData,
   saveModularData,
   getClientOnSiteData,
-  getClientBoqFurnitureData
+  getClientBoqFurnitureData,
+  getClientBoqModularData
 } = require('../../models/boqQueries');
 const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
 const { s3Upload } = require('../../utils/s3Upload');
@@ -121,8 +122,12 @@ class BoqCon {
     } = reqData;
     console.log('3rd',clientId);
     const boqOnsiteData = await execSql(getClientOnSiteData(clientId));
-    const boqFurnitureData = await execSql(getClientBoqFurnitureData(clientId))
+    let boqFurnitureData = await execSql(getClientBoqFurnitureData(clientId));
+    const boqModularData = await execSql(getClientBoqModularData(clientId));
     let onSitePdfUrl = await boqPdfMaker.makeOnSitePdf(boqOnsiteData,adminId);
+    boqFurnitureData = boqFurnitureData.concat(boqModularData);
+    console.log('BOQ Modular data---',boqModularData);
+    console.log('BOQ Furniture data---',boqFurnitureData);
     let furniturePdfUrl = await boqPdfMaker.makeFurniturePdf(boqFurnitureData,adminId);
     const finalFile = path.join('./template', `/BOQ/boqCombined_${adminId}_${Date.now()}.pdf`);
     await new Promise((resolve, reject) => {

@@ -92,5 +92,5 @@ app.get('/v1/admin/ping', (req, res) => {
   });
 });
 app.use('/v1/admin', routes);
-
+app.use('/static', express.static('./template/BOQ/'));
 module.exports = app;

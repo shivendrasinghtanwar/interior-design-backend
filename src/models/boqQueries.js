@@ -181,7 +181,7 @@ class Queries {
   }
   saveModularData(data,clientId){
     return `Insert into client_modular_data
-    (client_id,onsite_id,quantity,total) VALUE
+    (client_id,modular_id,quantity,total) VALUE
     (${clientId},${data.id},${data.quantity},${data.total});`
   }
 
@@ -212,6 +212,20 @@ class Queries {
     unit,rate,breadth,length,height,main_rate,url
     from client_furniture_data
     inner join boq_furniture_master_data ON client_furniture_data.furniture_id=boq_furniture_master_data.id
+    where client_id = ${clientId}`;
+  }
+
+  getClientBoqModularData(clientId){
+    return `select
+    client_modular_data.quantity,
+    client_modular_data.total,
+    item_type,
+    item_code,
+    item_name,
+    item_description,
+    unit,rate,breadth,length,height,main_rate,url
+    from client_modular_data
+    inner join boq_modular_master_data ON client_modular_data.modular_id=boq_modular_master_data.id
     where client_id = ${clientId}`;
   }
 }
