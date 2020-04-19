@@ -1,4 +1,7 @@
-const {allToBeAssignedClients} = require('../../models/adminQueries');
+const {
+  allToBeAssignedClients,
+  allAssignedNotMetClients
+} = require('../../models/adminQueries');
 const { execSql,mySqlTxn } = require('../../models/sqlGetResult');
 
 class AdminController {
@@ -16,7 +19,7 @@ class AdminController {
       httpStatus: 200,
       body: {
         success: true,
-        data: await execSql(allToBeAssignedClients(adminId))
+        data: await execSql(allAssignedNotMetClients(adminId))
       }
     };
   }
