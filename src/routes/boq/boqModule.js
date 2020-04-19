@@ -130,11 +130,7 @@ class BOQModule {
    try{
      const adminId = req._decoded.id;
      const { clientId } = req.query;
-     const clientId = req.body.clientId;
-     const boqOnsiteData = req.body.onsite;
-     const boqFurnitureData = req.body.furniture;
-     const boqModularData = req.body.modular;
-     const response = await boqCon.saveBOQData({adminId, clientId, boqOnsiteData, boqFurnitureData, boqModularData});
+     const response = await boqCon.getBOQDataByClientId({adminId, clientId});
      return res.status(response.httpStatus).json(response.body);
    }catch (e) {
      console.log(e);

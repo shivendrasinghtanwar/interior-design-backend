@@ -116,6 +116,24 @@ class BoqCon {
     }
   }
 
+  async getBOQDataByClientId(request){
+    const {adminId, clientId} = request;
+    const onsiteData = await execSql(getClientOnSiteData(clientId));
+    const furnitureData = await execSql(getClientBoqFurnitureData(clientId));
+    const modularData = await execSql(getClientBoqModularData(clientId));
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: {
+          onsite: onsiteData,
+          furniture: furnitureData,
+          modular: modularData
+        }
+      }
+    }
+  }
+
   async generateBOQ(reqData) {
     const {
       adminId, clientId
