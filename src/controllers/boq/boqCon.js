@@ -126,22 +126,12 @@ class BoqCon {
     const boqModularData = await execSql(getClientBoqModularData(clientId));
     let onSitePdfUrl = await boqPdfMaker.makeOnSitePdf(boqOnsiteData,adminId);
     boqFurnitureData = boqFurnitureData.concat(boqModularData);
-    console.log('BOQ Modular data---',boqModularData);
-    console.log('BOQ Furniture data---',boqFurnitureData);
     let furniturePdfUrl = await boqPdfMaker.makeFurniturePdf(boqFurnitureData,adminId);
     const finalFile = path.join('./template', `/BOQ/boqCombined_${adminId}_${Date.now()}.pdf`);
     await new Promise((resolve, reject) => {
       pdfMerger([onSitePdfUrl,furniturePdfUrl],finalFile,function(err) {
         if(err) {
           console.log('Merging error',err);
-         /* return {
-            httpStatus: 400,
-            body: {
-              success: false,
-              msg: err,
-              data: {}
-            }
-          };*/
          return reject(err)
         }
         console.log(resolve);
@@ -154,12 +144,12 @@ class BoqCon {
 
     console.log('2nd');
     // console.log('temp ', tempFilePath);
-    /*const s3docLink = await s3Upload(tempFilePath, `${user.id}-boq.pdf`);*/
-    // reqData.docUrl = s3docLink;
+    const s3docLink = await s3Upload(finalFile, `BOQ/${finalFile.split('/')[2]}`);
+/*    // reqData.docUrl = s3docLink;
     // console.log('s3doclink', s3docLink);
     // reqData.docUrl = tempFilePath;
     // fs.unlinkSync(tempFilePath);
-   /* if (dbres.code) {
+    if (dbres.code) {
       return {
         httpStatus: 404,
         body: {success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {}}
@@ -172,7 +162,7 @@ class BoqCon {
       body: {
         success: true,
 
-        data: { pdfUrl:finalFile }
+        data: { pdfUrl:s3docLink }
       }
     };
   }
