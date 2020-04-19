@@ -12,11 +12,17 @@ class AdminQueries {
     from client
     where status=2 or status=3`;
   }
-  allDelayedProposals(adminId) {
+  allMetClients(adminId) {
     return `select
     *
     from client
-    where status=2 or status=3`;
+    where status=4`;
+  }
+  fetchDesignQuotationByClientId(clientId) {
+    return `select
+    *
+    from design_quotation
+    where client_id=${clientId}`
   }
 }
 
