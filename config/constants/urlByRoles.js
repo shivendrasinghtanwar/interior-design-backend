@@ -23,7 +23,8 @@ const routeConstants = {
     '/boq-generate-pdf',
     '/boq-generate-test',
     '/boq-save-data',
-    '/boq-get-data'
+    '/boq-get-data',
+    '/admin-to-be-assigned'
   ],
   userUrls: [
     '/check-client-req-form', '/fill-client-req-form'

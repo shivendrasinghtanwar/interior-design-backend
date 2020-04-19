@@ -8,6 +8,7 @@ const designerModule = require('./designer/designerModule');
 const registerModule = require('./register/registerModule');
 const reqFormModule = require('./reqForm/reqFormModule');
 const boqModule = require('./boq/boqModule');
+const adminModule = require('./admin/adminModule');
 const { errorHandler } = require('./../middlewares/errors');
 const { verifyToken } = require('./../middlewares/jwt');
 
@@ -52,6 +53,14 @@ router.get('/boq-get-data',verifyToken, boqModule.getData);
 router.post('/boq-save-data',verifyToken, boqModule.saveData);
 router.get('/boq-generate-pdf', verifyToken , boqModule.generateBOQ);
 router.get('/boq-generate-test', verifyToken , boqModule.generateBOQTest);
+
+router.get('/admin-to-be-assigned',verifyToken, adminModule.getToBeAssignedClients);
+router.get('/admin-assigned-not-met',verifyToken, adminModule.getAssignedNotMetClients);
+router.get('/admin-delayed-proposals',verifyToken, adminModule.getDelayedProposals);
+router.get('/admin-delayed-tasks',verifyToken, adminModule.getDelayedTasks);
+router.get('/admin-payment-dues',verifyToken, adminModule.getPaymentDues);
+router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
+
 
 router.use(errorHandler);
 
