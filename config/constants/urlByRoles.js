@@ -22,7 +22,8 @@ const routeConstants = {
     '/boq-search-modular',
     '/boq-generate-pdf',
     '/boq-generate-test',
-    '/boq-save-data'
+    '/boq-save-data',
+    '/boq-get-data'
   ],
   userUrls: [
     '/check-client-req-form', '/fill-client-req-form'

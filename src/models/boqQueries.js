@@ -187,6 +187,7 @@ class Queries {
 
   getClientOnSiteData(clientId){
     return `select
+    on_site_master_data.id as id,
     client_onsite_data.nos,
     client_onsite_data.length,
     client_onsite_data.height,
@@ -203,6 +204,7 @@ class Queries {
 
   getClientBoqFurnitureData(clientId){
     return `select
+    boq_furniture_master_data.id as id,
     client_furniture_data.quantity,
     client_furniture_data.total,
     item_type,
@@ -217,6 +219,7 @@ class Queries {
 
   getClientBoqModularData(clientId){
     return `select
+    boq_modular_master_data.id as id,
     client_modular_data.quantity,
     client_modular_data.total,
     item_type,
