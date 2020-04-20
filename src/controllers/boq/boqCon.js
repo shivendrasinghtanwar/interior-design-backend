@@ -158,6 +158,7 @@ class BoqCon {
         console.log('Successfully merged!');
         boqPdfMaker.delete(onSitePdfUrl);
         boqPdfMaker.delete(furniturePdfUrl);
+
         return resolve('OK')
       });
     });
@@ -165,6 +166,7 @@ class BoqCon {
     console.log('2nd');
     // console.log('temp ', tempFilePath);
     const s3docLink = await s3Upload(finalFile, `BOQ/${finalFile.split('/')[2]}`);
+    boqPdfMaker.delete(finalFile);
 /*    // reqData.docUrl = s3docLink;
     // console.log('s3doclink', s3docLink);
     // reqData.docUrl = tempFilePath;
