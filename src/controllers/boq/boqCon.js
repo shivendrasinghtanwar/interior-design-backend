@@ -146,8 +146,10 @@ class BoqCon {
     boqFurnitureData = boqFurnitureData.concat(boqModularData);
     let furniturePdfUrl = await boqPdfMaker.makeFurniturePdf(boqFurnitureData,adminId);
     const finalFile = path.join('./template', `/BOQ/boqCombined_${adminId}_${Date.now()}.pdf`);
+    const firstpage = path.join('./template','BOQ','boqPage1.pdf');
+    const secondpage = path.join('./template','BOQ','boqPage2.pdf');
     await new Promise((resolve, reject) => {
-      pdfMerger([onSitePdfUrl,furniturePdfUrl,'./boqPage1.pdf',''],finalFile,function(err) {
+      pdfMerger([firstpage,secondpage,onSitePdfUrl,furniturePdfUrl],finalFile,function(err) {
         if(err) {
           console.log('Merging error',err);
          return reject(err)
