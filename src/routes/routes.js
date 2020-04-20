@@ -9,6 +9,7 @@ const registerModule = require('./register/registerModule');
 const reqFormModule = require('./reqForm/reqFormModule');
 const boqModule = require('./boq/boqModule');
 const adminModule = require('./admin/adminModule');
+const commonModule = require('./common/CommonModule');
 const { errorHandler } = require('./../middlewares/errors');
 const { verifyToken } = require('./../middlewares/jwt');
 
@@ -54,6 +55,8 @@ router.post('/boq-save-data',verifyToken, boqModule.saveData);
 router.get('/boq-generate-pdf', verifyToken , boqModule.generateBOQ);
 router.get('/boq-generate-test', verifyToken , boqModule.generateBOQTest);
 
+router.get('/designer-all',commonModule.getAllDesigners);
+router.get('/team-leader-all',commonModule.getAllTeamLeaders);
 router.get('/admin-to-be-assigned',verifyToken, adminModule.getToBeAssignedClients);
 router.get('/admin-assigned-not-met',verifyToken, adminModule.getAssignedNotMetClients);
 router.get('/admin-delayed-proposals',verifyToken, adminModule.getDelayedProposals);

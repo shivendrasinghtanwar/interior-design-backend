@@ -26,7 +26,9 @@ const routeConstants = {
     '/boq-get-data',
     '/admin-to-be-assigned',
     '/admin-assigned-not-met',
-    '/admin-delayed-proposals'
+    '/admin-delayed-proposals',
+    '/designer-all',
+    '/team-leader-all'
   ],
   userUrls: [
     '/check-client-req-form', '/fill-client-req-form'
