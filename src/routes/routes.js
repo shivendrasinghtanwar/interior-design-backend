@@ -10,6 +10,7 @@ const reqFormModule = require('./reqForm/reqFormModule');
 const boqModule = require('./boq/boqModule');
 const adminModule = require('./admin/adminModule');
 const commonModule = require('./common/CommonModule');
+const tlModule = require('./teamLead/teamLeadModule');
 const { errorHandler } = require('./../middlewares/errors');
 const { verifyToken } = require('./../middlewares/jwt');
 
@@ -64,6 +65,12 @@ router.get('/admin-delayed-tasks',verifyToken, adminModule.getDelayedTasks);
 router.get('/admin-payment-dues',verifyToken, adminModule.getPaymentDues);
 router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
 
+router.get('/tl/to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
+/*router.get('/tl-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
+router.get('/tl-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
+router.get('/tl-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
+router.get('/tl-payment-dues',verifyToken, tlModule.getPaymentDues);
+router.get('/tl-new-sign-ups',verifyToken, tlModule.getNewSignUps);*/
 
 router.use(errorHandler);
 

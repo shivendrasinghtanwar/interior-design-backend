@@ -28,7 +28,13 @@ const routeConstants = {
     '/admin-assigned-not-met',
     '/admin-delayed-proposals',
     '/designer-all',
-    '/team-leader-all'
+    '/team-leader-all',
+    '/tl/to-be-assigned',
+    '/tl-assigned-not-met',
+    '/tl-delayed-proposals',
+    '/tl-delayed-tasks',
+    '/tl-payment-dues',
+    '/tl-new-sign-ups'
   ],
   userUrls: [
     '/check-client-req-form', '/fill-client-req-form'
