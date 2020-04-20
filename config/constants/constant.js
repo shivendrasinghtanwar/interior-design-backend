@@ -402,7 +402,9 @@ const constants = {
     INVALID_AMOUNT: 'Invalid amount passed.',
     PROP_NOT_FOUND: 'No relevant proposal found.',
     INVALID_PROP: 'Invalid proposal',
-    EMAIL_A_VERIFIED: 'Email already verified'
+    EMAIL_A_VERIFIED: 'Email already verified',
+    USER_NOT_DESIGNER: 'The selected user is not a Designer',
+    USER_NOT_TL: 'The selected user is not a Team Lead'
   }
 };
 

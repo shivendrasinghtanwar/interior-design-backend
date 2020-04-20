@@ -5,7 +5,6 @@ class AdminQueries {
     from client
     where status=1`;
   }
-
   allAssignedNotMetClients(adminId) {
     return `select
     *
@@ -24,6 +23,7 @@ class AdminQueries {
     from design_quotation
     where client_id=${clientId}`
   }
+
 }
 
 module.exports = new AdminQueries();

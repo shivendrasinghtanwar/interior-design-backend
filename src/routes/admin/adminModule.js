@@ -69,6 +69,31 @@ class AdminModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+  async assignToDesigner(req, res, next){
+    try{
+      const updatedBy = req._decoded.id;
+      const clientId = req.body.clientId;
+      const adminId = req.body.adminId;
+      const response = await adminCon.assignToDesigner({updatedBy,clientId,adminId});
+      return res.status(response.httpStatus).json(response.body);
+    }catch (e) {
+      console.log(e);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async assignToTl(req, res, next){
+    try{
+      const updatedBy = req._decoded.id;
+      const clientId = req.body.clientId;
+      const adminId = req.body.adminId;
+      const response = await adminCon.assignToTl({updatedBy,clientId,adminId});
+      return res.status(response.httpStatus).json(response.body);
+    }catch (e) {
+      console.log(e);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
 }
 
 module.exports = new AdminModule();

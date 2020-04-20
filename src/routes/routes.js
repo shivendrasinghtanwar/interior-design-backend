@@ -64,6 +64,9 @@ router.get('/admin-delayed-proposals',verifyToken, adminModule.getDelayedProposa
 router.get('/admin-delayed-tasks',verifyToken, adminModule.getDelayedTasks);
 router.get('/admin-payment-dues',verifyToken, adminModule.getPaymentDues);
 router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
+router.post('/admin-assignTo-designer',verifyToken, adminModule.assignToDesigner);
+router.post('/admin-assignTo-tl',verifyToken, adminModule.assignToTl);
+
 
 router.get('/tl/to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
 /*router.get('/tl-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
