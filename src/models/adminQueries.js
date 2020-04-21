@@ -22,11 +22,12 @@ class AdminQueries {
     DATE_format(meeting_datetime,'%d %b %Y %h:%i %p') AS meeting_datetime,
     DATE_format(meeting_datetime,'%m-%Y') AS meetingMonth,
     scope_of_work as scope,package,
-    concat(admin.title,' ',admin.first_name,' ',admin.last_name) as registeredBy, admin.id as registeredById
+    concat(admin.title,' ',admin.first_name,' ',admin.last_name) as assignedTo, admin.id as assignedToId
     from client inner join address_details
     on client.id = address_details.client_id
     inner join projects on client.id = projects.client_id
-    inner join admin on admin.id = client.registered_by
+    inner join client_assigned on client.id = client_assigned.client_id
+    inner join admin on admin.id = client_assigned.admin_id
     where client.status=2 or client.status=3`;
   }
   allMetClients(adminId) {
