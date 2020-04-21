@@ -12,7 +12,10 @@ const {
   saveModularData,
   getClientOnSiteData,
   getClientBoqFurnitureData,
-  getClientBoqModularData
+  getClientBoqModularData,
+  deleteOnSiteDataByClientId,
+  deleteFurnitureDataByClientId,
+  deleteModularDataByClientId
 } = require('../../models/boqQueries');
 const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
 const { s3Upload } = require('../../utils/s3Upload');
@@ -201,18 +204,21 @@ class BoqCon {
       };
     }*/
     if(reqData.boqOnsiteData.length!==0) {
+      await execSql(deleteOnSiteDataByClientId(reqData.clientId));
       reqData.boqOnsiteData.forEach(record => {
         const onSiteDBRes = execSql(saveOnsiteData(record, reqData.clientId));
         console.log('Onsite data save response -- ', onSiteDBRes);
       });
     }
     if(reqData.boqFurnitureData.length!==0) {
+      await execSql(deleteFurnitureDataByClientId(reqData.clientId));
       reqData.boqFurnitureData.forEach(record => {
         const onSiteDBRes = execSql(saveFurnitureData(record, reqData.clientId));
         console.log('Onsite data save response -- ', onSiteDBRes);
       });
     }
     if(reqData.boqModularData.length!==0){
+      await execSql(deleteModularDataByClientId(reqData.clientId));
       reqData.boqModularData.forEach(record=>{
         const onSiteDBRes = execSql(saveModularData(record,reqData.clientId));
         console.log('Onsite data save response -- ',onSiteDBRes);

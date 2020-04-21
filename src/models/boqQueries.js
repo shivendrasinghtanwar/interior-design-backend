@@ -180,6 +180,7 @@ class Queries {
     (${clientId},${data.id},${data.quantity},${data.total});`
   }
   saveModularData(data,clientId){
+    console.log('Modular data to save --', data);
     return `Insert into client_modular_data
     (client_id,modular_id,quantity,total) VALUE
     (${clientId},${data.id},${data.quantity},${data.total});`
@@ -231,6 +232,20 @@ class Queries {
     inner join boq_modular_master_data ON client_modular_data.modular_id=boq_modular_master_data.id
     where client_id = ${clientId}`;
   }
+
+  deleteOnSiteDataByClientId(clientId){
+    return `delete from client_onsite_data
+    where client_id=${clientId};`
+  }
+  deleteFurnitureDataByClientId(clientId){
+    return `delete from client_furniture_data
+    where client_id=${clientId};`
+  }
+  deleteModularDataByClientId(clientId){
+    return `delete from client_modular_data
+    where client_id=${clientId};`
+  }
+
 }
 
 module.exports = new Queries();
