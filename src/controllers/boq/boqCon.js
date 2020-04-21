@@ -209,6 +209,8 @@ class BoqCon {
         const onSiteDBRes = execSql(saveOnsiteData(record, reqData.clientId));
         console.log('Onsite data save response -- ', onSiteDBRes);
       });
+    }else if(reqData.boqOnsiteData.length===0){
+      await execSql(deleteOnSiteDataByClientId(reqData.clientId));
     }
     if(reqData.boqFurnitureData.length!==0) {
       await execSql(deleteFurnitureDataByClientId(reqData.clientId));
@@ -216,6 +218,8 @@ class BoqCon {
         const onSiteDBRes = execSql(saveFurnitureData(record, reqData.clientId));
         console.log('Onsite data save response -- ', onSiteDBRes);
       });
+    }else if(reqData.boqFurnitureData.length===0){
+      await execSql(deleteFurnitureDataByClientId(reqData.clientId));
     }
     if(reqData.boqModularData.length!==0){
       await execSql(deleteModularDataByClientId(reqData.clientId));
@@ -223,6 +227,8 @@ class BoqCon {
         const onSiteDBRes = execSql(saveModularData(record,reqData.clientId));
         console.log('Onsite data save response -- ',onSiteDBRes);
       });
+    }else if(reqData.boqModularData.length===0){
+      await execSql(deleteModularDataByClientId(reqData.clientId));
     }
 
 
