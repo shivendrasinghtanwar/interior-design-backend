@@ -23,7 +23,7 @@ class Login {
       type: user.type,
       role: user.role
     };
-    const jwt = await generateToken(tokenData, '5000min');
+    const jwt = await generateToken(tokenData, '500000min');
     return {
       httpStatus: 200,
       body: {
