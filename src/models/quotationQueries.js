@@ -18,6 +18,14 @@ class Queries {
     console.log('final->', finalQuerySet);
     return finalQuerySet;
   }
+
+  getDesignQuotationData(clientId){
+    const designQuotId = `SELECT id from design_quotation WHERE client_id = ${clientId}`;
+    
+    const finalQuery=`SELECT * from design_quotation_details where design_quotation_id=(${designQuotId})`;
+    console.log('final->', finalQuery);
+    return finalQuery;
+  }
 }
 
 module.exports = new Queries();
