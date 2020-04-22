@@ -58,12 +58,12 @@ class QuotationConn {
     // const tempFilePath = `${process.cwd()}/Design-Quot-${Date.now()}.pdf`;
     await new Promise((resolve, reject) => {
       pdf.create(htmlData, {
-        // format: 'A3',
+        format: 'A4',
         orientation: 'portrait',
-        height: '16in', // allowed units: mm, cm, in, px
-        width: '9in',
+        // height: '16in', // allowed units: mm, cm, in, px
+        // width: '9in',
         type: 'pdf',
-        zoomFactor: '0.5'
+        zoomFactor: '0'
       }).toFile(tempFilePath, async (e, file) => {
         if (e) return reject(e);
         console.log(file);
