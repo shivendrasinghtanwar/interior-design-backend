@@ -22,7 +22,7 @@ class Queries {
   getDesignQuotationData(clientId){
     const designQuotId = `SELECT id from design_quotation WHERE client_id = ${clientId}`;
     
-    const finalQuery=`SELECT * from design_quotation_details where design_quotation_id=(${designQuotId})`;
+    const finalQuery=`SELECT item_type,item_sub_type,number from design_quotation_details where design_quotation_id=(${designQuotId})`;
     console.log('final->', finalQuery);
     return finalQuery;
   }
