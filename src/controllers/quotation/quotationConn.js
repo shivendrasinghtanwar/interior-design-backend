@@ -13,7 +13,6 @@ const { resMsg } = require('../../../config/constants/constant');
 // const __dirname = '../../../template';
 
 class QuotationConn {
-  doc_url="";
 
   async generateDesignQuotPDF(reqData) {
     const {
