@@ -15,7 +15,7 @@ Required Request
   "adhocCharges":2500,
   "clientId":524
 } */
-  async designQuotation(req, res, next) {
+  async generateDesignQuotPDF(req, res, next) {
     try {
       const adminId = req._decoded.id;
       // const adminId = 1;
@@ -25,12 +25,30 @@ Required Request
       const reqData = {
         design, view3D, adhocCharges, clientId, adminId
       };
-      const response = await quotationConn.designQuotaion(reqData);
+      const response = await quotationConn.generateDesignQuotPDF(reqData);
       console.log('resp ', response);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       log(err);
       return next(new errors.OperationalError(`Unable to generate statement. - ${err.code}`));
+    }
+  }
+
+  async saveDesignQuotation(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const {
+        design, view3D, adhocCharges, clientId
+      } = req.body;
+      const reqData = {
+        design, view3D, adhocCharges, clientId, adminId
+      };
+      const response = await quotationConn.saveDesignQuotation(reqData);
+      console.log('resp ', response);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      log(err);
+      return next(new errors.OperationalError(`Unable to save data. - ${err.code}`));
     }
   }
 }
