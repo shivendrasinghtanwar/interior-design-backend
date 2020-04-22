@@ -4,7 +4,7 @@ const path = require('path');
 const moment = require('moment');
 const pdf = require('html-pdf');
 const { s3Upload } = require('../../utils/s3Upload');
-const { insertDesignQuotationQueries, getDesignQuotationByClientId } = require('../../models/quotationQueries');
+const { insertDesignQuotationQueries, getDesignQuotationByClientId,insertDesignQuotation} = require('../../models/quotationQueries');
 const { getClientByIdOrMobileOrEmail } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
@@ -13,7 +13,9 @@ const { resMsg } = require('../../../config/constants/constant');
 // const __dirname = '../../../template';
 
 class QuotationConn {
-  async designQuotaion(reqData) {
+  doc_url="";
+
+  async generateDesignQuotPDF(reqData) {
     const {
       design, view3D, adhocCharges, clientId
     } = reqData;
@@ -90,6 +92,38 @@ class QuotationConn {
         data: { url: reqData.docUrl }
       }
     };
+  }
+
+  async saveDesignQuotation(reqData) {
+    const {
+      design, view3D, adhocCharges, clientId
+    } = reqData;
+    reqData.docUrl="";
+    // reqData.adminId=3;
+    //check user valid
+    const [user] = await execSql(getClientByIdOrMobileOrEmail(reqData));
+    if (!user) {
+      return {
+        httpStatus: 400, body: { success: false, msg: resMsg.INVALID_CLIENT_ID, data: {} }
+      };
+    }
+
+    //save data(if exists then delete and insert again)
+    const [designQuot] = await execSql(getDesignQuotationByClientId(clientId));
+      const response = await mySqlTxn(insertDesignQuotation(reqData));
+      if(response.code){
+        return {
+          httpStatus: 404,
+          body: { success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {} }
+        };
+      }
+      return {
+        httpStatus: 200,
+        body: {
+          success: true,
+          data: { url: reqData.docUrl }
+        }
+      };
   }
 }
 module.exports = new QuotationConn();

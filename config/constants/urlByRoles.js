@@ -2,7 +2,8 @@ const routeConstants = {
   adminUrls: [
     '/login',
     '/ADMIN',
-    '/generate-design-quotation',
+    '/save-design-quotation',
+    '/design-quotation-pdf',
     '/add-client',
     '/fetch-all-client',
     '/pre-sales/fetch-all-unassigned-client',

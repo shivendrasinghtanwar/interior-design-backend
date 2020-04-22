@@ -18,7 +18,8 @@ const router = express.Router();
 
 router.get('/fetch-master-data', validators.checkEmail, validators.checkPassword, validationErrorHandler, loginModule.loginByPasswordReqFilter);
 router.get('/login', validators.checkEmail, validators.checkPassword, validationErrorHandler, loginModule.loginByPasswordReqFilter);
-router.post('/generate-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.designQuotation);
+router.post('/save-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.saveDesignQuotation);
+router.post('/design-quotation-pdf', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.generateDesignQuotPDF);
 
 router.get('/pre-sales/fetch-all-unassigned-client', verifyToken, preSalesModule.fetchAllUnassignedClient);
 router.get('/pre-sales/assigned-client', verifyToken, preSalesModule.fetchAssignedClient);
