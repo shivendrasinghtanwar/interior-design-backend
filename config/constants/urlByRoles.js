@@ -3,6 +3,7 @@ const routeConstants = {
     '/login',
     '/ADMIN',
     '/save-design-quotation',
+    '/get-design-quotation',
     '/design-quotation-pdf',
     '/add-client',
     '/fetch-all-client',

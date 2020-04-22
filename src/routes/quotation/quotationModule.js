@@ -51,6 +51,20 @@ Required Request
       return next(new errors.OperationalError(`Unable to save data. - ${err.code}`));
     }
   }
+
+  async getDesignQuotation(req, res, next) {
+    try {
+      const adminId = req._decoded.id;
+      const { clientId } = req.query;
+      console.log("clientId",clientId)
+      const reqData = { clientId, adminId };
+      const response = await quotationConn.getDesignQuotation(reqData);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
 }
 
 module.exports = new QuotationModule();

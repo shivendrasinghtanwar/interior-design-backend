@@ -4,7 +4,7 @@ const path = require('path');
 const moment = require('moment');
 const pdf = require('html-pdf');
 const { s3Upload } = require('../../utils/s3Upload');
-const { insertDesignQuotationQueries, getDesignQuotationByClientId,insertDesignQuotation} = require('../../models/quotationQueries');
+const { getDesignQuotationByClientId,insertDesignQuotation,getDesignQuotationData} = require('../../models/quotationQueries');
 const { getClientByIdOrMobileOrEmail } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
@@ -76,7 +76,7 @@ class QuotationConn {
     reqData.docUrl = s3docLink;
     console.log('s3doclink', s3docLink);
     // reqData.docUrl = tempFilePath;
-    const dbres = await mySqlTxn(insertDesignQuotationQueries(reqData));
+    const dbres = await mySqlTxn(insertDesignQuotation(reqData));
     // fs.unlinkSync(tempFilePath);
     if (dbres.code) {
       return {
@@ -98,18 +98,8 @@ class QuotationConn {
       design, view3D, adhocCharges, clientId
     } = reqData;
     reqData.docUrl="";
-    // reqData.adminId=3;
-    //check user valid
-    const [user] = await execSql(getClientByIdOrMobileOrEmail(reqData));
-    if (!user) {
-      return {
-        httpStatus: 400, body: { success: false, msg: resMsg.INVALID_CLIENT_ID, data: {} }
-      };
-    }
-
     //save data(if exists then delete and insert again)
-    const [designQuot] = await execSql(getDesignQuotationByClientId(clientId));
-      const response = await mySqlTxn(insertDesignQuotation(reqData));
+    const response = await mySqlTxn(insertDesignQuotation(reqData));
       if(response.code){
         return {
           httpStatus: 404,
@@ -123,6 +113,16 @@ class QuotationConn {
           data: { url: reqData.docUrl }
         }
       };
+  }
+
+  async getDesignQuotation(reqData){
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(getDesignQuotationData(reqData.clientId))
+      }
+    };
   }
 }
 module.exports = new QuotationConn();
