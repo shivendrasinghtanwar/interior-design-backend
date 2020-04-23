@@ -22,6 +22,7 @@ const {
   getAllRoomsByClientId,
   getClientBoqFurnitureDataByRoomId,
   getClientBOQData,
+  getRoomModularData,
   getRoomFurnitureData
 } = require('../../models/boqQueries');
 const  ClientStatus  = require('../../utils/enums/ClientStatus');
@@ -165,15 +166,13 @@ class BoqCon {
     const {adminId, clientId} = request;
     const onsiteData = await execSql(getClientOnSiteData(clientId));
     const roomFurnitureData = await execSql(getRoomFurnitureData(clientId));
-    const modularData = await execSql(getClientBoqModularData(clientId));
+    const roomModularData = await execSql(getRoomModularData(clientId));
     const rooms= [];
 
     const tempFurnitureData = roomFurnitureData.reduce((r, a) => {
       r[a.id] = [...r[a.id] || [], a];
-      delete r.room_type;
       return r;
     }, {});
-
     Object.entries(tempFurnitureData).forEach(([key,value])=>{
       // console.log('KEY----',key);
       // console.log('Value---',value);
@@ -181,7 +180,6 @@ class BoqCon {
       let roomType = value[0].room_type;
       const furniture = [];
       if(value.length!==0 ){
-        console.log('Furnitures of rooms ----->>',value);
         value.forEach(record=>{
           if(record.furniture_id!==null){
             furniture.push({
@@ -211,16 +209,46 @@ class BoqCon {
         furniture: furniture
       })
     });
-/*
-    roomFurnitureData.forEach(record=>{
-      rooms.push({
-        name : record.room_name,
-        type: record.room_type,
-        id: record.id,
-        furniture: furniture
+
+    const tempModularData = roomModularData.reduce((r, a) => {
+      r[a.id] = [...r[a.id] || [], a];
+      return r;
+    }, {});
+    Object.entries(tempModularData).forEach(([key,value])=>{
+      // console.log('KEY----',key);
+      // console.log('Value---',value);
+      let roomName = value[0].room_name;
+      let roomType = value[0].room_type;
+      const modular = [];
+      if(value.length!==0 ){
+        value.forEach(record=>{
+          if(record.modular_id!==null){
+            modular.push({
+              id:record.modular_id,
+              item_code:record.item_code,
+              item_type:record.item_type,
+              item_name:record.item_name,
+              item_description:record.item_description,
+              unit:record.unit,
+              rate:record.rate,
+              breadth:record.breadth,
+              length:record.length,
+              height:record.height,
+              main_rate:record.main_rate,
+              quantity:record.quantity,
+              total:record.total,
+              url:record.url
+            })
+          }
+        });
+      }
+
+      const thisRoom = rooms.find(obj => {
+        return obj.roomId === key
       });
+
+      thisRoom.modular = modular;
     });
-*/
 
     return {
       httpStatus: 200,
@@ -228,7 +256,6 @@ class BoqCon {
         success: true,
         data: {
           onsite: onsiteData,
-          modular: modularData,
           rooms: rooms
         }
       }
@@ -292,27 +319,14 @@ class BoqCon {
 
   async saveBOQData(reqData) {
     const {adminId, clientId, boqOnsiteData, rooms} = reqData;
-    // await execSql(insertNewRoom('asd','name','1'));
-    // Check if user exist with emailId, mobile number or both.
-   /* const listExistedUsers = JSON.stringify(await (execSql(isUserExist(reqData)))).toLocaleLowerCase();
 
-    if (listExistedUsers.includes(reqData.mobile)
-      && listExistedUsers.includes(reqData.email)) {
-      return {
-        httpStatus: 400,
-        body: { success: false, msg: resMsg.EMAIL_MOBILE_EXIST, data: {} }
-      };
-    }*/
     const transactionQueries = [];
     await execSql(deleteOnSiteDataByClientId(reqData.clientId));
     if(reqData.boqOnsiteData.length!==0) {
       reqData.boqOnsiteData.forEach(record => {
-        const onSiteDBRes = execSql(saveOnsiteData(record, reqData.clientId));
-        console.log('Onsite data save response -- ', onSiteDBRes);
-
+        transactionQueries.push(saveOnsiteData(record, reqData.clientId));
       });
     }
-
 
     transactionQueries.push(deleteFurnitureDataByClientId(clientId));
     transactionQueries.push(deleteAllRoomsByClientId(clientId));
@@ -321,28 +335,20 @@ class BoqCon {
       // Insert new room in req_form_details
       transactionQueries.push(insertNewRoom(room.type,room.name,clientId));
       const roomId = getLastAddedRoomId(clientId);
-      if(room.furniture.length!==0) {
-        room.furniture.forEach(record => {
-          transactionQueries.push(saveFurnitureData(record, clientId, roomId));
-        });
-      }
+      room.furniture.forEach(record => {
+        transactionQueries.push(saveFurnitureData(record, clientId, roomId));
+      });
+      room.modular.forEach(record => {
+        transactionQueries.push(saveModularData(record, clientId, roomId))
+      });
+
     });
 
-    transactionQueries.push(updateUserStatus(clientId,ClientStatus.PROPOSAL_SENT));
     const dbRes = mySqlTxn(transactionQueries);
     if(dbRes.code) return {
       httpStatus: 500,
       body: { success: false, msg: resMsg.CLIENT_MET_ERROR, data: {} }
     };
-
-    // await execSql(deleteModularDataByClientId(reqData.clientId));
-    // if(reqData.boqModularData.length!==0){
-    //   reqData.boqModularData.forEach(record=>{
-    //     const onSiteDBRes = execSql(saveModularData(record,reqData.clientId));
-    //     console.log('Onsite data save response -- ',onSiteDBRes);
-    //   });
-    // }
-
 
      return {
        httpStatus: 200, body: { success: true, msg: resMsg.OK }
