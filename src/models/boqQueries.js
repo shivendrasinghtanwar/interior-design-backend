@@ -16,7 +16,6 @@ class Queries {
     if (category) {
       queryString += ` where item_type='${category}'`;
     }
-    console.log('query string--------------', queryString);
     return queryString;
   }
 
@@ -199,11 +198,10 @@ class Queries {
     (client_id,furniture_id,room_id,quantity,total) VALUE
     (${clientId},${data.id},(${roomId}),${data.quantity},${data.total});`
   }
-  saveModularData(data,clientId){
-    console.log('Modular data to save --', data);
+  saveModularData(data,clientId,roomId){
     return `Insert into client_modular_data
-    (client_id,modular_id,quantity,total) VALUE
-    (${clientId},${data.id},${data.quantity},${data.total});`
+    (client_id,modular_id,room_id,quantity,total) VALUE
+    (${clientId},${data.id},(${roomId}),${data.quantity},${data.total});`
   }
 
   getClientOnSiteData(clientId){
@@ -217,7 +215,11 @@ class Queries {
     client_onsite_data.total,
     item_type,
     item_description,
-    unit,rate
+    unit,rate,
+    CASE on_site_master_data.nos WHEN '1' THEN 'true' ELSE 'false' END as hasNos,
+    CASE on_site_master_data.length WHEN '1' THEN 'true' ELSE 'false' END as hasLength,
+    CASE on_site_master_data.height WHEN '1' THEN 'true' ELSE 'false' END as hasHeight,
+    CASE on_site_master_data.width WHEN '1' THEN 'true' ELSE 'false' END as hasWidth
     from client_onsite_data
     inner join on_site_master_data ON client_onsite_data.onsite_id=on_site_master_data.id
     where client_id = ${clientId}`;
@@ -249,6 +251,20 @@ class Queries {
     req_form_details.id = client_furniture_data.room_id
     left join boq_furniture_master_data on
     boq_furniture_master_data.id = client_furniture_data.furniture_id
+    where req_form_details.client_id = ${clientId}`;
+  }
+
+  getRoomModularData(clientId){
+    return `select
+    req_form_details.id,req_form_details.client_id,room_type,room_name,
+    modular_id,quantity,total,
+    boq_modular_master_data.item_code,boq_modular_master_data.item_type,boq_modular_master_data.item_name,boq_modular_master_data.item_description,
+    unit,rate,breadth,length,height,main_rate,url
+    from req_form_details
+    left join client_modular_data on
+    req_form_details.id = client_modular_data.room_id
+    left join boq_modular_master_data on
+    boq_modular_master_data.id = client_modular_data.modular_id
     where req_form_details.client_id = ${clientId}`;
   }
 

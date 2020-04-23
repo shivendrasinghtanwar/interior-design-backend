@@ -32,6 +32,7 @@ const routeConstants = {
     '/admin-assignTo-designer',
     '/admin-assignTo-tl',
     '/admin-payment-dues',
+    '/admin-new-sign-ups',
     '/designer-all',
     '/team-leader-all',
     '/teamLead-designer-all',
