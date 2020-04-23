@@ -1,4 +1,14 @@
 class TeamLeadQueries {
+  allDesigners(adminId){
+    return `SELECT
+    admin_hierarchy.designer_id as id,
+    email,password,title,first_name,last_name,
+    mobile,type,status,visible,activated,registered_by
+    from marksdzyn.admin 
+    inner join marksdzyn.admin_hierarchy on admin.id=admin_hierarchy.designer_id
+    where  tl_id=${adminId} and admin_hierarchy.designer_id!=${adminId}; `
+  }
+
   allToBeAssignedClients(adminId) {
     return `select
     client.id as id, client.email,

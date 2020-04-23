@@ -34,6 +34,7 @@ const routeConstants = {
     '/admin-payment-dues',
     '/designer-all',
     '/team-leader-all',
+    '/teamLead-designer-all',
     '/teamLead-to-be-assigned',
     '/teamLead-assigned-not-met',
     '/teamLead-delayed-proposals',

@@ -69,6 +69,7 @@ router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
 router.post('/admin-assignTo-designer',verifyToken, adminModule.assignToDesigner);
 router.post('/admin-assignTo-tl',verifyToken, adminModule.assignToTl);
 
+router.get('/teamLead-designer-all',verifyToken,tlModule.getAllDesigners);
 router.get('/teamLead-to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
 router.get('/teamLead-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
 /*router.get('/teamLead-delayed-proposals',verifyToken, tlModule.getDelayedProposals);

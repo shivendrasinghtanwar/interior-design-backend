@@ -5,6 +5,16 @@ const {
 } = require('../../../config/constants/constant');
 
 class TeamLeadModule {
+  async getAllDesigners(req, res, next){
+    const adminId = req._decoded.id;
+    try{
+      const response = await tlCon.getAllDesigners(adminId);
+      return res.status(response.httpStatus).json(response.body);
+    }catch (e) {
+      console.log(e);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
   async getToBeAssignedClients(req, res, next){
     try{
       const adminId = req._decoded.id;
