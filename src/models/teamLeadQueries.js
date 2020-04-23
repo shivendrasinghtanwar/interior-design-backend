@@ -59,7 +59,8 @@ class TeamLeadQueries {
     inner join client_assigned on client.id = client_assigned.client_id
     inner join admin on admin.id = client_assigned.admin_id
     inner join meetings on meetings.project_id = projects.id
-    where client.status=4`;
+    inner join marksdzyn.admin_hierarchy on client_assigned.admin_id=admin_hierarchy.designer_id
+    where client.status=4 AND tl_id=${adminId}`;
   }
   allPaymentDueClients(adminId){
     return `select
