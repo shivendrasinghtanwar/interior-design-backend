@@ -116,9 +116,8 @@ class BOQModule {
       const adminId = req._decoded.id;
       const clientId = req.body.clientId;
       const boqOnsiteData = req.body.onsite;
-      const boqFurnitureData = req.body.furniture;
-      const boqModularData = req.body.modular;
-      const response = await boqCon.saveBOQData({adminId, clientId, boqOnsiteData, boqFurnitureData, boqModularData});
+      const rooms = req.body.rooms;
+      const response = await boqCon.saveBOQData({adminId, clientId, boqOnsiteData, rooms});
       return res.status(response.httpStatus).json(response.body);
     }catch (e) {
       console.log(e);
@@ -138,7 +137,7 @@ class BOQModule {
  }
   async generateBOQTest(req, res, next){
     try {
-      const adminId = req._decoded.id;
+      // const adminId = req._decoded.id;
       const { clientId } = req.query;
       const response = await boqCon.test(clientId);
       return res.status(response.httpStatus).json(response.body);

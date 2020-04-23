@@ -169,15 +169,35 @@ class Queries {
     return queryString
   }
 
+  insertNewRoom(roomType,roomName,clientId){
+    return `
+    Insert into req_form_details
+    (req_form_id, room_type, room_name, client_id) VALUE
+    ('1','${roomType}','${roomName}',${clientId})`;
+  }
+
+  deleteAllRoomsByClientId(clientId){
+    return `delete from req_form_details
+    where client_id=${clientId};`
+  }
+  getAllRoomsByClientId(clientId){
+    return `select * from req_form_details
+    where client_id=${clientId}`;
+  }
+  getLastAddedRoomId(clientId){
+    return `
+    select id from req_form_details
+     order by created desc limit  1`;
+  }
   saveOnsiteData(data,clientId){
     return `Insert into client_onsite_data
     (client_id,onsite_id,nos,length,height,width,quantity,total) VALUE
     (${clientId},${data.id},${data.nos},${data.length},${data.height},${data.width},${data.quantity},${data.total});`
   }
-  saveFurnitureData(data,clientId){
+  saveFurnitureData(data,clientId,roomId){
     return `Insert into client_furniture_data
-    (client_id,furniture_id,quantity,total) VALUE
-    (${clientId},${data.id},${data.quantity},${data.total});`
+    (client_id,furniture_id,room_id,quantity,total) VALUE
+    (${clientId},${data.id},(${roomId}),${data.quantity},${data.total});`
   }
   saveModularData(data,clientId){
     console.log('Modular data to save --', data);
@@ -212,10 +232,24 @@ class Queries {
     item_code,
     item_name,
     item_description,
-    unit,rate,breadth,length,height,main_rate,url
+    unit,rate,breadth,length,height,main_rate,url,room_number
     from client_furniture_data
     inner join boq_furniture_master_data ON client_furniture_data.furniture_id=boq_furniture_master_data.id
     where client_id = ${clientId}`;
+  }
+
+  getRoomFurnitureData(clientId){
+    return `select
+    req_form_details.id,req_form_details.client_id,room_type,room_name,
+    furniture_id,quantity,total,
+    boq_furniture_master_data.item_code,boq_furniture_master_data.item_type,boq_furniture_master_data.item_name,boq_furniture_master_data.item_description,
+    unit,rate,breadth,length,height,main_rate,url
+    from req_form_details
+    inner join client_furniture_data on
+    req_form_details.id = client_furniture_data.room_id
+    inner join boq_furniture_master_data on
+    boq_furniture_master_data.id = client_furniture_data.furniture_id
+    where req_form_details.client_id = ${clientId}`;
   }
 
   getClientBoqModularData(clientId){
@@ -246,6 +280,13 @@ class Queries {
     where client_id=${clientId};`
   }
 
+  getClientBOQData(clientId){
+    return `select *
+    from req_form_details
+    left join client_furniture_data
+    on req_form_details.id = client_furniture_data.room_id
+    where req_form_details.clientId=${clientId}`;
+  }
 }
 
 module.exports = new Queries();
