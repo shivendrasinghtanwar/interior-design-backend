@@ -7,30 +7,17 @@ const SingletonRunnerResponse = require('../../utils/singletonRunnerResponse');
 const { log } = console;
 
 class QuotationModule {
-/*
-Required Request
-{
-  "design":[{"roomType":"bedRoom",count:2},{"roomType":"kitchen",count:1},{"roomType":"bathRoom",count:3}],
-  "view3D":3,
-  "adhocCharges":2500,
-  "clientId":524
-} */
-  async generateDesignQuotPDF(req, res, next) {
+
+  async generateDNBLPDF(req, res, next) {
     try {
       const adminId = req._decoded.id;
-      // const adminId = 1;
-      const {
-        design, view3D, adhocCharges, clientId
-      } = req.body;
-      const reqData = {
-        design, view3D, adhocCharges, clientId, adminId
-      };
-      const response = await quotationConn.generateDesignQuotPDF(reqData);
-      console.log('resp ', response);
+      const { clientId } = req.query;
+      const reqData = { clientId, adminId };
+      const response = await quotationConn.generateDNBLPDF(reqData);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       log(err);
-      return next(new errors.OperationalError(`Unable to generate statement. - ${err.code}`));
+      return next(new errors.OperationalError(`Unable to generate PDF - ${err.code}`));
     }
   }
 

@@ -20,7 +20,7 @@ router.get('/fetch-master-data', validators.checkEmail, validators.checkPassword
 router.get('/login', validators.checkEmail, validators.checkPassword, validationErrorHandler, loginModule.loginByPasswordReqFilter);
 router.post('/save-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.saveDesignQuotation);
 router.get('/get-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.getDesignQuotation);
-router.post('/design-quotation-pdf', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.generateDesignQuotPDF);
+router.get('/dnbl-pdf', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.generateDNBLPDF);
 
 router.get('/pre-sales/fetch-all-unassigned-client', verifyToken, preSalesModule.fetchAllUnassignedClient);
 router.get('/pre-sales/assigned-client', verifyToken, preSalesModule.fetchAssignedClient);
