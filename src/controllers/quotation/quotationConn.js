@@ -3,7 +3,6 @@ const { resMsg } = require('../../../config/constants/constant');
 const pdfFiller = require('pdffiller');
 
 class QuotationConn {
-  doc_url="";
 
   async generateDNBLPDF(reqData) {
     var sourcePDF = "/home/nishtha/Work/MarksDezynProject/marks-dzyn-backend/template/DNBL/LENDBOX-NACH.pdf";

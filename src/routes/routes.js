@@ -56,7 +56,7 @@ router.get('/boq-search-modular', verifyToken, boqModule.getBOQModularSearch);
 router.get('/boq-get-data',verifyToken, boqModule.getData);
 router.post('/boq-save-data',verifyToken, boqModule.saveData);
 router.get('/boq-generate-pdf', verifyToken , boqModule.generateBOQ);
-router.get('/boq-generate-test', verifyToken , boqModule.generateBOQTest);
+router.get('/boq-generate-test' , boqModule.generateBOQTest);
 
 router.get('/designer-all',commonModule.getAllDesigners);
 router.get('/team-leader-all',commonModule.getAllTeamLeaders);
