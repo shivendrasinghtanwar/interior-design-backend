@@ -2,7 +2,8 @@ const {
   allToBeAssignedClients,
   allAssignedNotMetClients,
   allMetClients,
-  fetchDesignQuotationByClientId
+  fetchDesignQuotationByClientId,
+  allPaymentDueClients
 } = require('../../models/adminQueries');
 const {
   allDesigners,allManagers,allPreSales,allTeamLeaders,getDesignerById,getTeamLeaderById
@@ -63,7 +64,7 @@ class AdminController {
       httpStatus: 200,
       body: {
         success: true,
-        data: await execSql(allToBeAssignedClients(adminId))
+        data: await execSql(allPaymentDueClients(adminId))
       }
     };
   }

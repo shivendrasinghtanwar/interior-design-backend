@@ -24,6 +24,8 @@ const {
   getClientBOQData,
   getRoomFurnitureData
 } = require('../../models/boqQueries');
+const  ClientStatus  = require('../../utils/enums/ClientStatus');
+const { assignClientToAdmin, updateUserStatus } = require('../../models/basicQueries');
 const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
 const { s3Upload } = require('../../utils/s3Upload');
 const pdf = require('html-pdf');
@@ -326,6 +328,7 @@ class BoqCon {
       }
     });
 
+    transactionQueries.push(updateUserStatus(clientId,ClientStatus.PROPOSAL_SENT));
     const dbRes = mySqlTxn(transactionQueries);
     if(dbRes.code) return {
       httpStatus: 500,
