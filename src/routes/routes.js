@@ -20,7 +20,7 @@ router.get('/fetch-master-data', validators.checkEmail, validators.checkPassword
 router.get('/login', validators.checkEmail, validators.checkPassword, validationErrorHandler, loginModule.loginByPasswordReqFilter);
 router.post('/save-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.saveDesignQuotation);
 router.get('/get-design-quotation', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.getDesignQuotation);
-router.post('/design-quotation-pdf', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.generateDesignQuotPDF);
+router.get('/dnbl-pdf', verifyToken, validators.checkClientId, validationErrorHandler, quotationModule.generateDNBLPDF);
 
 router.get('/pre-sales/fetch-all-unassigned-client', verifyToken, preSalesModule.fetchAllUnassignedClient);
 router.get('/pre-sales/assigned-client', verifyToken, preSalesModule.fetchAssignedClient);
@@ -69,13 +69,13 @@ router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
 router.post('/admin-assignTo-designer',verifyToken, adminModule.assignToDesigner);
 router.post('/admin-assignTo-tl',verifyToken, adminModule.assignToTl);
 
-
-router.get('/tl/to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
-/*router.get('/tl-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
-router.get('/tl-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
-router.get('/tl-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
-router.get('/tl-payment-dues',verifyToken, tlModule.getPaymentDues);
-router.get('/tl-new-sign-ups',verifyToken, tlModule.getNewSignUps);*/
+router.get('/teamLead-designer-all',verifyToken,tlModule.getAllDesigners);
+router.get('/teamLead-to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
+router.get('/teamLead-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
+/*router.get('/teamLead-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
+router.get('/teamLead-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
+router.get('/teamLead-payment-dues',verifyToken, tlModule.getPaymentDues);
+router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);*/
 
 router.use(errorHandler);
 
