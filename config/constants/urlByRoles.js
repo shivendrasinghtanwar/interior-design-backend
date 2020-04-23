@@ -38,7 +38,6 @@ const routeConstants = {
     '/teamLead-to-be-assigned',
     '/teamLead-assigned-not-met',
     '/teamLead-delayed-proposals',
-    '/teamLead-delayed-tasks',
     '/teamLead-payment-dues',
     '/teamLead-new-sign-ups',
 

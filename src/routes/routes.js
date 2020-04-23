@@ -60,22 +60,25 @@ router.get('/boq-generate-test' , boqModule.generateBOQTest);
 
 router.get('/designer-all',commonModule.getAllDesigners);
 router.get('/team-leader-all',commonModule.getAllTeamLeaders);
+
 router.get('/admin-to-be-assigned',verifyToken, adminModule.getToBeAssignedClients);
 router.get('/admin-assigned-not-met',verifyToken, adminModule.getAssignedNotMetClients);
 router.get('/admin-delayed-proposals',verifyToken, adminModule.getDelayedProposals);
 router.get('/admin-delayed-tasks',verifyToken, adminModule.getDelayedTasks);
 router.get('/admin-payment-dues',verifyToken, adminModule.getPaymentDues);
 router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
+
 router.post('/admin-assignTo-designer',verifyToken, adminModule.assignToDesigner);
 router.post('/admin-assignTo-tl',verifyToken, adminModule.assignToTl);
 
 router.get('/teamLead-designer-all',verifyToken,tlModule.getAllDesigners);
+
 router.get('/teamLead-to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
 router.get('/teamLead-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
-/*router.get('/teamLead-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
+router.get('/teamLead-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
 router.get('/teamLead-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
 router.get('/teamLead-payment-dues',verifyToken, tlModule.getPaymentDues);
-router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);*/
+router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);
 
 router.use(errorHandler);
 
