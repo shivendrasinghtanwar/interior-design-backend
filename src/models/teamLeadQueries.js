@@ -30,7 +30,7 @@ allAssignedNotMetClients(adminId) {
   inner join projects on client.id = projects.client_id
   inner join client_assigned on client.id = client_assigned.client_id
   inner join admin on admin.id = client_assigned.admin_id
-  inner join marksdzyn.admin_hierarchy on client_assigned.admin_id = admin_hierarchy.designer_id
+  inner join admin_hierarchy on client_assigned.admin_id = admin_hierarchy.designer_id
   where (client.status=2 or client.status=3) and admin_hierarchy.tl_id=${adminId}`;
 }
 }
