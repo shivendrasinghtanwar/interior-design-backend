@@ -24,6 +24,8 @@ const {
   getClientBOQData,
   getRoomFurnitureData
 } = require('../../models/boqQueries');
+const  ClientStatus  = require('../../utils/enums/ClientStatus');
+const { assignClientToAdmin, updateUserStatus } = require('../../models/basicQueries');
 const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
 const { s3Upload } = require('../../utils/s3Upload');
 const pdf = require('html-pdf');
@@ -178,24 +180,30 @@ class BoqCon {
       let roomName = value[0].room_name;
       let roomType = value[0].room_type;
       const furniture = [];
-      value.forEach(record=>{
-        furniture.push({
-          id:record.furniture_id,
-          item_code:record.item_code,
-          item_type:record.item_type,
-          item_name:record.item_name,
-          item_description:record.item_description,
-          unit:record.unit,
-          rate:record.rate,
-          breadth:record.breadth,
-          length:record.length,
-          height:record.height,
-          main_rate:record.main_rate,
-          quantity:record.quantity,
-          total:record.total,
-          url:record.url
-        })
-      });
+      if(value.length!==0 ){
+        console.log('Furnitures of rooms ----->>',value);
+        value.forEach(record=>{
+          if(record.furniture_id!==null){
+            furniture.push({
+              id:record.furniture_id,
+              item_code:record.item_code,
+              item_type:record.item_type,
+              item_name:record.item_name,
+              item_description:record.item_description,
+              unit:record.unit,
+              rate:record.rate,
+              breadth:record.breadth,
+              length:record.length,
+              height:record.height,
+              main_rate:record.main_rate,
+              quantity:record.quantity,
+              total:record.total,
+              url:record.url
+            })
+          }
+        });
+      }
+
       rooms.push({
         roomId:key,
         name: roomName,
@@ -320,6 +328,7 @@ class BoqCon {
       }
     });
 
+    transactionQueries.push(updateUserStatus(clientId,ClientStatus.PROPOSAL_SENT));
     const dbRes = mySqlTxn(transactionQueries);
     if(dbRes.code) return {
       httpStatus: 500,
