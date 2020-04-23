@@ -110,17 +110,35 @@ class QuotationConn {
         httpStatus: 200,
         body: {
           success: true,
-          data: { url: reqData.docUrl }
+          msg: "Data Successfully Saved"
         }
       };
   }
 
   async getDesignQuotation(reqData){
+    const result=await execSql(getDesignQuotationData(reqData.clientId));
+    let rooms=[];
+    let adhocCharges=0;
+    let view3D=0;
+    result.forEach(element => {
+      if(element.item_type=="DESIGN"){
+        rooms.push({item_type:element.item_type,item_sub_type:element.item_sub_type,number:element.number});
+      } 
+      else if (element.item_type=="ADHOC_CHARGES"){
+        adhocCharges=element.number
+      }
+      else if (element.item_type=="3D_VIEW"){
+        view3D=element.number
+      }
+
+    });
     return {
       httpStatus: 200,
       body: {
         success: true,
-        data: await execSql(getDesignQuotationData(reqData.clientId))
+        data: {
+          design:rooms, adhocCharges:adhocCharges,view3D:view3D
+        }
       }
     };
   }

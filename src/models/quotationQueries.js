@@ -13,7 +13,7 @@ class Queries {
     if (reqData.view3D) finalQuerySet.push(`INSERT INTO design_quotation_details (design_quotation_id, item_type, number, amount) VALUES ((${designQuotId}), '3D_VIEW',${reqData.view3D}, 3500 * ${reqData.view3D}); `);
     if (reqData.adhocCharges) finalQuerySet.push(`INSERT INTO design_quotation_details (design_quotation_id, item_type, number, amount) VALUES ((${designQuotId}), 'ADHOC_CHARGES', 1, ${reqData.adhocCharges}); `);
     if (reqData.design && reqData.design.length > 0) {
-      reqData.design.map(design => finalQuerySet.push(`INSERT INTO design_quotation_details (design_quotation_id, item_type, item_sub_type, number, amount) VALUES ((${designQuotId}), 'DESIGN', '${design.roomType}', ${design.count}, 5000 * ${design.count}); `));
+      reqData.design.map(design => finalQuerySet.push(`INSERT INTO design_quotation_details (design_quotation_id, item_type, item_sub_type, number, amount) VALUES ((${designQuotId}), 'DESIGN', '${design.item_sub_type}', ${design.number}, 5000 * ${design.number}); `));
     }
     console.log('final->', finalQuerySet);
     return finalQuerySet;
