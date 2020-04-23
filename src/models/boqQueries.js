@@ -187,7 +187,7 @@ class Queries {
   getLastAddedRoomId(clientId){
     return `
     select id from req_form_details
-     order by created desc limit  1`;
+     order by id desc limit  1`;
   }
   saveOnsiteData(data,clientId){
     return `Insert into client_onsite_data
@@ -245,9 +245,9 @@ class Queries {
     boq_furniture_master_data.item_code,boq_furniture_master_data.item_type,boq_furniture_master_data.item_name,boq_furniture_master_data.item_description,
     unit,rate,breadth,length,height,main_rate,url
     from req_form_details
-    inner join client_furniture_data on
+    left join client_furniture_data on
     req_form_details.id = client_furniture_data.room_id
-    inner join boq_furniture_master_data on
+    left join boq_furniture_master_data on
     boq_furniture_master_data.id = client_furniture_data.furniture_id
     where req_form_details.client_id = ${clientId}`;
   }
