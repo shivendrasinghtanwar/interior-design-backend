@@ -33,12 +33,12 @@ const routeConstants = {
     '/admin-assignTo-tl',
     '/designer-all',
     '/team-leader-all',
-    '/tl/to-be-assigned',
-    '/tl-assigned-not-met',
-    '/tl-delayed-proposals',
-    '/tl-delayed-tasks',
-    '/tl-payment-dues',
-    '/tl-new-sign-ups',
+    '/teamLead-to-be-assigned',
+    '/teamLead-assigned-not-met',
+    '/teamLead-delayed-proposals',
+    '/teamLead-delayed-tasks',
+    '/teamLead-payment-dues',
+    '/teamLead-new-sign-ups',
 
   ],
   userUrls: [

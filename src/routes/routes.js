@@ -69,13 +69,12 @@ router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
 router.post('/admin-assignTo-designer',verifyToken, adminModule.assignToDesigner);
 router.post('/admin-assignTo-tl',verifyToken, adminModule.assignToTl);
 
-
-router.get('/tl/to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
-/*router.get('/tl-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
-router.get('/tl-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
-router.get('/tl-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
-router.get('/tl-payment-dues',verifyToken, tlModule.getPaymentDues);
-router.get('/tl-new-sign-ups',verifyToken, tlModule.getNewSignUps);*/
+router.get('/teamLead-to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
+router.get('/teamLead-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
+/*router.get('/teamLead-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
+router.get('/teamLead-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
+router.get('/teamLead-payment-dues',verifyToken, tlModule.getPaymentDues);
+router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);*/
 
 router.use(errorHandler);
 
