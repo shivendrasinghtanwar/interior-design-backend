@@ -167,88 +167,9 @@ class BoqCon {
     const onsiteData = await execSql(getClientOnSiteData(clientId));
     const roomFurnitureData = await execSql(getRoomFurnitureData(clientId));
     const roomModularData = await execSql(getRoomModularData(clientId));
-    const rooms= [];
 
-    const tempFurnitureData = roomFurnitureData.reduce((r, a) => {
-      r[a.id] = [...r[a.id] || [], a];
-      return r;
-    }, {});
-    Object.entries(tempFurnitureData).forEach(([key,value])=>{
-      // console.log('KEY----',key);
-      // console.log('Value---',value);
-      let roomName = value[0].room_name;
-      let roomType = value[0].room_type;
-      const furniture = [];
-      if(value.length!==0 ){
-        value.forEach(record=>{
-          if(record.furniture_id!==null){
-            furniture.push({
-              id:record.furniture_id,
-              item_code:record.item_code,
-              item_type:record.item_type,
-              item_name:record.item_name,
-              item_description:record.item_description,
-              unit:record.unit,
-              rate:record.rate,
-              breadth:record.breadth,
-              length:record.length,
-              height:record.height,
-              main_rate:record.main_rate,
-              quantity:record.quantity,
-              total:record.total,
-              url:record.url
-            })
-          }
-        });
-      }
-
-      rooms.push({
-        roomId:key,
-        name: roomName,
-        type: roomType,
-        furniture: furniture
-      })
-    });
-
-    const tempModularData = roomModularData.reduce((r, a) => {
-      r[a.id] = [...r[a.id] || [], a];
-      return r;
-    }, {});
-    Object.entries(tempModularData).forEach(([key,value])=>{
-      // console.log('KEY----',key);
-      // console.log('Value---',value);
-      let roomName = value[0].room_name;
-      let roomType = value[0].room_type;
-      const modular = [];
-      if(value.length!==0 ){
-        value.forEach(record=>{
-          if(record.modular_id!==null){
-            modular.push({
-              id:record.modular_id,
-              item_code:record.item_code,
-              item_type:record.item_type,
-              item_name:record.item_name,
-              item_description:record.item_description,
-              unit:record.unit,
-              rate:record.rate,
-              breadth:record.breadth,
-              length:record.length,
-              height:record.height,
-              main_rate:record.main_rate,
-              quantity:record.quantity,
-              total:record.total,
-              url:record.url
-            })
-          }
-        });
-      }
-
-      const thisRoom = rooms.find(obj => {
-        return obj.roomId === key
-      });
-
-      thisRoom.modular = modular;
-    });
+    let rooms = this.fillFurnitureInRoom(roomFurnitureData);
+    rooms = this.fillModularInRoom(roomModularData,rooms);
 
     return {
       httpStatus: 200,
@@ -266,24 +187,28 @@ class BoqCon {
     const {
       adminId, clientId
     } = reqData;
-    console.log('3rd',clientId);
     const boqOnsiteData = await execSql(getClientOnSiteData(clientId));
-    let boqFurnitureData = await execSql(getClientBoqFurnitureData(clientId));
-    const boqModularData = await execSql(getClientBoqModularData(clientId));
+/*    let boqFurnitureData = await execSql(getClientBoqFurnitureData(clientId));
+    const boqModularData = await execSql(getClientBoqModularData(clientId));*/
+
+    const roomFurnitureData = await execSql(getRoomFurnitureData(clientId));
+    const roomModularData = await execSql(getRoomModularData(clientId));
+
+    let rooms = this.fillFurnitureInRoom(roomFurnitureData);
+    rooms = this.fillModularInRoom(roomModularData,rooms);
+
     let onSitePdfUrl = await boqPdfMaker.makeOnSitePdf(boqOnsiteData,adminId);
-    boqFurnitureData = boqFurnitureData.concat(boqModularData);
-    let furniturePdfUrl = await boqPdfMaker.makeFurniturePdf(boqFurnitureData,adminId);
+
+    let furniturePdfUrl = await boqPdfMaker.makeFurniturePdf(rooms,adminId);
     const finalFile = path.join('./template', `/BOQ/boqCombined_${adminId}_${Date.now()}.pdf`);
     const firstpage = path.join('./template','BOQ','boqPage1.pdf');
     const secondpage = path.join('./template','BOQ','boqPage2.pdf');
+
     await new Promise((resolve, reject) => {
       pdfMerger([firstpage,secondpage,onSitePdfUrl,furniturePdfUrl],finalFile,function(err) {
         if(err) {
-          console.log('Merging error',err);
          return reject(err)
         }
-        console.log(resolve);
-        console.log('Successfully merged!');
         boqPdfMaker.delete(onSitePdfUrl);
         boqPdfMaker.delete(furniturePdfUrl);
 
@@ -291,7 +216,7 @@ class BoqCon {
       });
     });
 
-    console.log('2nd');
+
     // console.log('temp ', tempFilePath);
     const s3docLink = await s3Upload(finalFile, `BOQ/${finalFile.split('/')[2]}`);
     boqPdfMaker.delete(finalFile);
@@ -353,6 +278,93 @@ class BoqCon {
      return {
        httpStatus: 200, body: { success: true, msg: resMsg.OK }
      };
+   }
+
+   fillFurnitureInRoom(roomFurnitureData){
+     const rooms= [];
+     const tempFurnitureData = roomFurnitureData.reduce((r, a) => {
+       r[a.id] = [...r[a.id] || [], a];
+       return r;
+     }, {});
+     Object.entries(tempFurnitureData).forEach(([key,value])=>{
+       // console.log('KEY----',key);
+       // console.log('Value---',value);
+       let roomName = value[0].room_name;
+       let roomType = value[0].room_type;
+       const furniture = [];
+       if(value.length!==0 ){
+         value.forEach(record=>{
+           if(record.furniture_id!==null){
+             furniture.push({
+               id:record.furniture_id,
+               item_code:record.item_code,
+               item_type:record.item_type,
+               item_name:record.item_name,
+               item_description:record.item_description,
+               unit:record.unit,
+               rate:record.rate,
+               breadth:record.breadth,
+               length:record.length,
+               height:record.height,
+               main_rate:record.main_rate,
+               quantity:record.quantity,
+               total:record.total,
+               url:record.url
+             })
+           }
+         });
+       }
+
+       rooms.push({
+         roomId:key,
+         name: roomName,
+         type: roomType,
+         furniture: furniture
+       })
+     });
+     return rooms
+   }
+   fillModularInRoom(roomModularData,rooms){
+     const tempModularData = roomModularData.reduce((r, a) => {
+       r[a.id] = [...r[a.id] || [], a];
+       return r;
+     }, {});
+     Object.entries(tempModularData).forEach(([key,value])=>{
+       // console.log('KEY----',key);
+       // console.log('Value---',value);
+       let roomName = value[0].room_name;
+       let roomType = value[0].room_type;
+       const modular = [];
+       if(value.length!==0 ){
+         value.forEach(record=>{
+           if(record.modular_id!==null){
+             modular.push({
+               id:record.modular_id,
+               item_code:record.item_code,
+               item_type:record.item_type,
+               item_name:record.item_name,
+               item_description:record.item_description,
+               unit:record.unit,
+               rate:record.rate,
+               breadth:record.breadth,
+               length:record.length,
+               height:record.height,
+               main_rate:record.main_rate,
+               quantity:record.quantity,
+               total:record.total,
+               url:record.url
+             })
+           }
+         });
+       }
+
+       const thisRoom = rooms.find(obj => {
+         return obj.roomId === key
+       });
+
+       thisRoom.modular = modular;
+     });
+     return rooms
    }
 }
 module.exports = new BoqCon();

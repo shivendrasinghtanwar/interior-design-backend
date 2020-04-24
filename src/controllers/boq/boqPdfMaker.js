@@ -69,10 +69,11 @@ class BoqPdfMaker {
     const groupedData = _.groupBy(onsiteData,'item_type');
 
     let categoryIndex = 65;
+    let grandTotal = 0;
     Object.entries(groupedData).forEach(([key,values])=>{
 
       tableBody += this.getCategoryTitleRowOnSite(categoryIndex, key);
-
+      let categoryTotal = 0;
       values.forEach((record,index) => {
         let row = '<tr>';
 
@@ -80,32 +81,45 @@ class BoqPdfMaker {
         column += `<td> ${index+1} </td>`;
         column += `<td> ${record.item_description} </td>`;
         column += `<td> ${record.unit} </td>`;
-        column += `<td align="right"> ${record.quantity} </td>`;
-        column += `<td align="right"> ${record.rate} </td>`;
-        column += `<td align="right"> ${record.total} </td>`;
+        column += `<td class="center"> ${record.quantity} </td>`;
+        column += `<td class="center"> ${record.rate} </td>`;
+        column += `<td class="center"> ${record.total} </td>`;
         column += '<td>  </td>';
 
         row += column;
         row += '</tr>';
         tableBody += row;
+
+        categoryTotal += record.total;
       });
 
-      tableBody += this.getCategoryTotalRowOnSite(categoryIndex, key);
+      grandTotal+=categoryTotal;
+
+      tableBody += this.getCategoryTotalRowOnSite(categoryIndex, key, categoryTotal);
 
       tableBody += this.getEmptyRowOnSite();
 
       categoryIndex++;
     });
+
+    tableBody += this.getGrandTotalRowOnSite(this.getGrandTotalKey(Object.entries(groupedData).length),grandTotal);
     return tableBody;
   }
 
 
   //Furniture
-  async makeFurniturePdf(furnitureData, adminId) {
+  async makeFurniturePdf(rooms, adminId) {
     const url = path.join('./template', '/BOQ/furniture.html');
     let furnitureHtml = fs.readFileSync(url, 'utf8');
+    let tableBody ='';
 
-    let tableBody = this.makeFurnitureTable(furnitureData);
+    let categoryIndex = 65;
+    rooms.forEach(room=>{
+      tableBody+=this.makeRoomTableBody(room,categoryIndex)
+      categoryIndex++;
+    });
+    const grandTotal = this.getGrandTotalForRooms(rooms);
+    tableBody += this.getGrandTotalRowFurniture(this.getGrandTotalKey(rooms.length),grandTotal);
     furnitureHtml = furnitureHtml.replace('{tableBody}', tableBody);
     furnitureHtml = furnitureHtml.replace('{currency}', `INR`);
 
@@ -130,18 +144,25 @@ class BoqPdfMaker {
 
     return tempPdfUrl;
   }
-  makeFurnitureTable(furnitureData) {
+  makeRoomTableBody(room, categoryIndex){
+    let tableBody = '';
+    const roomHeading = `${room.name} ${room.type}`;
+    room.furniture = room.furniture.concat(room.modular);
+    tableBody += this.getCategoryTitleRowFurniture(categoryIndex, roomHeading);
+    tableBody += this.makeFurnitureRows(room.furniture);
+    const roomTotal = this.getRoomTotal(room.furniture);
+    tableBody += this.getCategoryTotalRowFurniture(categoryIndex, roomHeading, roomTotal);
+    tableBody += this.getEmptyRowFurniture();
+
+    return tableBody
+  }
+  makeFurnitureRows(furnitureData) {
     let tableBody = '';
     const groupedData = _.groupBy(furnitureData,'item_type');
-    // console.log('groupedData--------------',groupedData);
-    let categoryIndex = 65;
     Object.entries(groupedData).forEach(([key,values])=>{
-
-      tableBody += this.getCategoryTitleRowFurniture(categoryIndex, key);
 
       values.forEach((record,index) => {
         let row = '<tr>';
-
         let column = '';
         column += `<td> ${index+1} </td>`;
         column += `<td> ${record.item_code} </td>`;
@@ -157,15 +178,38 @@ class BoqPdfMaker {
         tableBody += row;
       });
 
-      tableBody += this.getCategoryTotalRowFurniture(categoryIndex, key);
-
-      tableBody += this.getEmptyRowFurniture();
-
-      categoryIndex++;
     });
     return tableBody;
   }
-
+  getRoomTotal(furnitureData){
+    let total = 0;
+    furnitureData.map(entity => total += entity.total);
+    return total;
+  }
+  getGrandTotalForRooms(rooms){
+    let total = 0;
+    rooms.forEach(room => {
+      room.furniture.concat(room.modular);
+      room.furniture.forEach(record=>{
+        total += record.total
+      });
+      // total += this.getRoomTotal(room.furniture)
+      // console.log('Room total=-------->',this.getRoomTotal(room.furniture));
+    });
+    return total
+  }
+  getGrandTotalKey(limit){
+    let gtKey = '';
+    let index = 65;
+    for (let step = 0; step < limit; step++) {
+      gtKey += ` ${String.fromCharCode(index)} `;
+      if(step!==limit-1){
+        gtKey+='+'
+      }
+      index++
+    }
+    return gtKey;
+  }
   //Onsite Methods
   getEmptyRowOnSite(){
     let emptyRow = `<tr style="line-height: 1rem;padding-top: 1rem;">`;
@@ -187,11 +231,28 @@ class BoqPdfMaker {
     categoryRow += '</tr>';
     return categoryRow
   }
-  getCategoryTotalRowOnSite(categoryIndex, key){
+  getCategoryTotalRowOnSite(categoryIndex, key, categoryTotal){
     let categoryTotalRow = `<tr class="categoryRow">`;
-    categoryTotalRow += this.getCategoryTotalColumnOnSite(String.fromCharCode(categoryIndex), key);;
+    categoryTotalRow += this.getCategoryTotalColumnOnSite(String.fromCharCode(categoryIndex), key, categoryTotal);
     categoryTotalRow += '</tr>';
     return categoryTotalRow
+  }
+  getGrandTotalRowOnSite(key,total){
+    let categoryTotalRow = `<tr class="grandTotalRow">`;
+    categoryTotalRow += this.getGrandTotalColumnOnSite( key, total);
+    categoryTotalRow += '</tr>';
+    return categoryTotalRow
+  }
+  getGrandTotalColumnOnSite(key, total){
+    let categoryColumn = '';
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td> Total of ( ${key} ) </td>`;
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td>${total}</td>`;
+    categoryColumn += `<td></td>`;
+    return categoryColumn;
   }
   getCategoryColumnOnSite(index, key){
     let categoryColumn = '';
@@ -204,14 +265,14 @@ class BoqPdfMaker {
     categoryColumn += `<td></td>`;
     return categoryColumn;
   }
-  getCategoryTotalColumnOnSite(index, key){
+  getCategoryTotalColumnOnSite(index, key, categoryTotal){
     let categoryColumn = '';
     categoryColumn += `<td class="catIndex"> ${index} </td>`;
     categoryColumn += `<td> Total of ${key} </td>`;
     categoryColumn += `<td></td>`;
     categoryColumn += `<td></td>`;
     categoryColumn += `<td></td>`;
-    categoryColumn += `<td></td>`;
+    categoryColumn += `<td>${categoryTotal}</td>`;
     categoryColumn += `<td></td>`;
     return categoryColumn;
   }
@@ -238,15 +299,33 @@ class BoqPdfMaker {
     categoryRow += '</tr>';
     return categoryRow
   }
-  getCategoryTotalRowFurniture(categoryIndex, key){
+  getCategoryTotalRowFurniture(categoryIndex, key, total){
     let categoryTotalRow = `<tr class="categoryRow">`;
-    categoryTotalRow += this.getCategoryTotalColumnFurniture(String.fromCharCode(categoryIndex), key);;
+    categoryTotalRow += this.getCategoryTotalColumnFurniture(String.fromCharCode(categoryIndex), key, total);
     categoryTotalRow += '</tr>';
     return categoryTotalRow
   }
-  getCategoryColumnFurniture(index, key){
+  getGrandTotalRowFurniture( key, total){
+    let categoryTotalRow = `<tr class="grandTotalRow">`;
+    categoryTotalRow += this.getGrandTotalColumnsFurniture(key, total);
+    categoryTotalRow += '</tr>';
+    return categoryTotalRow
+  }
+  getGrandTotalColumnsFurniture(key, total){
     let categoryColumn = '';
     categoryColumn += `<td></td>`;
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td> Total of ( ${key} )</td>`;
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td>${total}</td>`;
+    categoryColumn += `<td></td>`;
+    categoryColumn += `<td></td>`;
+    return categoryColumn;
+  }
+  getCategoryColumnFurniture(index, key){
+    let categoryColumn = '';
+    categoryColumn += `<td class="catIndex">${index}</td>`;
     categoryColumn += `<td></td>`;
     categoryColumn += `<td> ${key} </td>`;
     categoryColumn += `<td></td>`;
@@ -256,14 +335,14 @@ class BoqPdfMaker {
     categoryColumn += `<td></td>`;
     return categoryColumn;
   }
-  getCategoryTotalColumnFurniture(index, key){
+  getCategoryTotalColumnFurniture(index, key, total){
     let categoryColumn = '';
-    categoryColumn += `<td></td>`;
+    categoryColumn += `<td class="catIndex">${index}</td>`;
     categoryColumn += `<td></td>`;
     categoryColumn += `<td> Total of ${key} </td>`;
     categoryColumn += `<td></td>`;
     categoryColumn += `<td></td>`;
-    categoryColumn += `<td></td>`;
+    categoryColumn += `<td>${total}</td>`;
     categoryColumn += `<td></td>`;
     categoryColumn += `<td></td>`;
     return categoryColumn;
@@ -277,6 +356,7 @@ class BoqPdfMaker {
     description += `<p>Fabric : Not Included </p>`;
     return description;
   }
+
 
   delete(path){
     fs.unlink(path, (err) => {
