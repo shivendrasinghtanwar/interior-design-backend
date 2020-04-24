@@ -9,11 +9,9 @@ class TeamLeadQueries {
     where  tl_id=${adminId} and admin_hierarchy.designer_id!=${adminId}; `
   }
 
-  allTeamIds(adminId){
-    return `SELECT designer_id from admin_hierarchy where tl_id=${adminId}`;
-  }
-
+  //TeamId includes himself
   allToBeAssignedClients(adminId) {
+    const teamIds=`SELECT designer_id from admin_hierarchy where tl_id=${adminId}`;
     return `select
     client.id as id, client.email,
     concat(client.title,' ',client.first_name,' ',client.last_name) as name, client.mobile,
@@ -29,7 +27,9 @@ class TeamLeadQueries {
     where client.status=1`;
   }
 
+  //TeamId includes himself
   allAssignedNotMetClients(adminId) {
+    const teamIds=`SELECT designer_id from admin_hierarchy where tl_id=${adminId}`;
     return `select
     client.id as id, client.email,
     concat(client.title,' ',client.first_name,' ',client.last_name) as name, client.mobile,
@@ -44,12 +44,13 @@ class TeamLeadQueries {
     inner join projects on client.id = projects.client_id
     inner join client_assigned on client.id = client_assigned.client_id
     inner join admin on admin.id = client_assigned.admin_id
-    inner join admin_hierarchy on client_assigned.admin_id = admin_hierarchy.designer_id
-    where (client.status=2 or client.status=3) and admin_hierarchy.tl_id=${adminId}`;
+    where (client.status=2 or client.status=3) and admin_id in (${teamIds})`;
   }
 
-  //Delayed Proposals
+  //Delayed Proposals 
+  //TeamId includes himself
   allMetClients(adminId) {
+    const teamIds=`SELECT designer_id from admin_hierarchy where tl_id=${adminId}`;
     return `select
     client.id as id, client.email,
     concat(client.title,' ',client.first_name,' ',client.last_name) as name, client.mobile,
@@ -65,12 +66,12 @@ class TeamLeadQueries {
     inner join client_assigned on client.id = client_assigned.client_id
     inner join admin on admin.id = client_assigned.admin_id
     inner join meetings on meetings.project_id = projects.id
-    inner join marksdzyn.admin_hierarchy on client_assigned.admin_id=admin_hierarchy.designer_id
-    where client.status=4 AND tl_id=${adminId}`;
+    where (client.status=4) and admin_id in (${teamIds})`;
   }
 
-
+//TeamId includes himself
   allPaymentDueClients(adminId){
+    const teamIds=`SELECT designer_id from admin_hierarchy where tl_id=${adminId}`;
     return `select
     client.id as id, client.email,
     concat(client.title,' ',client.first_name,' ',client.last_name) as name, client.mobile,
@@ -84,7 +85,7 @@ class TeamLeadQueries {
     inner join projects on client.id = projects.client_id
     inner join client_assigned on client.id = client_assigned.client_id
     inner join admin on admin.id = client_assigned.admin_id
-    where client.status=5 or client.status=6`;
+    where (client.status=5 or client.status=6 )and admin_id in (${teamIds})` ;
   }
   fetchDesignQuotationByClientId(clientId) {
     return `select
