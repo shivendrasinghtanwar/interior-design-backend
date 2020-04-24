@@ -41,6 +41,9 @@ const routeConstants = {
     '/teamLead-delayed-proposals',
     '/teamLead-payment-dues',
     '/teamLead-new-sign-ups',
+    '/register-designer',
+    '/register-teamLead',
+    '/register-presales'
 
   ],
   userUrls: [

@@ -1,5 +1,5 @@
 const {
-  allDesigners,allManagers,allPreSales,allTeamLeaders
+  allDesigners,allManagers,allPreSales,allTeamLeaders,registerTl,registerDesigner,registerPresales
 } = require('../../models/commonQueries');
 const { execSql,mySqlTxn } = require('../../models/sqlGetResult');
 
@@ -40,6 +40,38 @@ class CommonController {
       }
     };
   }
+
+  async registerTl(reqData){
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        msg: 'TeamLead Successfully Registered!',
+        data: await mySqlTxn(registerTl(reqData))
+      }
+    };
+  }
+  
+  async registerDesigner(reqData){
+      return {
+        httpStatus: 200,
+        body: {
+          success: true,
+          msg: 'Designer Successfully Registered!',
+          data: await mySqlTxn(registerDesigner(reqData))
+        }
+      };
+  }
+  async registerPresales(reqData){
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        msg: 'Presales Successfully Registered!',
+        data: await mySqlTxn(registerPresales(reqData))
+      }
+    };
+}
 }
 
 module.exports = new CommonController();
