@@ -66,7 +66,7 @@ class QuotationConn {
         rooms.push({item_type:element.item_type,item_sub_type:element.item_sub_type,number:element.number});
       } 
       else if (element.item_type=="ADHOC_CHARGES"){
-        adhocCharges=element.number
+        adhocCharges=element.amount
       }
       else if (element.item_type=="3D_VIEW"){
         view3D=element.number
