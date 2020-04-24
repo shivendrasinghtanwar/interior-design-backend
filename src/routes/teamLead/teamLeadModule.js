@@ -15,6 +15,7 @@ class TeamLeadModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+
   async getToBeAssignedClients(req, res, next){
     try{
       const adminId = req._decoded.id;

@@ -9,6 +9,10 @@ class TeamLeadQueries {
     where  tl_id=${adminId} and admin_hierarchy.designer_id!=${adminId}; `
   }
 
+  allTeamIds(adminId){
+    return `SELECT designer_id from admin_hierarchy where tl_id=${adminId}`;
+  }
+
   allToBeAssignedClients(adminId) {
     return `select
     client.id as id, client.email,
@@ -43,6 +47,8 @@ class TeamLeadQueries {
     inner join admin_hierarchy on client_assigned.admin_id = admin_hierarchy.designer_id
     where (client.status=2 or client.status=3) and admin_hierarchy.tl_id=${adminId}`;
   }
+
+  //Delayed Proposals
   allMetClients(adminId) {
     return `select
     client.id as id, client.email,
@@ -62,6 +68,8 @@ class TeamLeadQueries {
     inner join marksdzyn.admin_hierarchy on client_assigned.admin_id=admin_hierarchy.designer_id
     where client.status=4 AND tl_id=${adminId}`;
   }
+
+
   allPaymentDueClients(adminId){
     return `select
     client.id as id, client.email,

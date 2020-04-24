@@ -1,5 +1,6 @@
 const {
   allDesigners,
+  allTeamIds,
   allToBeAssignedClients,
   allAssignedNotMetClients,
   allMetClients,
@@ -18,6 +19,16 @@ class TeamLeadController {
       body: {
         success: true,
         data: await execSql(allDesigners(adminId))
+      }
+    };
+  }
+
+  async getAllTeamIds(adminId){
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(allTeamIds(adminId))
       }
     };
   }

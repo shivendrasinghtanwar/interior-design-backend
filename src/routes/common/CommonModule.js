@@ -34,7 +34,6 @@ class CommonModule {
       reqData.first_name = req.body.first_name;
       reqData.last_name = req.body.last_name;
       reqData.mobile = req.body.mobile;
-
       const response = await commonCon.registerTl(reqData);
       return res.status(response.httpStatus).json(response.body);
     }catch (e) {

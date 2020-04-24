@@ -154,7 +154,7 @@ class CommonQueries {
     VALUES (('${reqData.email}'), ('${reqData.password}'), ('${reqData.title}'), ('${reqData.first_name}'), ('${reqData.last_name}'), ${reqData.mobile}, 'ADMIN', '1', '1')`); 
 
     finalQuerySet.push(`INSERT into user_roles (admin_id,roles,visible) values ((${designerId}),'ROLE_DESIGNER',1)`);  
-    finalQuerySet.push(`INSERT into admin_hierarchy (manager_id,tl_id,designer_id) values (1,(${designerId}),(${teamLeadId}))`);
+    finalQuerySet.push(`INSERT into admin_hierarchy (manager_id,tl_id,designer_id) values (1,(${teamLeadId}),(${designerId}))`);
 
     console.log('final->', finalQuerySet);
     return finalQuerySet;
