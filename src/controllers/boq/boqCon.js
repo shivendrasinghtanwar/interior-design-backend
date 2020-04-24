@@ -188,9 +188,6 @@ class BoqCon {
       adminId, clientId
     } = reqData;
     const boqOnsiteData = await execSql(getClientOnSiteData(clientId));
-/*    let boqFurnitureData = await execSql(getClientBoqFurnitureData(clientId));
-    const boqModularData = await execSql(getClientBoqModularData(clientId));*/
-
     const roomFurnitureData = await execSql(getRoomFurnitureData(clientId));
     const roomModularData = await execSql(getRoomModularData(clientId));
 
@@ -220,16 +217,15 @@ class BoqCon {
     // console.log('temp ', tempFilePath);
     const s3docLink = await s3Upload(finalFile, `BOQ/${finalFile.split('/')[2]}`);
     boqPdfMaker.delete(finalFile);
-/*    // reqData.docUrl = s3docLink;
-    // console.log('s3doclink', s3docLink);
-    // reqData.docUrl = tempFilePath;
-    // fs.unlinkSync(tempFilePath);
-    if (dbres.code) {
+
+    const dbres2 = await execSql(updateUserStatus(clientId,ClientStatus.PROPOSAL_SENT));
+    if (dbres2.code) {
+      console.log(dbres2);
       return {
-        httpStatus: 404,
-        body: {success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {}}
+        httpStatus: 500,
+        body: { success: false, msg: resMsg.CLIENT_STATUS_UPDATE_ERROR, data: {} }
       };
-    }*/
+    }
 
 
     return {

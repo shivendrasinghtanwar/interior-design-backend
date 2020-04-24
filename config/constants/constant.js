@@ -241,6 +241,7 @@ const constants = {
   resMsg: {
     OK:'OK',
     INVALID_EMAIL: 'Invalid email format.',
+    CLIENT_STATUS_UPDATE_ERROR: 'Client status update failed!',
     INVALID_EMAIL_OR_MOBILE: 'Invalid email or mobile format.',
     INVALID_CLIENT_ID: 'Client Id is invalid!',
     DESIGN_QUOTATION_ALREADY_GENERATED: 'Design Quotation Already Generated for this user!',
