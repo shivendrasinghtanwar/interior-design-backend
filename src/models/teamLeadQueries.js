@@ -4,8 +4,8 @@ class TeamLeadQueries {
     admin_hierarchy.designer_id as id,
     email,password,title,first_name,last_name,
     mobile,type,status,visible,activated,registered_by
-    from marksdzyn.admin 
-    inner join marksdzyn.admin_hierarchy on admin.id=admin_hierarchy.designer_id
+    from admin 
+    inner join admin_hierarchy on admin.id=admin_hierarchy.designer_id
     where  tl_id=${adminId} and admin_hierarchy.designer_id!=${adminId}; `
   }
 
