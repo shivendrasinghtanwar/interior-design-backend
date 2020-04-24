@@ -7,11 +7,13 @@ class AdminQueries {
     DATE_format(meeting_datetime,'%d %b %Y %h:%i %p') AS meeting_datetime,
     DATE_format(meeting_datetime,'%m-%Y') AS meetingMonth,
     scope_of_work as scope,package,
-    concat(admin.title,' ',admin.first_name,' ',admin.last_name) as registeredBy, admin.id as registeredById
-    from client inner join address_details
-    on client.id = address_details.client_id
+    concat(admin.title,' ',admin.first_name,' ',admin.last_name) as registeredBy, admin.id as registeredById,
+    visit_charges.amount as visit_charges
+    from client inner
+    join address_details on client.id = address_details.client_id
     inner join projects on client.id = projects.client_id
     inner join admin on admin.id = client.registered_by
+    inner join visit_charges on visit_charges.client_id = client.id
     where client.status=1`;
   }
   allAssignedNotMetClients(adminId) {
@@ -47,6 +49,7 @@ class AdminQueries {
     inner join client_assigned on client.id = client_assigned.client_id
     inner join admin on admin.id = client_assigned.admin_id
     inner join meetings on meetings.project_id = projects.id
+
     where client.status=4`;
   }
   allPaymentDueClients(adminId){
