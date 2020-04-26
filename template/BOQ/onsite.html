@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BOQ_Template</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css' />
+	<style type="text/css">
+		body{
+			font-family: 'Open Sans', sans-serif;
+			font-size: 8px !important;
+		}
+		table{
+			/*margin-top: 1rem;*/
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		.header{
+			background-color: #021f59;
+			text-align: center;
+			color: white;
+      margin: 0;
+		}
+		.header h2{
+			padding: 0;
+			margin: 0;
+		}
+		.mainTable thead{
+			border-top: solid thin black;
+			background-color: #87ccf5;
+			 border-bottom: 1px solid black;
+			 text-align:left;
+		}
+		.mainTable td{
+			 border-bottom: 1px solid black;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 4px;
+		}
+    td:first-child{
+      align-content: center !important;
+      text-align:  center!important;
+    }
+    th:first-child{
+      text-align: center;
+    }
+		.categoryRow{
+			background-color: #d1c26d;
+      font-weight:bold ;
+		}
+		.catIndex{
+			border-right: solid thin black;
+		}
+    .grandTotalRow{
+      background-color: #ccc;
+      font-weight:bold ;
+    }
+    .center{
+      text-align: center;
+    }
+    .right{
+      text-align: right;
+    }
+
+	</style>
+</head>
+<body>
+<!-- Invoice general Row with invoice number, duedate, invoice date,etc  -->
+<div class="header" id="pageHeader">
+  <h2>On-Site Work</h2>
+</div>
+<!-- Main Table Row row -->
+<table class="mainTable">
+  <thead>
+  <tr>
+    <th width="5%">S. No.</th>
+    <th width="40%">Description</th>
+    <th width="8%">Unit Price</th>
+    <th width="8%">Quantity</th>
+    <th width="8%">Rate</th>
+    <th width="8%">Amount</th>
+    <th width="23%">Extra</th>
+  </tr>
+  </thead>
+  <tbody>
+  {tableBody}
+  </tbody>
+</table>
+
+</body>
+</html>

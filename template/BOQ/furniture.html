@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BOQ_Template_Furniture</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css' />
+	<style type="text/css">
+		body{
+			font-family: 'Open Sans', sans-serif;
+			font-size: 7px !important;
+      padding: 5px;
+		}
+		table{
+			/*margin-top: 1rem;*/
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		.header{
+			background-color: #021f59;
+			text-align: center;
+			color: white;
+      margin: 0;
+		}
+		.header h2{
+			padding: 0;
+			margin: 0;
+		}
+		.mainTable thead{
+			border-top: solid thin black;
+			background-color: #87ccf5;
+			 border-bottom: 1px solid black;
+			 text-align:left;
+		}
+		.mainTable td{
+			 border-bottom: 1px solid black;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 4px;
+		}
+    .mainTable td:first-child, th:first-child{
+      align-content: center !important;
+      text-align:  center!important;
+    }
+		.categoryRow{
+			background-color: #d1c26d;
+      font-weight:bold ;
+		}
+		.catIndex{
+			border-right: solid thin black;
+		}
+    .grandTotalRow{
+      background-color: #ccc;
+      font-weight:bold ;
+    }
+    .paymentTerm {
+      margin-top: 10px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    .paymentTerm th,.paymentTerm td{
+      padding: 4px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    .mainTable p{
+      margin: 0;
+      padding: 0;
+    }
+
+	</style>
+</head>
+<body>
+<!-- Upper Row with logo and company and customer address  -->
+
+<!-- Invoice general Row with invoice number, duedate, invoice date,etc  -->
+     <div class="header" >
+     			<h2>Modular Storages and Category Furniture</h2>
+     </div>
+
+    <!-- Terms table -->
+    <table align="left" style="text-align: left;">
+      <tbody align="left">
+        <tr>
+          <td>
+            All Modular Furniture carry a Warranty of 05 years towards Defects. Not applicable to Hardware
+          </td>
+        </tr>
+        <tr>
+          <td>
+            All Category (Loose) Furniture carry a Warranty of 01 years towards Defects. Not applicable to Hardware or Fabric
+          </td>
+        </tr>
+        <tr>
+          <td>
+            50% of Project Value
+          </td>
+        </tr>
+        <tr>
+          <td>All Channels, Hinges to be of Hetich, Hafelle or Ozone. Locks of Doreset</td>
+        </tr>
+        <tr>
+          <td>All External Laminate to be 1.0 mm thick and Veneer will be 4 mm thick</td>
+        </tr>
+        <tr>
+          <td>All Wardrobes, TV Units, Storages will be finished internally with 0.8 mm laminate</td>
+        </tr>
+        <tr>
+          <td>Light Fittings to be provided by client basis final selection. The same can be sourced through Marks Dzyn also</td>
+        </tr>
+        <tr>
+          <td>Final Bill will be basis the final measurements of work delivered</td>
+        </tr>
+        <tr>
+          <td>Unless specified, light will not be provided in wardrobes or storages</td>
+        </tr>
+        <tr>
+          <td>Furniture fabric to be provided by client</td>
+        </tr>
+        <tr>
+          <td>
+            Tile & toilet fixtures to be provided by client
+          </td>
+        </tr>
+        <tr>
+          <td><b><i>Unless specified, light will not be provided in wardrobes or storages. Cost of Lights is extra</i></b></td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Main Table Row row -->
+        <table class="mainTable">
+        	<thead>
+        		<tr>
+              <th width="5%">S. No.</th>
+              <th width="8">Item Code</th>
+              <th width="40%">Description</th>
+              <th width="8%">Unit Price</th>
+              <th width="8%">Quantity</th>
+              <th width="8%">Rate</th>
+              <th width="8%">Amount</th>
+              <th width="15%">Extra</th>
+            </tr>
+        	</thead>
+        	<tbody>
+        		{tableBody}
+        	</tbody>
+        </table>
+    <!-- payment term -->
+    <table class="paymentTerm">
+      <tr>
+        <td style="text-align: center" colspan="2">Payment Terms for Furniture:</td>
+      </tr>
+      <tr>
+        <td>Advance Sign up</td>
+        <td>20% of Project Value</td>
+      </tr>
+      <tr>
+        <td>Production Amount (at the time of commencement of Production)</td>
+        <td>30% of Project Value</td>
+      </tr>
+      <tr>
+        <td>On Dispatch of Furniture (Before Dispatch Payment needs to be cleared). </td>
+        <td>50% of Project Value</td>
+      </tr>
+      <tr style="background-color:gainsboro;">
+        <td  colspan="2">GST Extra as applicable</td>
+      </tr>
+    </table>
+</body>
+</html>

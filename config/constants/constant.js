@@ -239,7 +239,9 @@ const constants = {
     }
   },
   resMsg: {
+    OK:'OK',
     INVALID_EMAIL: 'Invalid email format.',
+    CLIENT_STATUS_UPDATE_ERROR: 'Client status update failed!',
     INVALID_EMAIL_OR_MOBILE: 'Invalid email or mobile format.',
     INVALID_CLIENT_ID: 'Client Id is invalid!',
     DESIGN_QUOTATION_ALREADY_GENERATED: 'Design Quotation Already Generated for this user!',
@@ -401,7 +403,9 @@ const constants = {
     INVALID_AMOUNT: 'Invalid amount passed.',
     PROP_NOT_FOUND: 'No relevant proposal found.',
     INVALID_PROP: 'Invalid proposal',
-    EMAIL_A_VERIFIED: 'Email already verified'
+    EMAIL_A_VERIFIED: 'Email already verified',
+    USER_NOT_DESIGNER: 'The selected user is not a Designer',
+    USER_NOT_TL: 'The selected user is not a Team Lead'
   }
 };
 
