@@ -25,9 +25,7 @@ router.get('/dnbl-pdf', verifyToken, validators.checkClientId, validationErrorHa
 router.get('/pre-sales/fetch-all-unassigned-client', verifyToken, preSalesModule.fetchAllUnassignedClient);
 router.get('/pre-sales/assigned-client', verifyToken, preSalesModule.fetchAssignedClient);
 
-router.get('/designer/assigned-client', verifyToken, designerModule.fetchAssignedClient);
-router.get('/designer/client-met', verifyToken, designerModule.fetchClientMet);
-router.post('/designer/update-client-met', verifyToken, designerModule.updateClientMet);
+
 
 router.get('/client-profile', verifyToken, clientModule.getProfile);
 router.post('/update-client-profile', verifyToken, clientModule.updateClientProfile);
@@ -90,6 +88,11 @@ router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);
 
 
 router.get('/designer-on-board-clients',verifyToken, designerModule.getOnBoardClients);
+router.get('/designer/assigned-client', verifyToken, designerModule.fetchAssignedClient);
+router.get('/designer/client-met', verifyToken, designerModule.fetchClientMet);
+router.post('/designer/update-client-met', verifyToken, designerModule.updateClientMet);
+
+router.get('/client/tasks',clientModule.getTasks);
 router.use(errorHandler);
 
 module.exports = router;

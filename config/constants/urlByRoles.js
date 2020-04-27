@@ -7,6 +7,7 @@ const routeConstants = {
     '/dnbl-pdf',
     '/add-client',
     '/fetch-all-client',
+    '/client/tasks',
     '/pre-sales/fetch-all-unassigned-client',
     '/pre-sales/assigned-client',
     '/assign-to-client',

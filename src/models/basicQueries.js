@@ -96,6 +96,16 @@ class Queries {
     where id = ${clientId} ;`;
   }
 
+  getClientTasks(clientId){
+    return `select
+    tmd.task_name,
+    ctd.id,ctd.client_id,ctd.start_date,ctd.end_date,
+    ctd.status,ctd.delay,ctd.task_id,ctd.admin_Id
+    from client_tasks_data ctd
+    left join client_task_master_data tmd on
+    tmd.id = ctd.task_id
+    where client_id = ${clientId}`;
+  }
 }
 
 module.exports = new Queries();
