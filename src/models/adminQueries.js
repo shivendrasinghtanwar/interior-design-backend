@@ -98,12 +98,13 @@ class AdminQueries {
     return `SELECT 
     DATE_format(meeting_datetime,'%d %b %Y %h:%i %p') AS meeting_datetime,client.id as id,
     concat(client.title,' ',client.first_name,' ',client.last_name) as name, client.mobile,
-    city,client.status,
+    city,client.status,amount as visitingCharges, paid as vcReceived,
     concat(A.title,' ',A.first_name,' ',A.last_name) as registered_by,
-    concat(B.title,' ',B.first_name,' ',B.last_name) as Designer,
-    concat(C.title,' ',C.first_name,' ',C.last_name) as TL
+    concat(B.title,' ',B.first_name,' ',B.last_name) as designer,
+    concat(C.title,' ',C.first_name,' ',C.last_name) as teamLead
     FROM client 
     inner join address_details on client.id = address_details.client_id
+    inner join marksdzyn.visit_charges on client.id = visit_charges.client_id
     inner join projects on client.id = projects.client_id
     inner join admin as A on client.registered_by = A.id
     inner join client_assigned on client.id=client_assigned.client_id
