@@ -74,6 +74,8 @@ router.get('/admin-delayed-proposals',verifyToken, adminModule.getDelayedProposa
 router.get('/admin-delayed-tasks',verifyToken, adminModule.getDelayedTasks);
 router.get('/admin-payment-dues',verifyToken, adminModule.getPaymentDues);
 router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
+router.get('/admin-all-presales',verifyToken, adminModule.getAllPresales);
+router.get('/admin-all-clients',verifyToken, adminModule.getAllClients);
 
 
 router.get('/teamLead-designer-all',verifyToken,tlModule.getAllDesigners);
