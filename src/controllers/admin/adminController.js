@@ -3,7 +3,9 @@ const {
   allAssignedNotMetClients,
   allMetClients,
   fetchDesignQuotationByClientId,
-  allPaymentDueClients
+  allPaymentDueClients,
+  allPresales,
+  allClients
 } = require('../../models/adminQueries');
 const {
   allDesigners,allManagers,allPreSales,allTeamLeaders,getDesignerById,getTeamLeaderById
@@ -77,6 +79,27 @@ class AdminController {
       }
     };
   }
+
+  async getAllPresales(adminId) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(allPresales(adminId))
+      }
+    };
+  }
+
+  async getAllClients(adminId) {
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: await execSql(allClients(adminId))
+      }
+    };
+  }
+
   async assignToDesigner(request) {
 
     const getDesiginerDBRes = await execSql(getDesignerById(request.adminId));
