@@ -90,6 +90,8 @@ router.get('/teamLead-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
 router.get('/teamLead-payment-dues',verifyToken, tlModule.getPaymentDues);
 router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);
 
+
+router.get('/designer-on-board-clients',verifyToken, designerModule.getOnBoardClients);
 router.use(errorHandler);
 
 module.exports = router;

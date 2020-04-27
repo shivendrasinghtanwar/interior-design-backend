@@ -13,6 +13,7 @@ const routeConstants = {
     '/designer/assigned-client',
     '/designer/client-met',
     '/designer/update-client-met',
+    '/designer-on-board-clients',
     '/client-profile',
     '/on-site-records',
     '/on-site-categories',
