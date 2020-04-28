@@ -100,11 +100,22 @@ class Queries {
     return `select
     tmd.task_name,
     ctd.id,ctd.client_id,ctd.start_date,ctd.end_date,
-    ctd.status,ctd.delay,ctd.task_id,ctd.admin_Id
+    CASE ctd.status WHEN '1' THEN 'true' ELSE 'false' END as status,
+    ctd.delay,ctd.task_id,ctd.admin_id
     from client_tasks_data ctd
     left join client_task_master_data tmd on
     tmd.id = ctd.task_id
     where client_id = ${clientId}`;
+  }
+  getClientTaskMasterData(){
+    return `select * from client_task_master_data;`
+  }
+
+  insertClientTask(clientId,task,startDate,endDate){
+    return `insert into
+    client_tasks_data
+    (client_id, start_date, end_date, status, delay, task_id) value
+    (${clientId},'${startDate}','${endDate}', 0, 0, ${task.id})`
   }
 }
 
