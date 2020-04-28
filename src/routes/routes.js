@@ -11,6 +11,7 @@ const boqModule = require('./boq/boqModule');
 const adminModule = require('./admin/adminModule');
 const commonModule = require('./common/CommonModule');
 const tlModule = require('./teamLead/teamLeadModule');
+const razorpay = require('./razorpay/razorpayModule');
 const { errorHandler } = require('./../middlewares/errors');
 const { verifyToken } = require('./../middlewares/jwt');
 
@@ -87,6 +88,11 @@ router.get('/teamLead-delayed-proposals',verifyToken, tlModule.getDelayedProposa
 router.get('/teamLead-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
 router.get('/teamLead-payment-dues',verifyToken, tlModule.getPaymentDues);
 router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);
+
+/*
+  Razorpay Payment Gateway Integration Start
+ */
+router.post('/rp_pay_order', razorpay.payment);
 
 router.use(errorHandler);
 

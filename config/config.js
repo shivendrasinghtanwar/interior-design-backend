@@ -1,19 +1,9 @@
 const config = {
   cryptKey: process.env.CRYPTKEY,
   automationScriptUser: process.env.AUTOMATION_SCRIPT_USER,
-  // mongoDb credentials
-  mongo: {
-    uri: process.env.MONGO_URI,
-    database: process.env.MONGO_DB
-  },
   // JWT secrets
   JWT: {
     login: process.env.JWT_LOGIN_KEY
-  },
-  serviceUrls: {
-    lbWallet: process.env.WALLET_BASE_URL,
-    lendboxPg: process.env.PG_BASE_URL,
-    adminJava: process.env.ADMIN_JAVA_URL
   },
   awsSes: {
     host: process.env.AWS_SES_HOST,
@@ -41,30 +31,12 @@ const config = {
     withdrawalReqDir: process.env.WITHDRAWAL_REQ_DIR,
     emiDir: process.env.EMI_DIR
   },
-  gupshup: {
-    url: process.env.GUPSHUP_URL,
-    params: {
-      method: process.env.GUPSHUP_METHOD,
-      userid: process.env.GUPSHUP_USER,
-      password: process.env.GUPSHUP_PASSWORD,
-      v: process.env.GUPSHUP_VERSION,
-      msg_type: process.env.GUPSHUP_MSGTYPE,
-      auth_scheme: process.env.GUPSHUP_AUTH,
-      send_to: '',
-      msg: ''
-    }
+  razorpay: {
+    baseUrl: process.env.RAZORPAY_URL,
+    secret: process.env.RAZORPAY_WEBHOOK_SECRET,
+    username: process.env.RAZORPAY_USERNAME,
+    password: process.env.RAZORPAY_PASSWORD
   },
-  verumviewCred: {
-    url: process.env.VERUMVIEW_URL,
-    secret: process.env.VERUMVIEW_SECRET,
-    callbackUrl: process.env.VERUMVIEW_CB_URL
-  },
-  iciciCred: {
-    url: process.env.ICICI_BASE_URL,
-    user: process.env.ICICI_USER,
-    password: process.env.ICICI_PASSWORD,
-    headerSecret: process.env.ICICI_SECRET_KEY
-  }
 };
 
 module.exports = config;

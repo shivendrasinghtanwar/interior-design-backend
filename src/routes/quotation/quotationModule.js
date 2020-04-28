@@ -1,8 +1,5 @@
 const quotationConn = require('../../controllers/quotation/quotationConn');
 const errors = require('../../utils/errors');
-const { fileType, errorMsg } = require('../../../config/constants/reportUploader');
-const singletonRunner = require('../../utils/singletonRunner');
-const SingletonRunnerResponse = require('../../utils/singletonRunnerResponse');
 
 const { log } = console;
 

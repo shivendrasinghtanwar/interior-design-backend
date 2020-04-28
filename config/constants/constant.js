@@ -1,245 +1,10 @@
 const constants = {
-  iciciTxnPath: '/transaction',
-  referals: {
-    zest: 'ZEST',
-    bon: 'BON',
-    micro: 'MICRO'
-  },
-  userActivatedDateForDisbursalSheet: '2019-12-21',
-  LendboxStartDate: 1420070400000,
-  emiChangeDate: 1567276200,
-  registartionFee: 500,
-  invFeeCheckBar: 200000,
-  invBar: 100000,
-  rcptType: 'payid',
-  investorSort: {
-    updated: 'UPDATED',
-    created: 'CREATED'
-  },
-  products: {
-    register: 'Registration Fees',
-    emandate: 'e-Mandate',
-    walletFund: 'Add funds',
-    monthlyPull: 'Monthly Pull',
-    investment: 'Investment Fees',
-    invoice: 'Invoice Payment',
-    emiPayment: 'Emi Payment'
-  },
-  proposalStatus: {
-    accepted: 'Accepted',
-    rejected: 'Rejected',
-    pending: 'Pending',
-    closed: 'Closed'
-  },
-  disbursementStatus: {
-    disbursed: 'DISBURSED',
-    notyet: 'NOTDISBURSED',
-    signed: 'SIGNED',
-    notSigned: 'NOTSIGNED'
-  },
-  proposalIO: {
-    all: 'All',
-    sent: 'Sent',
-    received: 'Received',
-    notIn: 'NOEXCHNG'
-  },
-  productFee: {
-    register: 'REGISTER_FEE',
-    addFund: 'ADD_FUND_FEE',
-    investment: 'INVESTMENT_FEE',
-    invoice: 'INVOICE_PAYMENT',
-    emiPayment: 'EMI_PAYMENT_FEE'
-  },
-  pgFees: 18,
-  pgConst: {
-    np: 'not paid',
-    p: 'paid',
-    created: 'created'
-  },
-  lbDataTypes: [
-    'TITLE', 'LOAN_PURPOSE', 'CITY', 'RESIDENCE_TYPE', 'MARITAL_STATUS',
-    'HIGHEST_EDUCATION', 'PROFESSION', 'DESIGNATION_LEVEL', 'STATE',
-    'USER_FLAG', 'APP_ROLE', 'UW_FLAG', 'UW_PENDENCIES', 'STATS_LOAN_DISBURSED'
-  ],
   roles: {
     admin: 'ROLE_ADMIN',
     user: 'ROLE_USER'
   },
-  tokenAtAction: {
-    login: 'LOGIN',
-    logout: 'LOGOUT',
-    verifyemail: 'VERIFYEMAIL',
-    verifyotp: 'VERIFYOTP'
-  },
-  accType: ['SAVINGS', 'CURRENT'],
-  empType: ['SALARIED_EMP', 'SELF_EMP_BUSINESS', 'SELF_EMP_PROFESSIONAL'],
-  bizType: ['PUB_LTD', 'PARTNERSHIP', 'SOLE_PROP', 'LLP', 'PVT_LTD', 'OTHER'],
-  education: [44, 45, 46, 47, 48, 49, 50],
-  userType: {
-    investor: 'INVESTOR',
-    borrower: 'BORROWER'
-  },
-  loanStatus: ['active', 'closed', 'overdue', 'prepaid'],
-  userStatus: ['STEP_1', 'STEP_2', 'STEP_3', 'STEP_4', 'ACTIVE'],
-  emailTypes: {
-    1: 'verifyEmail',
-    2: 'referralMail',
-    3: 'amountIncreaseConfirmation',
-    4: 'callBack',
-    5: 'requestDemo',
-    6: 'resetPassword',
-    7: 'publiclinkagreement',
-    8: 'otpEsignBorrowerForBorrower',
-    9: 'otpEsignBorrowerForInvestor',
-    10: 'otpEsignInvestor',
-    11: 'receivedProposal',
-    12: 'rejectProposal',
-    13: 'updateProposal',
-    14: 'reviseProposal',
-    15: 'acceptProposal',
-    16: 'investorMoneyDisbursed',
-    17: 'disbursementReminder',
-    18: 'otpEsignEmail'
-  },
-  awsEmails: {
-    fromSupport: 'support@lendbox.in',
-    fromNoreply: 'no-reply@lendbox.in',
-    fromDisbursement: 'disbursement@lendbox.in'
-  },
-  referalSignup: {
-    mobile: 'https://www.lendbox.in/signupInvestor?referralMobile=',
-    email: 'https://www.lendbox.in/signupInvestor?referralEmail='
-  },
-  maritalStatuses: [40, 41, 42, 43],
-  loanPurposes: [6, 7, 8, 9, 10, 11, 21, 22, 23, 24, 25, 129, 261, 273],
-  relations: [281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292],
-  incomeMode: ['BANK_CREDIT', 'CHEQUE', 'CASH'],
-  title: ['Mr.', 'Ms.', '*'],
-  otpTokenExpTime: '30min',
-  mailTokenExpTime: '259200min',
-  loginTokenExpTime: '43200min',
-  agreementTokenExpTime: '259200min',
-  rpTokenExpTime: '14400min',
-  supportedFileFormats: ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'],
-  residenceTypes: [38, 39, 80, 94, 95, 95, 96, 97, 98],
-  mendatoryDocs: {
-    addProofAnyOne: ['MOBILE_BILL', 'GAS_BILL', 'LANDLINE_BILL', 'WATER_BILL', 'ELECTRICITY_BILL', 'RENT_AGREEMENT', 'OTHER'],
-    others: ['BANK_STATEMENT', 'PAN', 'AADHAR'],
-    salaried: ['SS1', 'SS2', 'SS3'],
-    selfEmployed: ['BITR1']
-  },
-  docsMaxUploads: {
-    MOBILE_BILL: 3,
-    GAS_BILL: 3,
-    LANDLINE_BILL: 3,
-    WATER_BILL: 3,
-    ELECTRICITY_BILL: 3,
-    RENT_AGREEMENT: 3,
-    BANK_STATEMENT: 10,
-    PAN: 3,
-    AADHAR: 6,
-    SS1: 3,
-    SS2: 3,
-    SS3: 3,
-    BITR1: 3,
-    BITR2: 3,
-    ITR: 3,
-    PASSPORT: 6,
-    VOTER_ID: 6,
-    CHEQUE: 3,
-    OTHER: 15
-  },
-  documentNames: {
-    pan: 'PAN',
-    photo: 'PHOTO',
-    rentAggrement: 'RENT_AGREEMENT',
-    aadhar: 'AADHAR',
-    itr: 'ITR',
-    salarySlip1: 'SS1',
-    salarySlip2: 'SS2',
-    salarySlip3: 'SS3',
-    passPosrt: 'PASSPORT',
-    bitr1: 'BITR1',
-    bitr2: 'BITR2',
-    electricityBill: 'ELECTRICITY_BILL',
-    voterId: 'VOTER_ID',
-    mobileBill: 'MOBILE_BILL',
-    bankStmt: 'BANK_STATEMENT',
-    cheque: 'CHEQUE',
-    gasBill: 'GAS_BILL',
-    landline: 'LANDLINE_BILL',
-    waterBill: 'WATER_BILL',
-    other: 'OTHER'
-  },
-  wallet: {
-    tags: {
-      all: 'all',
-      emiTransfer: 'emi_transfer',
-      disbursal: 'disbursal',
-      manualWithdrawal: 'MANUAL_WITHDRAWAL',
-    },
-    txType: {
-      all: 'all',
-      credit: 'emi_transfer',
-      debit: 'withdrawal'
-    },
-    investorTx: {
-      tags: ['fund_deposit', 'disbursal', 'refund', 'all'],
-      type: ['debit', 'credit', 'all']
-    },
-    pathUrls: {
-      txn: 'tx', // both get and post method for creating and getting transactions.
-      wallet: 'wallet', // both get and post methods for creating and getting wallets.
-      settle: '/invoice/settle'
-    },
-    method: {
-      create: 'post',
-      getWallet: 'get'
-    },
-    types: ['user', 'investment', 'loan']
-  },
-  lbnUrls: {
-    saveFcm: '/subscription/fcmtoken'
-  },
-  // Front-end Urls
-  adminPathUrls: {
-    withdrawalReq: 'web/wallet/withdrawalreq'
-  },
-  webPathUrls: {
-    signAgreement: 'sign-agreements',
-    publicSign: 'public-esign',
-    lbPayments: 'lb-payments'
-  },
-  eSignReqType: {
-    byBorrower: 'AGREEMENT_OTP_ESIGN_BORROWER',
-    byInvestor: 'AGREEMENT_OTP_ESIGN_INVESTOR'
-  },
-  action: {
-    accept: 'ACCEPT',
-    reject: 'REJECT',
-    negotiate: 'NEGOTIATE',
-    revise: 'REVISE',
-    send: 'SEND'
-  },
-  proposalMap: {
-    borrower: {
-      SHORT_TERM: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      TOPUP: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      P2P: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      HOMERGIZE: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      BOARD_INFINITY: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      ISERVEU: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      SMART_SCHOOL: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      MICRO: ['INDIVIDUAL', 'ALT_INVESTMENTS'],
-      SAFEXPAY: ['INDIVIDUAL', 'ALT_INVESTMENTS']
-    },
-    investor: {
-      INDIVIDUAL: ['SHORT_TERM', 'TOPUP', 'P2P', 'HOMERGIZE', 'BOARD_INFINITY', 'ISERVEU', 'SMART_SCHOOL', 'MICRO', 'SAFEXPAY'],
-      ALT_INVESTMENTS: ['SHORT_TERM', 'TOPUP', 'P2P', 'HOMERGIZE', 'BOARD_INFINITY', 'ISERVEU', 'SMART_SCHOOL', 'MICRO', 'SAFEXPAY']
-    }
-  },
   resMsg: {
-    OK:'OK',
+    OK: 'OK',
     INVALID_EMAIL: 'Invalid email format.',
     CLIENT_STATUS_UPDATE_ERROR: 'Client status update failed!',
     INVALID_EMAIL_OR_MOBILE: 'Invalid email or mobile format.',
@@ -406,6 +171,96 @@ const constants = {
     EMAIL_A_VERIFIED: 'Email already verified',
     USER_NOT_DESIGNER: 'The selected user is not a Designer',
     USER_NOT_TL: 'The selected user is not a Team Lead'
+  },
+  nErrorMsg: {
+    FIELD_NOT_FOUND: 'ER_BAD_FIELD_ERROR',
+    NO_DATA_FOUND: 'ER_PARSE_ERROR',
+    INCORRECT_REQUEST_PARAMETERS: 'INCORRECT_REQUEST_PARAMETERS',
+    FILE_UPLOAD_ERROR: 'FILE_UPLOAD_ERROR',
+    USER_NOT_ACTIVE: 'User must fullfill requirements.',
+    MANDATE_ALREADY_REG: 'E-Mandate already registered for this loan id.',
+    INSUFFICIENT_MANDATE_DATA: 'Insufficient data. User must have verified bank account & loan approved.',
+    MANDATE_CUSTOMER_REG: 'Customer already registered for this loan id.',
+    CUSTOMER_NOT_EXIST: 'Customer Id isn\'t in list. Please check with Tech team.',
+    MANDATE_PENDING: 'Previous E-Mandate is already pending.',
+    MANDATE_REG: 'E-Mandate already registered for this loan.',
+    MIN_MAX_WALLET_BAL: 'Add funds between 1000 - 10 Lac.'
+  },
+  razorpayPathUrl: {
+    createCustomer: 'customers',
+    createOrder: 'orders',
+    updateDetails: 'orders/',
+    payments: '/payments',
+    updateToken: 'customers/',
+    token: '/tokens',
+    createRecurringPayment: 'payments/create/recurring'
+  },
+  nSuccessMsg: {
+    EMANDATE_REG: 'Customer registered for emandate.'
+  },
+  rSuccessMsg: {
+    ORDER_SUCCESS: 'Order created successfully.',
+    PULL_SUCCESS: 'Mandate pull initiated'
+  },
+  rStatusMsg: {
+    NOT_INITIATED: 'Emandate not yet initiated by user',
+    PAYMENT_FAILED: 'Payment failed',
+    PAYMENT_AUTHORISED: 'Payment authorised',
+    PAYMENT_CAPTURED: 'Caputured successfully',
+    EMANDATE_NOT_REQ: 'Emandate not yet requested'
+  },
+  rErrorMsg: {
+    ORDER_ID_MISSING: 'Order Id missing',
+    BAD_REQUEST: 'BAD REQUEST'
+  },
+  rPayFailed: 'failed',
+  walletConst: {
+    lbUser: 1,
+    walletType: 'user',
+    txnType: ['deposit', 'transfer'],
+    commentOnAutoTransfer: 'Auto allocation for Alternate Investment',
+    source: 'RAZORPAY',
+    walletUrl: 'tx',
+    txSuccess: 'SUCCESS',
+    txFailed: 'FAILED',
+    commentOnTransfer: orderId => `Payment gateway charges on order ${orderId}`,
+    products: {
+      register: 'Registration Fees',
+      emandate: 'e-Mandate',
+      walletFund: 'Add funds',
+      monthlyPull: 'Monthly Pull',
+      investment: 'Investment Fees',
+      emiPayment: 'EMI Payments & Invoices'
+    },
+    razorpay1Products: ['Add funds'],
+    razorpayFees: (fees, product) => {
+      let fee = 0;
+      let pInfo = '';
+      fees.forEach((element) => {
+        if (product === 'Registration Fees') pInfo = 'REGISTER_FEE';
+        if (product === 'Add funds') pInfo = 'ADD_FUND_FEE';
+        if (product === 'Monthly Pull') pInfo = 'MANDATE_PULL_FEE';
+        if (product === 'e-Mandate') pInfo = 'MANDATE_FEE';
+        if (product === 'Investment Fees') pInfo = 'INVESTMENT_FEE';
+        if (product === 'EMI Payments & Invoices') pInfo = 'EMI_PAYMENT_FEE';
+        if (pInfo === element.feesType) fee = element.fees;
+      });
+      return fee;
+    }
+  },
+  razorpayConst: {
+    authorized: 'payment.authorized',
+    captured: 'payment.captured',
+    failed: 'payment.failed',
+    tokenConfirmed: 'token.confirmed',
+    tokenRejected: 'token.rejected',
+    invoicePaid: 'invoice.paid',
+    invoiceExp: 'invoice.expired',
+    orderPaid: 'order.paid',
+    pfailed: 'failed',
+    pcreated: 'created',
+    pauth: 'authorized',
+    psuccess: 'confirmed',
   }
 };
 

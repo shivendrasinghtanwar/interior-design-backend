@@ -82,7 +82,7 @@ class Queries {
     return [query, `insert into notes (client_id, notes, tag, admin_id) values (${reqData.clientId}, ${note}, 'CLIENT_UPDATED', ${reqData.adminId});`];
   }
 
-  assignClientToAdmin(request){
+  assignClientToAdmin(request) {
     return `INSERT INTO client_assigned
     (client_id,admin_id,assigned_by) value
     (${request.clientId},${request.adminId},${request.updatedBy})
