@@ -55,39 +55,39 @@ router.get('/boq-modular-categories', verifyToken, boqModule.getBOQModularCatego
 
 router.get('/boq-search-furniture', verifyToken, boqModule.getBOQFurnitureSearch);
 router.get('/boq-search-modular', verifyToken, boqModule.getBOQModularSearch);
-router.get('/boq-get-data',verifyToken, boqModule.getData);
-router.post('/boq-save-data',verifyToken, boqModule.saveData);
-router.get('/boq-generate-pdf', verifyToken , boqModule.generateBOQ);
-router.get('/boq-generate-test' , boqModule.generateBOQTest);
+router.get('/boq-get-data', verifyToken, boqModule.getData);
+router.post('/boq-save-data', verifyToken, boqModule.saveData);
+router.get('/boq-generate-pdf', verifyToken, boqModule.generateBOQ);
+router.get('/boq-generate-test', boqModule.generateBOQTest);
 
-//REGISTER AND GET DESIGNER & TL
-router.get('/designer-all',commonModule.getAllDesigners);
-router.get('/team-leader-all',commonModule.getAllTeamLeaders);
+// REGISTER AND GET DESIGNER & TL
+router.get('/designer-all', commonModule.getAllDesigners);
+router.get('/team-leader-all', commonModule.getAllTeamLeaders);
 router.post('/register-teamLead', commonModule.registerTl);
 router.post('/register-designer', commonModule.registerDesigner);
 router.post('/register-presales', commonModule.registerPresales);
 
-router.post('/admin-assignTo-designer',verifyToken, adminModule.assignToDesigner);
-router.post('/admin-assignTo-tl',verifyToken, adminModule.assignToTl);
+router.post('/admin-assignTo-designer', verifyToken, adminModule.assignToDesigner);
+router.post('/admin-assignTo-tl', verifyToken, adminModule.assignToTl);
 
-//ADMIN APIs
-router.get('/admin-to-be-assigned',verifyToken, adminModule.getToBeAssignedClients);
-router.get('/admin-assigned-not-met',verifyToken, adminModule.getAssignedNotMetClients);
-router.get('/admin-delayed-proposals',verifyToken, adminModule.getDelayedProposals);
-router.get('/admin-delayed-tasks',verifyToken, adminModule.getDelayedTasks);
-router.get('/admin-payment-dues',verifyToken, adminModule.getPaymentDues);
-router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
+// ADMIN APIs
+router.get('/admin-to-be-assigned', verifyToken, adminModule.getToBeAssignedClients);
+router.get('/admin-assigned-not-met', verifyToken, adminModule.getAssignedNotMetClients);
+router.get('/admin-delayed-proposals', verifyToken, adminModule.getDelayedProposals);
+router.get('/admin-delayed-tasks', verifyToken, adminModule.getDelayedTasks);
+router.get('/admin-payment-dues', verifyToken, adminModule.getPaymentDues);
+router.get('/admin-new-sign-ups', verifyToken, adminModule.getNewSignUps);
 
 
-router.get('/teamLead-designer-all',verifyToken,tlModule.getAllDesigners);
+router.get('/teamLead-designer-all', verifyToken, tlModule.getAllDesigners);
 
-//TL APIs
-router.get('/teamLead-to-be-assigned',verifyToken, tlModule.getToBeAssignedClients);
-router.get('/teamLead-assigned-not-met',verifyToken, tlModule.getAssignedNotMetClients);
-router.get('/teamLead-delayed-proposals',verifyToken, tlModule.getDelayedProposals);
-router.get('/teamLead-delayed-tasks',verifyToken, tlModule.getDelayedTasks);
-router.get('/teamLead-payment-dues',verifyToken, tlModule.getPaymentDues);
-router.get('/teamLead-new-sign-ups',verifyToken, tlModule.getNewSignUps);
+// TL APIs
+router.get('/teamLead-to-be-assigned', verifyToken, tlModule.getToBeAssignedClients);
+router.get('/teamLead-assigned-not-met', verifyToken, tlModule.getAssignedNotMetClients);
+router.get('/teamLead-delayed-proposals', verifyToken, tlModule.getDelayedProposals);
+router.get('/teamLead-delayed-tasks', verifyToken, tlModule.getDelayedTasks);
+router.get('/teamLead-payment-dues', verifyToken, tlModule.getPaymentDues);
+router.get('/teamLead-new-sign-ups', verifyToken, tlModule.getNewSignUps);
 
 /*
   Razorpay Payment Gateway Integration Start
