@@ -10,6 +10,39 @@ const nodemailer = require('nodemailer');
 var generator = require('generate-password');
 
 class RegisterConn {
+
+  sendMail(email,subject,password){
+    let transport = nodemailer.createTransport({
+      host: 'smtp.mailtrap.io',
+      port: 2525,
+      auth: {
+         user: '32219240128afd',
+         pass: '670867791820c4'
+        }
+    });
+    const message = {
+      from: 'marksdezyn@gmail.com', // Sender address
+      to: email,         // List of recipients
+      subject: subject, // Subject line
+      text: 'here is your password: '+password // Plain text body
+    };
+    transport.sendMail(message, function(err, info) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(info);
+      }
+    });
+  }
+
+  generatePassword(){
+    var password = generator.generate({
+      length: 10,
+      numbers: true
+    });
+    return password;
+  }
+
   async addClient(reqData) {
     // Check if user exist with emailId, mobile number or both.
     const listExistedUsers = JSON.stringify(await (execSql(isUserExist(reqData))))
@@ -78,36 +111,11 @@ class RegisterConn {
       };
     }
 
-    var password = generator.generate({
-      length: 10,
-      numbers: true
-    });
+    let subject='Get Registration Password';
+    let password=this.generatePassword();
+    this.sendMail(reqData.email,subject,password);
 
-     //smtp
-     let transport = nodemailer.createTransport({
-      host: 'smtp.mailtrap.io',
-      port: 2525,
-      auth: {
-         user: '32219240128afd',
-         pass: '670867791820c4'
-      }
-    });
-    
-    const message = {
-      from: 'marksdezyn@gmail.com', // Sender address
-      to: reqData.email,         // List of recipients
-      subject: 'Get Registration Password', // Subject line
-      text: 'here is your password: '+password // Plain text body
-    };
-    transport.sendMail(message, function(err, info) {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(info);
-      }
-    });
     const dbres1 = await execSql(insertPassword(reqData,password));
-
     if (dbres1.code) {
       return {
         httpStatus: 500,
@@ -147,34 +155,10 @@ class RegisterConn {
   async forgotPassword(reqData){
     const emailExist=await (execSql(checkEmail(reqData)))
     if(emailExist.length!==0){
-      var password = generator.generate({
-        length: 10,
-        numbers: true
-      });
+      let subject='New Password';
+      let password=this.generatePassword();
+      this.sendMail(reqData.email,subject,password);
 
-     //smtp
-     let transport = nodemailer.createTransport({
-      host: 'smtp.mailtrap.io',
-      port: 2525,
-      auth: {
-         user: '32219240128afd',
-         pass: '670867791820c4'
-        }
-      });
-    
-      const message = {
-        from: 'marksdezyn@gmail.com', // Sender address
-        to: reqData.email,         // List of recipients
-        subject: 'New Password', // Subject line
-        text: 'here is your password: '+password // Plain text body
-      };
-      transport.sendMail(message, function(err, info) {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log(info);
-        }
-      });
       const dbres = await execSql(insertPassword(reqData,password));
       
       if (dbres.code) {
@@ -204,11 +188,16 @@ class RegisterConn {
           body: { success: false, msg: resMsg.PASSWORD_CHANGE_ERROR, data: {} }
         };
       }
-        
+      let subject='Password Changed Successfully';
+      this.sendMail(reqData.email,subject,reqData.newPassword);
       return {
         httpStatus: 200, body: { success: true, msg: resMsg.PSWD_CHANGED }
       };
-      }
+    } else{
+      return {
+        httpStatus: 200, body: { success: true, msg: resMsg.PASSWORD_MATCH_ERROR}
+      };
+    }
   }
 }
 module.exports = new RegisterConn();

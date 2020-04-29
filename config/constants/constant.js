@@ -406,7 +406,8 @@ const constants = {
     EMAIL_A_VERIFIED: 'Email already verified',
     USER_NOT_DESIGNER: 'The selected user is not a Designer',
     USER_NOT_TL: 'The selected user is not a Team Lead',
-    PASSWORD_CHANGE_ERROR: 'Password change error'
+    PASSWORD_CHANGE_ERROR: 'Password change error',
+    PASSWORD_MATCH_ERROR: 'Password does not match'
   }
 };
 
