@@ -47,7 +47,8 @@ const routeConstants = {
     '/teamLead-new-sign-ups',
     '/register-designer',
     '/register-teamLead',
-    '/register-presales'
+    '/register-presales',
+    '/register-client'
 
   ],
   userUrls: [

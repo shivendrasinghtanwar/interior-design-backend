@@ -34,8 +34,11 @@ router.get('/check-client-req-form', verifyToken, reqFormModule.checkReqForm);
 router.post('/fill-client-req-form', verifyToken, reqFormModule.fillReqFormClientSide);
 
 router.post('/assign-to-client', verifyToken, validators.checkClientId, validators.checkAdminId, validationErrorHandler, clientModule.assignToClient);
+//through website
+router.post('/register-client',validators.checkFirstName,validators.checkEmail,validators.checkMobile,registerModule.registerClient);
+router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, 
+validators.checkLastName, validators.checkMobile, validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler, registerModule.addClient);
 
-router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler, registerModule.registerClient);
 
 router.post('/register-admin', verifyToken, validators.checkEmail, validators.checkPassword, validators.checkTitle, validators.checkFirstName,
   validators.checkLastName, validators.checkMobile, validationErrorHandler,
