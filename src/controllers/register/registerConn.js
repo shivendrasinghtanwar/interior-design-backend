@@ -1,5 +1,6 @@
 const _ = require('lodash');
-const { isUserExist, addClientQuery, registerClientQuery, insertPassword } = require('../../models/registrationQueries');
+const { isUserExist, addClientQuery, registerClientQuery, insertPassword,
+  checkEmail,checkPassword } = require('../../models/registrationQueries');
 const { getClientByIdOrMobileOrEmail } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { generateToken } = require('../../middlewares/jwt');
@@ -106,6 +107,7 @@ class RegisterConn {
       }
     });
     const dbres1 = await execSql(insertPassword(reqData,password));
+
     if (dbres1.code) {
       return {
         httpStatus: 500,
@@ -118,5 +120,78 @@ class RegisterConn {
     };
   }
 
+  async login(reqData) {
+    //check email exists
+    const emailExist=await (execSql(checkEmail(reqData)))
+    const passExist =await (execSql(checkPassword(reqData)))
+    console.log(emailExist,passExist)
+    if(emailExist.length!==0){
+      if(passExist.length!==0){
+        return {
+          httpStatus: 200, body: { success: true, msg: resMsg.LOGGED_IN, data:passExist }
+        };
+      } else{
+        return {
+          httpStatus: 400,
+          body: { success: false, msg: resMsg.INVALID_USERNAME, data: {} }
+        };
+      }
+    } else{
+      return {
+        httpStatus: 400,
+        body: { success: false, msg: resMsg.EMAIL_NOT_EXIST, data: {} }
+      };
+    }
+  }
+
+  async forgotPassword(reqData){
+    const emailExist=await (execSql(checkEmail(reqData)))
+    if(emailExist.length!==0){
+      var password = generator.generate({
+        length: 10,
+        numbers: true
+      });
+
+     //smtp
+     let transport = nodemailer.createTransport({
+      host: 'smtp.mailtrap.io',
+      port: 2525,
+      auth: {
+         user: '32219240128afd',
+         pass: '670867791820c4'
+        }
+      });
+    
+      const message = {
+        from: 'marksdezyn@gmail.com', // Sender address
+        to: reqData.email,         // List of recipients
+        subject: 'New Password', // Subject line
+        text: 'here is your password: '+password // Plain text body
+      };
+      transport.sendMail(message, function(err, info) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log(info);
+        }
+      });
+      const dbres = await execSql(insertPassword(reqData,password));
+      
+      if (dbres.code) {
+        return {
+          httpStatus: 500,
+          body: { success: false, msg: resMsg.PASSWORD_CHANGE_ERROR, data: {} }
+        };
+      }
+      
+    return {
+      httpStatus: 200, body: { success: true, msg: resMsg.PSWD_CHANGED }
+    };
+  } else{
+    return {
+      httpStatus: 400, body: { success: false, msg: resMsg.EMAIL_NOT_EXIST }
+    };
+  }
+  }  
 }
 module.exports = new RegisterConn();

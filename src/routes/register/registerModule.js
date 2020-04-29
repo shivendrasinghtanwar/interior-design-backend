@@ -66,6 +66,33 @@ class RegisterModule {
     }
   }
 
+  async loginClient(req, res, next) {
+    try {
+      const reqData = {};
+      reqData.email = req.body.email;
+      reqData.password = req.body.password;
+      const response = await registerConn.login(reqData);
+      console.log(response);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
+  async forgotPassword(req, res, next) {
+    try {
+      const reqData = {};
+      reqData.email = req.body.email;
+      const response = await registerConn.forgotPassword(reqData);
+      console.log(response);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
   async registerAdmin(req, res, next) {
     try {
       const reqData = new RegisterModule().getMandatoryFields(req);

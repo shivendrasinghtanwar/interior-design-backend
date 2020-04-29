@@ -26,6 +26,13 @@ class Queries {
   insertPassword(data,password) {
     return `update marksdzyn.client set password ='${password}' where email='${data.email}'`
   }
+
+  checkEmail(data){
+    return `SELECT email from client where email='${data.email}' `
+  }
+  checkPassword(data){
+    return `SELECT * from client where email='${data.email}' and password ='${data.password}'`
+  }
 }
 
 module.exports = new Queries();
