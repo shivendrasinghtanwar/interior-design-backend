@@ -93,6 +93,21 @@ class RegisterModule {
     }
   }
 
+  async changePassword(req, res, next) {
+    try {
+      const reqData = {};
+      reqData.email = req.body.email;
+      reqData.password = req.body.password;
+      reqData.newPassword = req.body.newPassword;
+      const response = await registerConn.changePassword(reqData);
+      console.log(response);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (err) {
+      console.log(err);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
+
   async registerAdmin(req, res, next) {
     try {
       const reqData = new RegisterModule().getMandatoryFields(req);

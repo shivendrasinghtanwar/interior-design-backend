@@ -193,5 +193,22 @@ class RegisterConn {
     };
   }
   }  
+
+  async changePassword(reqData){
+    const checkPass =await (execSql(checkPassword(reqData)))
+    if(checkPass.length!==0){
+      const dbres = await execSql(insertPassword(reqData,reqData.newPassword));
+      if (dbres.code) {
+        return {
+          httpStatus: 500,
+          body: { success: false, msg: resMsg.PASSWORD_CHANGE_ERROR, data: {} }
+        };
+      }
+        
+      return {
+        httpStatus: 200, body: { success: true, msg: resMsg.PSWD_CHANGED }
+      };
+      }
+  }
 }
 module.exports = new RegisterConn();

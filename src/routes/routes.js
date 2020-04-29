@@ -40,6 +40,7 @@ validators.checkLastName, validators.checkMobile, validators.checkCity, validato
 router.post('/register-client',validators.checkFirstName,validators.checkEmail,validators.checkMobile,registerModule.registerClient);
 router.post('/login-client',validators.checkEmail,validators.checkPassword,registerModule.loginClient);
 router.post('/forgot-password',validators.checkEmail,registerModule.forgotPassword);
+router.post('/change-password',validators.checkEmail,registerModule.changePassword);
 
 
 router.post('/register-admin', verifyToken, validators.checkEmail, validators.checkPassword, validators.checkTitle, validators.checkFirstName,

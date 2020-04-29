@@ -50,7 +50,8 @@ const routeConstants = {
     '/register-presales',
     '/register-client',
     '/login-client',
-    '/forgot-password'
+    '/forgot-password',
+    '/change-password'
 
   ],
   userUrls: [
