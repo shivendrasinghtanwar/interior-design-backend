@@ -1,9 +1,12 @@
 const _ = require('lodash');
-const { isUserExist, addClientQuery, registerClientQuery } = require('../../models/registrationQueries');
+const { isUserExist, addClientQuery, registerClientQuery, insertPassword } = require('../../models/registrationQueries');
 const { getClientByIdOrMobileOrEmail } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { generateToken } = require('../../middlewares/jwt');
 const { resMsg } = require('../../../config/constants/constant');
+
+const nodemailer = require('nodemailer');
+var generator = require('generate-password');
 
 class RegisterConn {
   async addClient(reqData) {
@@ -73,10 +76,45 @@ class RegisterConn {
         body: { success: false, msg: resMsg.SIGNUP_ERROR, data: {} }
       };
     }
-    // reqData.jwt = await generateToken(tokenData, '5000min');
+
+    var password = generator.generate({
+      length: 10,
+      numbers: true
+    });
+
+     //smtp
+     let transport = nodemailer.createTransport({
+      host: 'smtp.mailtrap.io',
+      port: 2525,
+      auth: {
+         user: '32219240128afd',
+         pass: '670867791820c4'
+      }
+    });
+    
+    const message = {
+      from: 'marksdezyn@gmail.com', // Sender address
+      to: reqData.email,         // List of recipients
+      subject: 'Get Registration Password', // Subject line
+      text: 'here is your password: '+password // Plain text body
+    };
+    transport.sendMail(message, function(err, info) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(info);
+      }
+    });
+    const dbres1 = await execSql(insertPassword(reqData,password));
+    if (dbres1.code) {
+      return {
+        httpStatus: 500,
+        body: { success: false, msg: resMsg.SIGNUP_ERROR, data: {} }
+      };
+    }
     
     return {
-      httpStatus: 200, body: { success: true, msg: resMsg.REGISTER_SUCCESS, data: reqData.jwt }
+      httpStatus: 200, body: { success: true, msg: resMsg.REGISTER_SUCCESS }
     };
   }
 

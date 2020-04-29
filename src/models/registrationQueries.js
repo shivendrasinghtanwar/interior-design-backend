@@ -22,6 +22,10 @@ class Queries {
     finalQuery.push(`INSERT INTO address_details (client_id, city, address) VALUES ((select id from client where mobile = '${data.mobile}'), '${data.city}',${add})`);
     return finalQuery;
   }
+
+  insertPassword(data,password) {
+    return `update marksdzyn.client set password ='${password}' where email='${data.email}'`
+  }
 }
 
 module.exports = new Queries();

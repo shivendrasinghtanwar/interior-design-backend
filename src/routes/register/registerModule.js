@@ -47,7 +47,7 @@ class RegisterModule {
       reqData.firstName = req.body.firstName.toUpperCase().trim();
       reqData.lastName = req.body.lastName.toUpperCase().trim();
       reqData.email = req.body.email.toLowerCase().trim();
-      reqData.password = req.body.password;
+      reqData.password = "";
       reqData.mobile = req.body.mobile.trim();
       reqData.address = req.body.address || null;
       reqData.city = req.body.city;
