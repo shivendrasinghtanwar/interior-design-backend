@@ -240,6 +240,7 @@ const constants = {
   },
   resMsg: {
     OK:'OK',
+    ERORR: 'Something went terribly wrong!',
     INVALID_EMAIL: 'Invalid email format.',
     CLIENT_STATUS_UPDATE_ERROR: 'Client status update failed!',
     INVALID_EMAIL_OR_MOBILE: 'Invalid email or mobile format.',
