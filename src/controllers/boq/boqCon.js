@@ -373,6 +373,7 @@ class BoqCon {
         body: { success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {} }
       };
     }
+    let dosp = new Date();
     taskMasterData.forEach(record => {
       let tat = 0;
       if(nosRooms<=3){
@@ -380,7 +381,8 @@ class BoqCon {
       }else{
         tat = record.time_limit_large
       }
-      const startDate = this.toMySQLDate(this.addDays(new Date(), tat));
+      dosp = this.addDays(dosp, tat);
+      const startDate = this.toMySQLDate(dosp);
       transactionQueries.push(insertClientTask(clientId,record,startDate,startDate))
     });
 
