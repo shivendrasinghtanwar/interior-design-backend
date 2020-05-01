@@ -1,4 +1,4 @@
-const { assignToClient, getClientProfile, updateClientProfile } = require('../../models/basicQueries');
+const { assignToClient, getClientProfile, updateClientProfile, getClientTasks } = require('../../models/basicQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
 
@@ -50,6 +50,23 @@ class ClientCon {
       body: {
         success: true,
         data: profile
+      }
+    };
+  }
+
+  async getTasks(clientId){
+    const tasks = await execSql(getClientTasks(clientId));
+    if (!tasks) {
+      return {
+        httpStatus: 404,
+        body: { success: false, msg: resMsg.INVALID_CLIENT_ID, data: {} }
+      };
+    }
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: tasks
       }
     };
   }

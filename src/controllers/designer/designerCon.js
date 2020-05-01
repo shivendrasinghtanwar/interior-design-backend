@@ -1,4 +1,4 @@
-const { fetchClientMetQuery, updateClientMetTxn, fetchAssignedClientQuery } = require('../../models/designerQueries');
+const { fetchClientMetQuery, getOnBoardClientsOfDesigner, updateClientMetTxn, fetchAssignedClientQuery } = require('../../models/designerQueries');
 const { execSql, mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
 
@@ -38,6 +38,17 @@ class DesignerCon {
       body: {
         success: true,
         msg: resMsg.CLIENT_MET_SUCCESS
+      }
+    };
+  }
+
+  async getOnBoardClients(reqData){
+    const allClients = await execSql(getOnBoardClientsOfDesigner(reqData.adminId));
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: { allClients }
       }
     };
   }

@@ -25,8 +25,9 @@ const {
   getRoomModularData,
   getRoomFurnitureData
 } = require('../../models/boqQueries');
+
 const  ClientStatus  = require('../../utils/enums/ClientStatus');
-const { assignClientToAdmin, updateUserStatus } = require('../../models/basicQueries');
+const { assignClientToAdmin, updateUserStatus, getClientTaskMasterData,insertClientTask } = require('../../models/basicQueries');
 const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
 const { s3Upload } = require('../../utils/s3Upload');
 const pdf = require('html-pdf');
@@ -226,6 +227,7 @@ class BoqCon {
         body: { success: false, msg: resMsg.CLIENT_STATUS_UPDATE_ERROR, data: {} }
       };
     }
+    await this.calculateAndAssignTasks(clientId, rooms.length);
 
 
     return {
@@ -275,92 +277,128 @@ class BoqCon {
        httpStatus: 200, body: { success: true, msg: resMsg.OK }
      };
    }
+  fillFurnitureInRoom(roomFurnitureData){
+    const rooms= [];
+    const tempFurnitureData = roomFurnitureData.reduce((r, a) => {
+      r[a.id] = [...r[a.id] || [], a];
+      return r;
+    }, {});
+    Object.entries(tempFurnitureData).forEach(([key,value])=>{
+      // console.log('KEY----',key);
+      // console.log('Value---',value);
+      let roomName = value[0].room_name;
+      let roomType = value[0].room_type;
+      const furniture = [];
+      if(value.length!==0 ){
+        value.forEach(record=>{
+          if(record.furniture_id!==null){
+            furniture.push({
+              id:record.furniture_id,
+              item_code:record.item_code,
+              item_type:record.item_type,
+              item_name:record.item_name,
+              item_description:record.item_description,
+              unit:record.unit,
+              rate:record.rate,
+              breadth:record.breadth,
+              length:record.length,
+              height:record.height,
+              main_rate:record.main_rate,
+              quantity:record.quantity,
+              total:record.total,
+              url:record.url
+            })
+          }
+        });
+      }
 
-   fillFurnitureInRoom(roomFurnitureData){
-     const rooms= [];
-     const tempFurnitureData = roomFurnitureData.reduce((r, a) => {
-       r[a.id] = [...r[a.id] || [], a];
-       return r;
-     }, {});
-     Object.entries(tempFurnitureData).forEach(([key,value])=>{
-       // console.log('KEY----',key);
-       // console.log('Value---',value);
-       let roomName = value[0].room_name;
-       let roomType = value[0].room_type;
-       const furniture = [];
-       if(value.length!==0 ){
-         value.forEach(record=>{
-           if(record.furniture_id!==null){
-             furniture.push({
-               id:record.furniture_id,
-               item_code:record.item_code,
-               item_type:record.item_type,
-               item_name:record.item_name,
-               item_description:record.item_description,
-               unit:record.unit,
-               rate:record.rate,
-               breadth:record.breadth,
-               length:record.length,
-               height:record.height,
-               main_rate:record.main_rate,
-               quantity:record.quantity,
-               total:record.total,
-               url:record.url
-             })
-           }
-         });
-       }
+      rooms.push({
+        roomId:key,
+        name: roomName,
+        type: roomType,
+        furniture: furniture
+      })
+    });
+    return rooms
+  }
+  fillModularInRoom(roomModularData,rooms){
+    const tempModularData = roomModularData.reduce((r, a) => {
+      r[a.id] = [...r[a.id] || [], a];
+      return r;
+    }, {});
+    Object.entries(tempModularData).forEach(([key,value])=>{
+      // console.log('KEY----',key);
+      // console.log('Value---',value);
+      let roomName = value[0].room_name;
+      let roomType = value[0].room_type;
+      const modular = [];
+      if(value.length!==0 ){
+        value.forEach(record=>{
+          if(record.modular_id!==null){
+            modular.push({
+              id:record.modular_id,
+              item_code:record.item_code,
+              item_type:record.item_type,
+              item_name:record.item_name,
+              item_description:record.item_description,
+              unit:record.unit,
+              rate:record.rate,
+              breadth:record.breadth,
+              length:record.length,
+              height:record.height,
+              main_rate:record.main_rate,
+              quantity:record.quantity,
+              total:record.total,
+              url:record.url
+            })
+          }
+        });
+      }
 
-       rooms.push({
-         roomId:key,
-         name: roomName,
-         type: roomType,
-         furniture: furniture
-       })
-     });
-     return rooms
-   }
-   fillModularInRoom(roomModularData,rooms){
-     const tempModularData = roomModularData.reduce((r, a) => {
-       r[a.id] = [...r[a.id] || [], a];
-       return r;
-     }, {});
-     Object.entries(tempModularData).forEach(([key,value])=>{
-       // console.log('KEY----',key);
-       // console.log('Value---',value);
-       let roomName = value[0].room_name;
-       let roomType = value[0].room_type;
-       const modular = [];
-       if(value.length!==0 ){
-         value.forEach(record=>{
-           if(record.modular_id!==null){
-             modular.push({
-               id:record.modular_id,
-               item_code:record.item_code,
-               item_type:record.item_type,
-               item_name:record.item_name,
-               item_description:record.item_description,
-               unit:record.unit,
-               rate:record.rate,
-               breadth:record.breadth,
-               length:record.length,
-               height:record.height,
-               main_rate:record.main_rate,
-               quantity:record.quantity,
-               total:record.total,
-               url:record.url
-             })
-           }
-         });
-       }
+      const thisRoom = rooms.find(obj => {
+        return obj.roomId === key
+      });
 
-       const thisRoom = rooms.find(obj => {
-         return obj.roomId === key
-       });
+      thisRoom.modular = modular;
+    });
+    return rooms
+  }
+  async calculateAndAssignTasks(clientId, nosRooms){
+    const transactionQueries = [];
+    const taskMasterData = await execSql(getClientTaskMasterData());
+    if (taskMasterData.code) {
+      console.log(taskMasterData);
+      return {
+        httpStatus: 500,
+        body: { success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {} }
+      };
+    }
+    taskMasterData.forEach(record => {
+      let tat = 0;
+      if(nosRooms<=3){
+        tat = record.time_limit_small
+      }else{
+        tat = record.time_limit_large
+      }
+      const startDate = this.toMySQLDate(this.addDays(new Date(), tat));
+      transactionQueries.push(insertClientTask(clientId,record,startDate,startDate))
+    });
 
-       thisRoom.modular = modular;
-     });
-     return rooms
-   }
+    const dbres = await mySqlTxn(transactionQueries);
+    if (dbres.code) {
+      console.log(dbres);
+      return {
+        httpStatus: 500,
+        body: { success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {} }
+      };
+    }
+  }
+
+  toMySQLDate(date){
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+  }
+  addDays(date,days){
+    return new Date(date.setTime( date.getTime() + days * 86400000 ));
+  }
 }
 module.exports = new BoqCon();

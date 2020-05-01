@@ -40,6 +40,17 @@ class ClientModule {
       return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
     }
   }
+
+  async getTasks(req, res, next){
+    try {
+      const { clientId } = req.query;
+      const response = await clientCont.getTasks(clientId);
+      return res.status(response.httpStatus).json(response.body);
+    } catch (e) {
+      console.log(e);
+      return next(new errors.OperationalError(`${resMsg.WENT_WRONG}`));
+    }
+  }
 }
 
 module.exports = new ClientModule();
