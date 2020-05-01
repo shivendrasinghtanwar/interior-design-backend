@@ -12,6 +12,7 @@ const adminModule = require('./admin/adminModule');
 const commonModule = require('./common/CommonModule');
 const tlModule = require('./teamLead/teamLeadModule');
 const razorpay = require('./razorpay/razorpayModule');
+const productModule = require('./products/ProductModule');
 const { errorHandler } = require('./../middlewares/errors');
 const { verifyToken } = require('./../middlewares/jwt');
 
@@ -26,8 +27,6 @@ router.get('/dnbl-pdf', verifyToken, validators.checkClientId, validationErrorHa
 router.get('/pre-sales/fetch-all-unassigned-client', verifyToken, preSalesModule.fetchAllUnassignedClient);
 router.get('/pre-sales/assigned-client', verifyToken, preSalesModule.fetchAssignedClient);
 
-
-
 router.get('/client-profile', verifyToken, clientModule.getProfile);
 router.post('/update-client-profile', verifyToken, clientModule.updateClientProfile);
 
@@ -35,8 +34,8 @@ router.get('/check-client-req-form', verifyToken, reqFormModule.checkReqForm);
 router.post('/fill-client-req-form', verifyToken, reqFormModule.fillReqFormClientSide);
 
 router.post('/assign-to-client', verifyToken, validators.checkClientId, validators.checkAdminId, validationErrorHandler, clientModule.assignToClient);
-
-router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName, validators.checkMobile, validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler, registerModule.registerClient);
+router.post('/add-client', verifyToken, validators.checkEmail, validators.checkTitle, validators.checkFirstName, validators.checkLastName,
+  validators.checkMobile, validators.checkCity, validators.checkMeetingTime, validators.checkPackage, validationErrorHandler, registerModule.addClient);
 
 router.post('/register-admin', verifyToken, validators.checkEmail, validators.checkPassword, validators.checkTitle, validators.checkFirstName,
   validators.checkLastName, validators.checkMobile, validationErrorHandler,
@@ -68,15 +67,15 @@ router.post('/register-presales', commonModule.registerPresales);
 router.post('/admin-assignTo-designer', verifyToken, adminModule.assignToDesigner);
 router.post('/admin-assignTo-tl', verifyToken, adminModule.assignToTl);
 
-//ADMIN APIs
-router.get('/admin-to-be-assigned',verifyToken, adminModule.getToBeAssignedClients);
-router.get('/admin-assigned-not-met',verifyToken, adminModule.getAssignedNotMetClients);
-router.get('/admin-delayed-proposals',verifyToken, adminModule.getDelayedProposals);
-router.get('/admin-delayed-tasks',verifyToken, adminModule.getDelayedTasks);
-router.get('/admin-payment-dues',verifyToken, adminModule.getPaymentDues);
-router.get('/admin-new-sign-ups',verifyToken, adminModule.getNewSignUps);
-router.get('/admin-all-presales',verifyToken, adminModule.getAllPresales);
-router.get('/admin-all-clients',verifyToken, adminModule.getAllClients);
+// ADMIN APIs
+router.get('/admin-to-be-assigned', verifyToken, adminModule.getToBeAssignedClients);
+router.get('/admin-assigned-not-met', verifyToken, adminModule.getAssignedNotMetClients);
+router.get('/admin-delayed-proposals', verifyToken, adminModule.getDelayedProposals);
+router.get('/admin-delayed-tasks', verifyToken, adminModule.getDelayedTasks);
+router.get('/admin-payment-dues', verifyToken, adminModule.getPaymentDues);
+router.get('/admin-new-sign-ups', verifyToken, adminModule.getNewSignUps);
+router.get('/admin-all-presales', verifyToken, adminModule.getAllPresales);
+router.get('/admin-all-clients', verifyToken, adminModule.getAllClients);
 
 
 router.get('/teamLead-designer-all', verifyToken, tlModule.getAllDesigners);
@@ -95,12 +94,21 @@ router.get('/teamLead-new-sign-ups', verifyToken, tlModule.getNewSignUps);
 router.post('/rp_pay_order', razorpay.payment);
 
 
-router.get('/designer-on-board-clients',verifyToken, designerModule.getOnBoardClients);
+router.get('/designer-on-board-clients', verifyToken, designerModule.getOnBoardClients);
 router.get('/designer/assigned-client', verifyToken, designerModule.fetchAssignedClient);
 router.get('/designer/client-met', verifyToken, designerModule.fetchClientMet);
 router.post('/designer/update-client-met', verifyToken, designerModule.updateClientMet);
 
-router.get('/client/tasks',clientModule.getTasks);
+router.get('/client/tasks', clientModule.getTasks);
+
+// website
+router.post('/register-client', validators.checkFirstName, validators.checkEmail, validators.checkMobile, registerModule.registerClient);
+router.post('/login-client', validators.checkEmail, validators.checkPassword, registerModule.loginClient);
+router.post('/forgot-password', validators.checkEmail, registerModule.forgotPassword);
+router.post('/change-password', validators.checkEmail, registerModule.changePassword);
+
+// Website products
+router.get('/products', productModule.getAll);
 router.use(errorHandler);
 
 module.exports = router;

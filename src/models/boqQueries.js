@@ -25,7 +25,7 @@ class Queries {
     group by item_type`;
   }
 
-  allFurnitureRecords(category) {
+  allFurnitureRecords(reqData) {
     let queryString = `select
     id,
     item_code,
@@ -48,10 +48,15 @@ class Queries {
     sliding_rate,
     url
     from boq_furniture_master_data`;
-    if (category) {
-      queryString += ` where item_type='${category}'`;
+    if (reqData.category) {
+      queryString += ` where item_type='${reqData.category}'`;
     }
-    console.log('query string--------------', queryString);
+    if(reqData.productId) {
+      queryString += ` where id=${reqData.productId}`;
+    }
+    if(reqData.productCode) {
+      queryString += ` where item_code='${reqData.productCode}'`;
+    }
     return queryString;
   }
 
@@ -61,7 +66,7 @@ class Queries {
     group by item_type`;
   }
 
-  allModularRecords(category) {
+  allModularRecords(reqData) {
     let queryString = `select
     id,
     item_code,
@@ -85,10 +90,17 @@ class Queries {
     url
     width
     from boq_modular_master_data`;
-    if (category) {
-      queryString += ` where item_type='${category}'`;
+    if (reqData.category) {
+      queryString += ` where item_type='${reqData.category}'`;
     }
-    console.log('query string--------------', queryString);
+    if (reqData.productId){
+      queryString += ` where id=${reqData.productId}`;
+    }
+    if(reqData.productCode){
+      queryString += ` where item_code='${reqData.productCode}'`;
+    }
+
+    console.log(queryString)
     return queryString;
   }
 

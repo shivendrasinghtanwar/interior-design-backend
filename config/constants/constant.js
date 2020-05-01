@@ -5,6 +5,7 @@ const constants = {
   },
   resMsg: {
     OK: 'OK',
+    ERORR: 'Something went terribly wrong!',
     INVALID_EMAIL: 'Invalid email format.',
     CLIENT_STATUS_UPDATE_ERROR: 'Client status update failed!',
     INVALID_EMAIL_OR_MOBILE: 'Invalid email or mobile format.',
@@ -170,7 +171,9 @@ const constants = {
     INVALID_PROP: 'Invalid proposal',
     EMAIL_A_VERIFIED: 'Email already verified',
     USER_NOT_DESIGNER: 'The selected user is not a Designer',
-    USER_NOT_TL: 'The selected user is not a Team Lead'
+    USER_NOT_TL: 'The selected user is not a Team Lead',
+    PASSWORD_CHANGE_ERROR: 'Password change error',
+    PASSWORD_MATCH_ERROR: 'Password does not match'
   },
   nErrorMsg: {
     FIELD_NOT_FOUND: 'ER_BAD_FIELD_ERROR',

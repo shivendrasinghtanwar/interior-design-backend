@@ -28,14 +28,9 @@ const {
 
 const  ClientStatus  = require('../../utils/enums/ClientStatus');
 const { assignClientToAdmin, updateUserStatus, getClientTaskMasterData,insertClientTask } = require('../../models/basicQueries');
-const { isUserExist, addClientQuery } = require('../../models/registrationQueries');
 const { s3Upload } = require('../../utils/s3Upload');
-const pdf = require('html-pdf');
-const fs = require('fs');
 const path = require('path');
-const moment = require('moment');
 const { execSql,mySqlTxn } = require('../../models/sqlGetResult');
-const _ = require('underscore');
 const boqPdfMaker = require('./boqPdfMaker');
 const pdfMerger = require('easy-pdf-merge');
 const { resMsg } = require('../../../config/constants/constant');
@@ -65,7 +60,7 @@ class BoqCon {
       httpStatus: 200,
       body: {
         success: true,
-        data: await execSql(allFurnitureRecords(reqData.category))
+        data: await execSql(allFurnitureRecords(reqData))
       }
     };
   }
@@ -85,7 +80,7 @@ class BoqCon {
       httpStatus: 200,
       body: {
         success: true,
-        data: await execSql(allModularRecords(reqData.category))
+        data: await execSql(allModularRecords(reqData))
       }
     };
   }
@@ -373,6 +368,7 @@ class BoqCon {
         body: { success: false, msg: resMsg.DESIGN_QUOTATION_ERROR, data: {} }
       };
     }
+    let dosp = new Date();
     taskMasterData.forEach(record => {
       let tat = 0;
       if(nosRooms<=3){
@@ -380,7 +376,8 @@ class BoqCon {
       }else{
         tat = record.time_limit_large
       }
-      const startDate = this.toMySQLDate(this.addDays(new Date(), tat));
+      dosp = this.addDays(dosp, tat);
+      const startDate = this.toMySQLDate(dosp);
       transactionQueries.push(insertClientTask(clientId,record,startDate,startDate))
     });
 
