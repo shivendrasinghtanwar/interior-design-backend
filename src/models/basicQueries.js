@@ -41,14 +41,14 @@ class Queries {
   }
 
   getClientProfile(clientId) {
-    return `select DATE_format(c.meeting_datetime,'%d %b %y %h:%i %p') AS meetingDateTime,c.id,concat(c.title,' ',c.first_name,' ',c.last_name) AS name, c.email,c.mobile,ad.city,p.id AS projectId,p.scope_of_work,p.package,DATE_format(dq.created,'%d %b %Y') dos,ad.address,m.min_of_meeting,rf.id as reqFormId,dq.id AS designQuotId from client c left join client_assigned ca on c.id = ca.client_id join projects p on p.client_id = c.id left join meetings m on m.project_id = p.id join address_details ad on ad.client_id = c.id left join req_form rf on rf.client_id = c.id left join design_quotation dq on dq.client_id = c.id where c.id = ${clientId}`;
+    return `select DATE_format(c.meeting_datetime,'%d %b %y %h:%i %p') AS meetingDateTime,c.id,c.title as title,c.first_name as firstName,c.last_name as lastName, c.email,c.mobile,ad.city,p.id AS projectId,p.scope_of_work,p.package,DATE_format(dq.created,'%d %b %Y') dos,ad.address,m.min_of_meeting,rf.id as reqFormId,dq.id AS designQuotId from client c left join client_assigned ca on c.id = ca.client_id join projects p on p.client_id = c.id left join meetings m on m.project_id = p.id join address_details ad on ad.client_id = c.id left join req_form rf on rf.client_id = c.id left join design_quotation dq on dq.client_id = c.id where c.id = ${clientId}`;
   }
 
   updateClientProfile(reqData,clientOldData) {
 
     const finalQuery = [];
-    finalQuery.push(`insert into client_updated (client_id,name,address,city,email,mobile) values (${clientOldData.id},'${clientOldData.name}','${clientOldData.address}','${clientOldData.city}','${clientOldData.email}','${clientOldData.mobile}')`);
-    finalQuery.push(`update client set title='${reqData.newTitle}',first_Name='${reqData.newFirstName}',last_name='${reqData.newLastName}' where id=${reqData.clientId}`);
+    finalQuery.push(`insert into client_updated (client_id,title,first_name,last_name,address,city,email,mobile) values (${clientOldData.id},'${clientOldData.title}','${clientOldData.firstName}','${clientOldData.lastName}','${clientOldData.address}','${clientOldData.city}','${clientOldData.email}','${clientOldData.mobile}')`);
+    finalQuery.push(`update client set title='${reqData.title}',first_Name='${reqData.firstName}',last_name='${reqData.lastName}' where id=${reqData.clientId}`);
     finalQuery.push(`update address_details set address='${reqData.newAddress}',city='${reqData.newCity}' where client_id=${reqData.clientId}`);
 
     

@@ -35,9 +35,9 @@ class ClientModule {
       const reqData ={};
       reqData.adminId = req._decoded.id;;
       reqData.clientId = req.body.clientId;
-      reqData.newTitle = req.body.newTitle;
-      reqData.newFirstName = req.body.newFirstName;
-      reqData.newLastName = req.body.newLastName;
+      reqData.title = req.body.title;
+      reqData.firstName = req.body.firstName;
+      reqData.lastName = req.body.lastName;
       reqData.newAddress = req.body.newAddress;
       reqData.newCity = req.body.newCity;
       const response = await clientCont.updateClientProfile(reqData);
