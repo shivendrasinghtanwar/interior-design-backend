@@ -37,8 +37,11 @@ class ClientCon {
     };
   }
 
-  async updateClientProfile(clientId) {
-    const [profile] = await mySqlTxn(updateClientProfile(clientId));
+  async updateClientProfile(reqData) {
+
+    const clientOldData= await execSql(getClientProfile(reqData.clientId));
+    console.log(">>>>>>>>>>",clientOldData[0])
+    const profile = await mySqlTxn(updateClientProfile(reqData,clientOldData[0]));
     if (!profile) {
       return {
         httpStatus: 404,

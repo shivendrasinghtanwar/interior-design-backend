@@ -32,8 +32,15 @@ class ClientModule {
 
   async updateClientProfile(req, res, next) {
     try {
-      const { clientId } = req.body;
-      const response = await clientCont.updateClientProfile(clientId);
+      const reqData ={};
+      reqData.adminId = req._decoded.id;;
+      reqData.clientId = req.body.clientId;
+      reqData.newTitle = req.body.newTitle;
+      reqData.newFirstName = req.body.newFirstName;
+      reqData.newLastName = req.body.newLastName;
+      reqData.newAddress = req.body.newAddress;
+      reqData.newCity = req.body.newCity;
+      const response = await clientCont.updateClientProfile(reqData);
       return res.status(response.httpStatus).json(response.body);
     } catch (e) {
       console.log(e);

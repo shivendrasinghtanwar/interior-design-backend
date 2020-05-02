@@ -16,6 +16,7 @@ const routeConstants = {
     '/designer/update-client-met',
     '/designer-on-board-clients',
     '/client-profile',
+    '/update-client-profile',
     '/on-site-records',
     '/on-site-categories',
     '/boq-furniture-records',
