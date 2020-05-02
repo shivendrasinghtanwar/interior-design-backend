@@ -34,12 +34,12 @@ class ClientModule {
     try {
       const reqData ={};
       reqData.adminId = req._decoded.id;;
-      reqData.clientId = req.body.clientId;
+      reqData.clientId = req.body.id;
       reqData.title = req.body.title;
       reqData.firstName = req.body.firstName;
       reqData.lastName = req.body.lastName;
-      reqData.newAddress = req.body.newAddress;
-      reqData.newCity = req.body.newCity;
+      reqData.address = req.body.address;
+      reqData.city = req.body.city;
       const response = await clientCont.updateClientProfile(reqData);
       return res.status(response.httpStatus).json(response.body);
     } catch (e) {
