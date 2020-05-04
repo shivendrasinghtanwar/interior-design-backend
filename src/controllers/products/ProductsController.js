@@ -66,6 +66,10 @@ class ProductsController {
       }
     };
   }
+
+  async getAllItemsList(){
+    
+  }
 }
 
 module.exports = new ProductsController();

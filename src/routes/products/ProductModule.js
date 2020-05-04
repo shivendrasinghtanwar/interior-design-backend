@@ -19,8 +19,8 @@ class ProductModule {
 
   async getAllItemsList(req, res, next){
     try {
-      const response = await productsController.getAll({productId, category, productCode, sortBy, sortDirection});
-      console.log('Total ItemList fetched-->',response.body.data.length);
+      const response = await productsController.getAllItemsList();
+      console.log('ItemList fetched-->',response);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {
       console.log(err);
