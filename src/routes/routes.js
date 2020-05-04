@@ -109,6 +109,7 @@ router.post('/change-password', validators.checkEmail, registerModule.changePass
 
 // Website products
 router.get('/products', productModule.getAll);
+router.get('/allItemsList', productModule.getAllItemsList);
 router.use(errorHandler);
 
 module.exports = router;

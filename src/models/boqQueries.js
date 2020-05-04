@@ -93,10 +93,10 @@ class Queries {
     if (reqData.category) {
       queryString += ` where item_type='${reqData.category}'`;
     }
-    if (reqData.productId){
+    else if (reqData.productId){
       queryString += ` where id=${reqData.productId}`;
     }
-    if(reqData.productCode){
+    else if(reqData.productCode){
       queryString += ` where item_code='${reqData.productCode}'`;
     }
 
