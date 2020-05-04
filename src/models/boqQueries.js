@@ -88,7 +88,6 @@ class Queries {
     sliding,
     sliding_rate,
     url
-    width
     from boq_modular_master_data`;
     if (reqData.category) {
       queryString += ` where item_type='${reqData.category}'`;
