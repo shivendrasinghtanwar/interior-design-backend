@@ -1,29 +1,8 @@
 const {
-  allOnSiteRecords,
-  allOnSiteDistinctItemTypes,
   allFurnitureRecords,
-  allFurnitureCategories,
-  allModularCategories,
   allModularRecords,
-  searchFurnitureRecords,
-  searchModularRecords,
-  saveOnsiteData,
-  saveFurnitureData,
-  saveModularData,
-  getClientOnSiteData,
-  getClientBoqFurnitureData,
-  getClientBoqModularData,
-  deleteOnSiteDataByClientId,
-  deleteFurnitureDataByClientId,
-  deleteModularDataByClientId,
-  deleteAllRoomsByClientId,
-  insertNewRoom,
-  getLastAddedRoomId,
-  getAllRoomsByClientId,
-  getClientBoqFurnitureDataByRoomId,
-  getClientBOQData,
-  getRoomModularData,
-  getRoomFurnitureData
+  allFurnitureItems,
+  allModularItems
 } = require('../../models/boqQueries');
 const _ = require('lodash');
 const { execSql,mySqlTxn } = require('../../models/sqlGetResult');
@@ -68,7 +47,26 @@ class ProductsController {
   }
 
   async getAllItemsList(){
-    
+    const query = {};
+    const furnitureItems = await execSql(allFurnitureItems(query));
+    const modularItems = await execSql(allModularItems(query));
+
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: [
+          {
+            label: 'Furniture',
+            items: furnitureItems
+          },
+          {
+            label: 'Modular',
+            items: modularItems
+          }
+        ]          
+      }
+    };
   }
 }
 

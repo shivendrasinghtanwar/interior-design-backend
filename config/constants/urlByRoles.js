@@ -54,7 +54,7 @@ const routeConstants = {
     '/forgot-password',
     '/change-password',
     '/products',
-    '/allItemsList'
+    '/all-items-list'
   ],
   userUrls: [
     '/check-client-req-form', '/fill-client-req-form'

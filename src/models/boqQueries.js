@@ -315,6 +315,13 @@ class Queries {
     on req_form_details.id = client_furniture_data.room_id
     where req_form_details.clientId=${clientId}`;
   }
+
+  allFurnitureItems(){
+    return `SELECT distinct(item_type) as label FROM boq_furniture_master_data;`
+  }
+  allModularItems(){
+    return `SELECT distinct(item_type) as label FROM boq_modular_master_data;`
+  }
 }
 
 module.exports = new Queries();
