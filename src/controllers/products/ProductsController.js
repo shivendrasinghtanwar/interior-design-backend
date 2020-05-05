@@ -2,8 +2,10 @@ const {
   allFurnitureRecords,
   allModularRecords,
   allFurnitureItems,
-  allModularItems
+  allModularItems,
+  updateCategoryIdFurniture
 } = require('../../models/boqQueries');
+const {getAllFiltersByCategory} = require('../../models/categoryQueries');
 const _ = require('lodash');
 const { execSql,mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
@@ -64,7 +66,35 @@ class ProductsController {
             label: 'Modular',
             items: modularItems
           }
-        ]          
+        ]
+      }
+    };
+  }
+
+  async getAllFilters(categoryId){
+    const allFilters = await execSql(getAllFiltersByCategory(categoryId));
+
+    console.log('All Filters------------>>',allFilters);
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: allFilters
+      }
+    };
+  }
+
+
+  async addCategoryId(request){
+    const {category, id } = request;
+    // console.log('ssssssssssssssssssssssssssssssss',category)
+    const data = await execSql(updateCategoryIdFurniture(id,category));
+
+    return {
+      httpStatus: 200,
+      body: {
+        success: true,
+        data: data
       }
     };
   }
