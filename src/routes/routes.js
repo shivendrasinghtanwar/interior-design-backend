@@ -102,8 +102,8 @@ router.post('/designer/update-client-met', verifyToken, designerModule.updateCli
 router.get('/client/tasks', clientModule.getTasks);
 
 // website
-router.post('/register-client', validators.checkFirstName, validators.checkEmail, validators.checkMobile, registerModule.registerClient);
-router.post('/login-client', validators.checkEmail, validators.checkPassword, registerModule.loginClient);
+router.post('/client-register', validators.checkFirstName, validators.checkEmail, validators.checkMobile, registerModule.registerClient);
+router.post('/client-login', validators.checkEmail, validators.checkPassword, registerModule.loginClient);
 router.post('/forgot-password', validators.checkEmail, registerModule.forgotPassword);
 router.post('/change-password', validators.checkEmail, registerModule.changePassword);
 

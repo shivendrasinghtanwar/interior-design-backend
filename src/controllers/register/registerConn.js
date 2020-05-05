@@ -141,7 +141,7 @@ class RegisterConn {
       } else{
         return {
           httpStatus: 400,
-          body: { success: false, msg: resMsg.INVALID_USERNAME, data: {} }
+          body: { success: false, msg: resMsg.INVALID_PASSWORD, data: {} }
         };
       }
     } else{
