@@ -316,7 +316,7 @@ class Queries {
   }
 
   allFurnitureItems(){
-    return `SELECT distinct(item_type) as label FROM boq_furniture_master_data;`
+    return `SELECT distinct(item_type) as label,category_id FROM boq_furniture_master_data;`
   }
   allModularItems(){
     return `SELECT distinct(item_type) as label FROM boq_modular_master_data;`
