@@ -7,8 +7,16 @@ const {
 class ProductModule {
   async getAll(req, res, next) {
     try {
-      const { productId, category, productCode, sortBy, sortDirection } = req.query;
-      const response = await productsController.getAll({productId, category, productCode, sortBy, sortDirection});
+      const {
+        productId,
+        category,
+        productCode,
+        sortBy,
+        sortDirection,
+        priceStart,
+        priceEnd
+      } = req.query;
+      const response = await productsController.getAll({productId, category, productCode, sortBy, sortDirection,priceStart,priceEnd});
       console.log('Total records fetched-->',response.body.data.length);
       return res.status(response.httpStatus).json(response.body);
     } catch (err) {

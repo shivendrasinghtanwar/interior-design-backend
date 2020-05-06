@@ -11,7 +11,7 @@ const { execSql,mySqlTxn } = require('../../models/sqlGetResult');
 const { resMsg } = require('../../../config/constants/constant');
 class ProductsController {
   async getAll(request){
-    const {productId, category, productCode, sortBy, sortDirection} = request;
+    const {productId, category, productCode, sortBy, sortDirection,priceStart, priceEnd} = request;
 
     const query = {};
     if(productId) query.productId = productId;
@@ -31,11 +31,32 @@ class ProductsController {
     };
 
     const allRecords = furnitureDBRes.concat(modularDBRes);
-    let response = allRecords;
+
+    let filteredAllRecords = [];
+    console.log(priceEnd!=='0');
+    if(priceStart==='0' && priceEnd==='0'){
+      filteredAllRecords = allRecords;
+    }
+    else {
+      console.log('Hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',priceStart==='0',priceEnd);
+      let reqMax = 0;
+      let reqMin = 0;
+      if(priceEnd==='0'){
+        reqMax = Math.max.apply(Math, furnitureDBRes.map(function(o) { return o.rate; }))*1000;
+      }else {
+        reqMax = priceEnd * 1000;
+      }
+      reqMin = priceStart*1000;
+      filteredAllRecords = allRecords.filter(function(record) {
+        return record.rate > reqMin && record.rate <= reqMax;
+      });
+    }
+
+    let response = filteredAllRecords;
     if(sortBy && sortBy==='price'){
       query.sortBy = 'rate';
       if(sortDirection) query.sortDirection = sortDirection;
-      response = _.orderBy(allRecords, ['rate'], [query.sortDirection]);
+      response = _.orderBy(filteredAllRecords, ['rate'], [query.sortDirection]);
     }
 
 
