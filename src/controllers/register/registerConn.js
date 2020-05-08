@@ -130,13 +130,24 @@ class RegisterConn {
 
   async login(reqData) {
     //check email exists
-    const emailExist=await (execSql(checkEmail(reqData)))
-    const passExist =await (execSql(checkPassword(reqData)))
-    console.log(emailExist,passExist)
-    if(emailExist.length!==0){
-      if(passExist.length!==0){
+    const email=await (execSql(checkEmail(reqData)))
+    const user =await (execSql(checkPassword(reqData)))
+    console.log(email,user)
+    if(email.length!==0){
+      if(user.length!==0){
+        const tokenData = {
+        id: user.id,
+        type: user.type
+      };
+        const jwt = await generateToken(tokenData,'10000min')
         return {
-          httpStatus: 200, body: { success: true, msg: resMsg.LOGGED_IN, data:passExist }
+          httpStatus: 200, body: 
+              { success: true, 
+                msg: resMsg.LOGGED_IN, 
+                data:{
+                  profileInfo: user, token: jwt
+                  }
+              }
         };
       } else{
         return {
