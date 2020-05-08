@@ -316,10 +316,16 @@ class Queries {
   }
 
   allFurnitureItems(){
-    return `SELECT distinct(item_type) as label FROM boq_furniture_master_data;`
+    return `SELECT distinct(item_type) as label,category_id FROM boq_furniture_master_data;`
   }
   allModularItems(){
     return `SELECT distinct(item_type) as label FROM boq_modular_master_data;`
+  }
+
+  updateCategoryIdFurniture(categoryId,category){
+    return `Update boq_furniture_master_data
+     set category_id=${categoryId}
+     where item_type='${category}';`
   }
 }
 

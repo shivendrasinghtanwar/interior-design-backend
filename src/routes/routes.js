@@ -110,6 +110,8 @@ router.post('/change-password', validators.checkEmail, registerModule.changePass
 // Website products
 router.get('/products', productModule.getAll);
 router.get('/all-items-list', productModule.getAllItemsList);
+router.get('/products/filters',productModule.getAllFilters);
+router.post('/products/add/categoryId',productModule.addCategoryId);
 router.use(errorHandler);
 
 module.exports = router;
